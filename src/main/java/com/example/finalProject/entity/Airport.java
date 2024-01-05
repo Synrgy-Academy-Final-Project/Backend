@@ -4,14 +4,10 @@ import java.util.UUID;
 
 import org.hibernate.annotations.Where;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -20,7 +16,7 @@ import lombok.Data;
 @Data
 @Table(name = "airports")
 @Where(clause = "deleted_date is null")
-public class Airports extends AbstractDate {
+public class Airport extends AbstractDate {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
