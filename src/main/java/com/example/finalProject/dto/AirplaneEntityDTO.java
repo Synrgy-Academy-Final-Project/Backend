@@ -1,6 +1,5 @@
-package com.example.finalProject.DTO;
+package com.example.finalProject.dto;
 
-import com.example.finalProject.entity.Company;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;

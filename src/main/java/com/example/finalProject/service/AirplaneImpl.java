@@ -1,7 +1,6 @@
 package com.example.finalProject.service;
 
-import com.example.finalProject.DTO.AirplaneEntityDTO;
-import com.example.finalProject.DTO.CompanyEntityDTO;
+import com.example.finalProject.dto.AirplaneEntityDTO;
 import com.example.finalProject.entity.Airplane;
 import com.example.finalProject.entity.Company;
 import com.example.finalProject.repository.AirplaneRepository;

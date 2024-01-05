@@ -1,6 +1,6 @@
 package com.example.finalProject.service;
 
-import com.example.finalProject.DTO.CompanyEntityDTO;
+import com.example.finalProject.dto.CompanyEntityDTO;
 import com.example.finalProject.entity.Company;
 import com.example.finalProject.repository.CompanyRepository;
 import com.example.finalProject.utils.Config;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.ObjectInputFilter;
 import java.util.*;
 
 @Service

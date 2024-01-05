@@ -1,8 +1,7 @@
 package com.example.finalProject.controller;
 
-import com.example.finalProject.DTO.CompanyEntityDTO;
+import com.example.finalProject.dto.CompanyEntityDTO;
 import com.example.finalProject.service.CompanyImpl;
-import com.example.finalProject.utils.GeneralFunction;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

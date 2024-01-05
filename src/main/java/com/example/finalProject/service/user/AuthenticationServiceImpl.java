@@ -1,6 +1,9 @@
 package com.example.finalProject.service.user;
 
-import com.example.finalProject.dto.request.user.*;
+import com.example.finalProject.dto.request.user.ChangePasswordRequest;
+import com.example.finalProject.dto.request.user.ForgotPasswordRequest;
+import com.example.finalProject.dto.request.user.LoginRequest;
+import com.example.finalProject.dto.request.user.RegisterRequest;
 import com.example.finalProject.dto.response.user.*;
 import com.example.finalProject.model.user.ERole;
 import com.example.finalProject.model.user.Role;
@@ -12,7 +15,6 @@ import com.example.finalProject.security.service.UserDetailsImpl;
 import com.example.finalProject.security.service.UserService;
 import com.example.finalProject.security.util.EmailUtil;
 import com.example.finalProject.security.util.OtpUtil;
-import com.nimbusds.jose.crypto.PasswordBasedDecrypter;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,7 +30,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.Temporal;
 import java.util.List;
 
 @Service

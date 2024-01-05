@@ -1,6 +1,6 @@
 package com.example.finalProject.controller;
 
-import com.example.finalProject.DTO.AirplaneEntityDTO;
+import com.example.finalProject.dto.AirplaneEntityDTO;
 import com.example.finalProject.service.AirplaneImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
