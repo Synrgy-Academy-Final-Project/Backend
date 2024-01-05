@@ -71,16 +71,25 @@ public class AirportImpl {
                 return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
             }
 
-            Airport updatedAirports = checkData.get();
+            Airport updatedAirport = checkData.get();
 
             if (airports.getName() != null) {
-                updatedAirports.setName(airports.getName());
+                updatedAirport.setName(airports.getName());
             }
             if (airports.getCode() != null) {
-                updatedAirports.setCode(airports.getCode());
+                updatedAirport.setCode(airports.getCode());
+            }
+            if (airports.getCity() != null) {
+                updatedAirport.setCity(airports.getCity());
+            }
+            if (airports.getCountry() != null) {
+                updatedAirport.setCountry(airports.getCountry());
             }
 
-            map = response.sukses(airportsRepository.save(updatedAirports));
+            // Save the updated airport
+            Airport savedAirport = airportsRepository.save(updatedAirport);
+
+            map = response.sukses(savedAirport);
         } catch (Exception e) {
             map = response.error(e.getMessage(), Config.EROR_CODE_404);
         }
