@@ -24,10 +24,16 @@ public class UserDetailsImpl implements UserDetails {
 
     private List<GrantedAuthority> authorities;
 
-
+//    public static UserDetails build(User user) {
+//        List<GrantedAuthority> authorities = user.getRoles().stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+//                .collect(Collectors.toList());
+//
+//        return new UserDetailsImpl(user.getEmail(), user.getPassword(), authorities);
+//    }
     public static UserDetails build(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRoles().getName().toString()));
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getName().toString()));
 
         return new UserDetailsImpl(user.getEmail(), user.getPassword(), authorities);
     }

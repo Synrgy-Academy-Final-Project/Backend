@@ -24,6 +24,13 @@ public class Response {
         return map;
     }
 
+    public Map fail(String message){
+        Map map = new HashMap();
+        map.put("message", message);
+        map.put("status", 400);
+        return map;
+    }
+
     public boolean nameNotSimbol(String nama){
         String nameRegex = "^[a-zA-Z\\s]*$";
 
@@ -117,5 +124,11 @@ public class Response {
 
         Pattern pat = Pattern.compile(emailRegex);
         return pat.matcher(email).matches();
+    }
+
+    public boolean isValidPassword(String password){
+        String passRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&*()-_+=!]).{8,}$";
+
+        return password.matches(passRegex);
     }
 }

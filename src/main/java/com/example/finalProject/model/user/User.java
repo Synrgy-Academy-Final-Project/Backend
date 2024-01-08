@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -31,9 +33,10 @@ public class User {
     private Timestamp otpGeneratedTime;
     private boolean userActive;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role roles;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idRole", referencedColumnName = "id")
+    private Role role;
+//    private Set<Role> roles = new HashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userDetailId", referencedColumnName = "id")
