@@ -1,7 +1,5 @@
 package com.example.finalProject.security.service;
 
-import com.example.finalProject.model.user.ERole;
-import com.example.finalProject.model.user.Role;
 import com.example.finalProject.model.user.User;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -27,7 +24,7 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetails build(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRoles().getName().toString()));
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getName().toString()));
 
         return new UserDetailsImpl(user.getEmail(), user.getPassword(), authorities);
     }
