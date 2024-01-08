@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -16,11 +18,10 @@ public class AuthenticationController {
     private final AuthenticationServiceImpl authenticationServiceImpl;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(
+    public ResponseEntity<Map> register(
             @RequestBody RegisterRequest request
     ){
-        JwtResponseRegister register = authenticationServiceImpl.register(request);
-        return ResponseHandler.generateResponse("success", register, null, HttpStatus.OK);
+        return new ResponseEntity<>(authenticationServiceImpl.register(request), HttpStatus.OK);
     }
 
     @PutMapping("/verify-account")
@@ -38,11 +39,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(
+    public ResponseEntity<Map> login(
             @RequestBody LoginRequest request
     ){
-        JwtResponseLogin login = authenticationServiceImpl.login(request);
-        return ResponseHandler.generateResponse("success", login, null, HttpStatus.OK);
+        return new ResponseEntity<>(authenticationServiceImpl.login(request), HttpStatus.OK);
     }
 
     @PostMapping("/forgot-password")
@@ -53,11 +53,28 @@ public class AuthenticationController {
         return ResponseHandler.generateResponse("success", forgotPassword, null, HttpStatus.OK);
     }
 
+    @PostMapping("/forgot-password-web")
+    public ResponseEntity<?> forgotPasswordWeb(
+            @RequestBody ForgotPasswordRequest request
+    ){
+        JwtResponseForgotPassword forgotPassword = authenticationServiceImpl.forgotPasswordWeb(request);
+        return ResponseHandler.generateResponse("success", forgotPassword, null, HttpStatus.OK);
+    }
+
+
     @PutMapping("/verify-account-forgot")
     public ResponseEntity<?> verifyAccountForgot(@RequestParam String email,
                                                  @RequestBody VerifyAccountRequest verifyAccountRequest) {
-        JwtResponseVerifyForgot jwtResponseVerifyForgot = authenticationServiceImpl.verifyAccountPassword(email, verifyAccountRequest.getOtp());
-        return ResponseHandler.generateResponse("success", jwtResponseVerifyForgot, null, HttpStatus.OK);
+        TokenResponse verifyAcount = authenticationServiceImpl.verifyAccountPassword(email, verifyAccountRequest.getOtp());
+        return ResponseHandler.generateResponse("success", verifyAcount, null, HttpStatus.OK);
+    }
+
+    @PutMapping("/forgotpassword-web")
+    public ResponseEntity<?> forgotPasswordWeb(@RequestParam String email,
+                                                 @RequestParam String token,
+                                               @RequestBody ChangePasswordRequest request) {
+        JwtResponseVerifyForgot changePassword = authenticationServiceImpl.changePasswordWeb(email, token, request);
+        return ResponseHandler.generateResponse("success", changePassword, null, HttpStatus.OK);
     }
 
     @PatchMapping("/change-password")
