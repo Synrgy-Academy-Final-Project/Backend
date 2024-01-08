@@ -12,15 +12,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.finalProject.dto.AirportEntityDTO;
-import com.example.finalProject.entity.Airport;
-import com.example.finalProject.repository.AirportRepository;
+import com.example.finalProject.dto.PaymentEntityDTO;
+import com.example.finalProject.entity.Payment;
+import com.example.finalProject.repository.PaymentRepository;
 import com.example.finalProject.utils.Config;
 import com.example.finalProject.utils.GeneralFunction;
 import com.example.finalProject.utils.Response;
 
 @Service
-public class AirportImpl {
+public class PaymentImpl {
     @Autowired
     Response response;
     @Autowired
@@ -28,21 +28,21 @@ public class AirportImpl {
     @Autowired
     GeneralFunction generalFunction;
     @Autowired
-    AirportRepository airportsRepository;
+    PaymentRepository paymentRepository;
 
-    public Page<Airport> searchAll(String code, String name, Pageable pageable) {
-        String updatedCode = generalFunction.createLikeQuery(code);
-        String updatedName = generalFunction.createLikeQuery(name);
-        return airportsRepository.searchAll(updatedCode, updatedName, pageable);
+    public Page<Payment> searchAll(String accountNumber, String bankName, Pageable pageable) {
+        String updatedAccountNumber = generalFunction.createLikeQuery(accountNumber);
+        String updateBankName = generalFunction.createLikeQuery(bankName);
+        return paymentRepository.searchAll(updatedAccountNumber, updateBankName, pageable);
     }
 
-    public Map<String, Object> save(AirportEntityDTO airport) {
+    public Map<String, Object> save(PaymentEntityDTO payment) {
         Map<String, Object> map = new HashMap<>();
 
         try {
             ModelMapper modelMapper = new ModelMapper();
-            Airport convertToairport = modelMapper.map(airport, Airport.class);
-            Airport result = airportsRepository.save(convertToairport);
+            Payment convertToairplane = modelMapper.map(payment, Payment.class);
+            Payment result = paymentRepository.save(convertToairplane);
 
             map = response.sukses(result);
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class AirportImpl {
     public Map<String, Object> findById(UUID id) {
         Map<String, Object> map;
 
-        Optional<Airport> checkData = airportsRepository.findById(id);
+        Optional<Payment> checkData = paymentRepository.findById(id);
         if (checkData.isEmpty()) {
             map = response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
         } else {
@@ -63,33 +63,30 @@ public class AirportImpl {
         return map;
     }
 
-    public Map<String, Object> update(UUID id, AirportEntityDTO airports) {
+    public Map<String, Object> update(UUID id, PaymentEntityDTO payment) {
         Map<String, Object> map;
         try {
-            Optional<Airport> checkData = airportsRepository.findById(id);
+            Optional<Payment> checkData = paymentRepository.findById(id);
             if (checkData.isEmpty()) {
                 return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
             }
 
-            Airport updatedAirport = checkData.get();
+            Payment updatedPayment = checkData.get();
 
-            if (airports.getName() != null) {
-                updatedAirport.setName(airports.getName());
+            if (payment.getAccountName() != null) {
+                updatedPayment.setAccountName(payment.getAccountName());
             }
-            if (airports.getCode() != null) {
-                updatedAirport.setCode(airports.getCode());
+            if (payment.getAccountNumber() != null) {
+                updatedPayment.setAccountNumber(payment.getAccountNumber());
             }
-            if (airports.getCity() != null) {
-                updatedAirport.setCity(airports.getCity());
-            }
-            if (airports.getCountry() != null) {
-                updatedAirport.setCountry(airports.getCountry());
+            if (payment.getBankName() != null) {
+                updatedPayment.setBankName(payment.getBankName());
             }
 
-            // Save the updated airport
-            Airport savedAirport = airportsRepository.save(updatedAirport);
+            // Save the updated Payment
+            Payment savePayment = paymentRepository.save(updatedPayment);
 
-            map = response.sukses(savedAirport);
+            map = response.sukses(savePayment);
         } catch (Exception e) {
             map = response.error(e.getMessage(), Config.EROR_CODE_404);
         }
@@ -99,16 +96,17 @@ public class AirportImpl {
     public Map<String, Object> delete(UUID id) {
         Map<String, Object> map;
         try {
-            Optional<Airport> checkData = airportsRepository.findById(id);
+            Optional<Payment> checkData = paymentRepository.findById(id);
             if (checkData.isEmpty()) {
                 return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
             }
-            Airport deletedAirports = checkData.get();
-            deletedAirports.setDeletedDate(new Date());
-            map = response.sukses(airportsRepository.save(deletedAirports));
+            Payment deletedPayment = checkData.get();
+            deletedPayment.setDeletedDate(new Date());
+            map = response.sukses(paymentRepository.save(deletedPayment));
         } catch (Exception e) {
             map = response.error(e.getMessage(), Config.EROR_CODE_404);
         }
         return map;
     }
+
 }
