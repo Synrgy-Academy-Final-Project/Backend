@@ -72,7 +72,7 @@ public class AuthenticationServiceImpl implements AuhenticationService {
                             .fullName(request.getFullName())
                             .email(request.getEmail())
                             .password(passwordEncoder.encode(request.getPassword()))
-                            .roles(roles)
+                            .role(roles)
                             .createdDate(Timestamp.valueOf(LocalDateTime.now()))
                             .updatedDate(Timestamp.valueOf(LocalDateTime.now()))
                             .otp(passwordEncoder.encode(otp))

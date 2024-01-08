@@ -31,9 +31,10 @@ public class User {
     private Timestamp otpGeneratedTime;
     private boolean userActive;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role roles;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idRole", referencedColumnName = "id")
+    private Role role;
+//    private Set<Role> roles = new HashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userDetailId", referencedColumnName = "id")

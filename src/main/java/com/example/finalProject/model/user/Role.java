@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Setter
@@ -24,6 +26,8 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private ERole name;
 
-    @OneToOne(mappedBy = "roles")
-    private User user;
+    @OneToMany(mappedBy = "role")
+    private Set<User> user = new HashSet<>();
+//    @JoinColumn(name = "user_id", nullable = false)
+
 }

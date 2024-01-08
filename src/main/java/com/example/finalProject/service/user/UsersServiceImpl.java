@@ -75,7 +75,7 @@ public class UsersServiceImpl implements UsersService{
                 userDetails.setVisa(request.getVisa());
                 userDetails.setPassport(request.getPassport());
                 userDetails.setResidentPermit(request.getResidentPermit());
-                userDetails.setNIK(request.getNik());
+                userDetails.setNik(request.getNik());
                 userDetails.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
                 userDetails.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
                 userDetailsRepository.save(userDetails);
@@ -90,7 +90,7 @@ public class UsersServiceImpl implements UsersService{
                 userUpdateResponse.setVisa(userDetails.getVisa());
                 userUpdateResponse.setPassport(userDetails.getPassport());
                 userUpdateResponse.setResidentPermit(userDetails.getResidentPermit());
-                userUpdateResponse.setNik(userDetails.getNIK());
+                userUpdateResponse.setNik(userDetails.getNik());
 
                 return response.sukses(userUpdateResponse);
             }else {
@@ -120,7 +120,7 @@ public class UsersServiceImpl implements UsersService{
             userDetails.setVisa(request.getVisa());
             userDetails.setPassport(request.getPassport());
             userDetails.setResidentPermit(request.getResidentPermit());
-            userDetails.setNIK(request.getNik());
+            userDetails.setNik(request.getNik());
             userDetails.setCreatedDate(userDetails.getCreatedDate());
             userDetails.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
 
@@ -131,7 +131,7 @@ public class UsersServiceImpl implements UsersService{
             userUpdateResponse.setVisa(userDetails.getVisa());
             userUpdateResponse.setPassport(userDetails.getPassport());
             userUpdateResponse.setResidentPermit(userDetails.getResidentPermit());
-            userUpdateResponse.setNik(userDetails.getNIK());
+            userUpdateResponse.setNik(userDetails.getNik());
 
             return response.sukses(userUpdateResponse);
         }catch (Exception e){
@@ -154,7 +154,7 @@ public class UsersServiceImpl implements UsersService{
             userUpdateResponse.setVisa(checkData.get().getVisa());
             userUpdateResponse.setPassport(checkData.get().getPassport());
             userUpdateResponse.setResidentPermit(checkData.get().getResidentPermit());
-            userUpdateResponse.setNik(checkData.get().getNIK());
+            userUpdateResponse.setNik(checkData.get().getNik());
             map = response.sukses(userUpdateResponse);
         }
         return map;
