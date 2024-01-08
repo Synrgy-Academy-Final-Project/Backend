@@ -12,15 +12,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.finalProject.dto.AirportEntityDTO;
-import com.example.finalProject.entity.Airport;
-import com.example.finalProject.repository.AirportRepository;
+import com.example.finalProject.dto.TicketEntityDTO;
+import com.example.finalProject.entity.Promotion;
+import com.example.finalProject.entity.Ticket;
+import com.example.finalProject.repository.TicketRepository;
 import com.example.finalProject.utils.Config;
 import com.example.finalProject.utils.GeneralFunction;
 import com.example.finalProject.utils.Response;
 
 @Service
-public class AirportImpl {
+public class TicketImpl {
     @Autowired
     Response response;
     @Autowired
@@ -28,21 +29,21 @@ public class AirportImpl {
     @Autowired
     GeneralFunction generalFunction;
     @Autowired
-    AirportRepository airportsRepository;
+    TicketRepository ticketRepository;
 
-    public Page<Airport> searchAll(String code, String name, Pageable pageable) {
-        String updatedCode = generalFunction.createLikeQuery(code);
-        String updatedName = generalFunction.createLikeQuery(name);
-        return airportsRepository.searchAll(updatedCode, updatedName, pageable);
+    public Page<Ticket> searchAll(String seat, String gate, Pageable pageable) {
+        String updatedSeat = generalFunction.createLikeQuery(seat);
+        String updateGate = generalFunction.createLikeQuery(gate);
+        return ticketRepository.searchAll(updatedSeat, updateGate, pageable);
     }
 
-    public Map<String, Object> save(AirportEntityDTO airport) {
+    public Map<String, Object> save(TicketEntityDTO ticket) {
         Map<String, Object> map = new HashMap<>();
 
         try {
             ModelMapper modelMapper = new ModelMapper();
-            Airport convertToairport = modelMapper.map(airport, Airport.class);
-            Airport result = airportsRepository.save(convertToairport);
+            Ticket convertToticket = modelMapper.map(ticket, Ticket.class);
+            Ticket result = ticketRepository.save(convertToticket);
 
             map = response.sukses(result);
         } catch (Exception e) {
@@ -54,7 +55,7 @@ public class AirportImpl {
     public Map<String, Object> findById(UUID id) {
         Map<String, Object> map;
 
-        Optional<Airport> checkData = airportsRepository.findById(id);
+        Optional<Ticket> checkData = ticketRepository.findById(id);
         if (checkData.isEmpty()) {
             map = response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
         } else {
@@ -63,33 +64,29 @@ public class AirportImpl {
         return map;
     }
 
-    public Map<String, Object> update(UUID id, AirportEntityDTO airports) {
+    public Map<String, Object> update(UUID id, TicketEntityDTO ticket) {
         Map<String, Object> map;
         try {
-            Optional<Airport> checkData = airportsRepository.findById(id);
+            Optional<Ticket> checkData = ticketRepository.findById(id);
             if (checkData.isEmpty()) {
                 return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
             }
 
-            Airport updatedAirport = checkData.get();
+            Ticket updateTicket = checkData.get();
 
-            if (airports.getName() != null) {
-                updatedAirport.setName(airports.getName());
+            if (ticket.getTransactionId() != null) {
+                updateTicket.setTransactionId(ticket.getTransactionId());
             }
-            if (airports.getCode() != null) {
-                updatedAirport.setCode(airports.getCode());
+            if (ticket.getGate() != null) {
+                updateTicket.setGate(ticket.getGate());
             }
-            if (airports.getCity() != null) {
-                updatedAirport.setCity(airports.getCity());
-            }
-            if (airports.getCountry() != null) {
-                updatedAirport.setCountry(airports.getCountry());
+            if (ticket.getSeat() != null) {
+                updateTicket.setSeat(ticket.getSeat());
             }
 
-            // Save the updated airport
-            Airport savedAirport = airportsRepository.save(updatedAirport);
+            Ticket saveTicket = ticketRepository.save(updateTicket);
 
-            map = response.sukses(savedAirport);
+            map = response.sukses(saveTicket);
         } catch (Exception e) {
             map = response.error(e.getMessage(), Config.EROR_CODE_404);
         }
@@ -99,13 +96,13 @@ public class AirportImpl {
     public Map<String, Object> delete(UUID id) {
         Map<String, Object> map;
         try {
-            Optional<Airport> checkData = airportsRepository.findById(id);
+            Optional<Ticket> checkData = ticketRepository.findById(id);
             if (checkData.isEmpty()) {
                 return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
             }
-            Airport deletedAirports = checkData.get();
-            deletedAirports.setDeletedDate(new Date());
-            map = response.sukses(airportsRepository.save(deletedAirports));
+            Ticket deletedTicket = checkData.get();
+            deletedTicket.setDeletedDate(new Date());
+            map = response.sukses(ticketRepository.save(deletedTicket));
         } catch (Exception e) {
             map = response.error(e.getMessage(), Config.EROR_CODE_404);
         }

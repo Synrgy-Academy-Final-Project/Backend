@@ -36,13 +36,13 @@ public class PromotionImpl {
         return promotionRepository.searchAll(updatedCode, updatedName, pageable);
     }
 
-    public Map<String, Object> save(PromotionEntityDTO airplane) {
+    public Map<String, Object> save(PromotionEntityDTO promotion) {
         Map<String, Object> map = new HashMap<>();
 
         try {
             ModelMapper modelMapper = new ModelMapper();
-            Promotion convertToairplane = modelMapper.map(airplane, Promotion.class);
-            Promotion result = promotionRepository.save(convertToairplane);
+            Promotion convertTopromotion = modelMapper.map(promotion, Promotion.class);
+            Promotion result = promotionRepository.save(convertTopromotion);
 
             map = response.sukses(result);
         } catch (Exception e) {
