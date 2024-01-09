@@ -1,5 +1,6 @@
 package com.example.finalProject.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private ERole name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "role")
     private Set<User> user = new HashSet<>();
 //    @JoinColumn(name = "user_id", nullable = false)

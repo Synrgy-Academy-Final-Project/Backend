@@ -9,8 +9,13 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.UUID;
 
 public interface UserDetailsRepository extends JpaRepository<UserDetails, UUID> {
-    @Query(value = "select * from UserDetails\n" +
-            "where name ilike ?1 and deleted_date is null",
+//    @Query(value = "select * from users_details\n" +
+//            "where name ilike ?1 and deleted_date is null",
+//            nativeQuery = true)
+//    public Page<UserDetails> searchAll(String query, Pageable pageable);
+
+    @Query(value = "select * from users_details\n" +
+            "where deleted_date is null",
             nativeQuery = true)
     public Page<UserDetails> searchAll(String query, Pageable pageable);
 }

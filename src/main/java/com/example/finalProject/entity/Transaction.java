@@ -1,11 +1,13 @@
 package com.example.finalProject.entity;
 
 import com.example.finalProject.model.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -39,6 +41,10 @@ public class Transaction extends AbstractDate {
     @ManyToOne
     @JoinColumn
     Promotion promotion;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "transaction")
+    List<Ticket> ticket;
 
     @NotNull
     int totalSeat;

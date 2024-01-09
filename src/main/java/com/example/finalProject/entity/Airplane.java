@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -26,4 +27,8 @@ public class Airplane extends AbstractDate {
     @ManyToOne
     @JoinColumn
     private Company company;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "airplane")
+    List<Flight> flight;
 }

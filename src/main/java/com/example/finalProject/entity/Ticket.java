@@ -2,14 +2,10 @@ package com.example.finalProject.entity;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -30,6 +26,7 @@ public class Ticket extends AbstractDate {
     @Column(name = "gate")
     private String gate;
 
-    @Column(name = "transaction_id")
-    private UUID transactionId;
+    @ManyToOne
+    @JoinColumn
+    Transaction transaction;
 }

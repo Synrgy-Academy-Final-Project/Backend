@@ -1,14 +1,12 @@
 package com.example.finalProject.entity;
 
+import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -32,4 +30,12 @@ public class Airport extends AbstractDate {
 
     @NotNull
     String country;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "fromAirport")
+    List<Flight> startFlight;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "toAirport")
+    List<Flight> endFlight;
 }
