@@ -43,6 +43,7 @@ public class User {
     @JoinColumn(name = "userDetailId", referencedColumnName = "id")
     private UserDetails usersDetails;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     List<Transaction> transaction;
 }

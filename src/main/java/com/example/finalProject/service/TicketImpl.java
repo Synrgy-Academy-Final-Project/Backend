@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.example.finalProject.entity.Transaction;
+import com.example.finalProject.repository.TransactionRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,6 +32,8 @@ public class TicketImpl {
     GeneralFunction generalFunction;
     @Autowired
     TicketRepository ticketRepository;
+    @Autowired
+    TransactionRepository transactionRepository;
 
     public Page<Ticket> searchAll(String seat, String gate, Pageable pageable) {
         String updatedSeat = generalFunction.createLikeQuery(seat);
@@ -43,6 +47,13 @@ public class TicketImpl {
         try {
             ModelMapper modelMapper = new ModelMapper();
             Ticket convertToticket = modelMapper.map(ticket, Ticket.class);
+
+            Optional<Transaction> checkTransactionData = transactionRepository.findById(ticket.getTransactionId());
+            if(checkTransactionData.isEmpty()){
+                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+            }
+            convertToticket.setTransaction(checkTransactionData.get());
+
             Ticket result = ticketRepository.save(convertToticket);
 
             map = response.sukses(result);
@@ -75,7 +86,11 @@ public class TicketImpl {
             Ticket updateTicket = checkData.get();
 
             if (ticket.getTransactionId() != null) {
-                updateTicket.setTransactionId(ticket.getTransactionId());
+                Optional<Transaction> checkTransactionData = transactionRepository.findById(ticket.getTransactionId());
+                if(checkTransactionData.isEmpty()){
+                    return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                }
+                updateTicket.setTransaction(checkTransactionData.get());
             }
             if (ticket.getGate() != null) {
                 updateTicket.setGate(ticket.getGate());

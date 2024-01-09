@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,7 +19,6 @@ public class Transaction extends AbstractDate {
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @JsonIgnore
     @NotNull
     @ManyToOne
     @JoinColumn
@@ -41,6 +41,10 @@ public class Transaction extends AbstractDate {
     @ManyToOne
     @JoinColumn
     Promotion promotion;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "transaction")
+    List<Ticket> ticket;
 
     @NotNull
     int totalSeat;
