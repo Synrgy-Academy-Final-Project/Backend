@@ -1,16 +1,13 @@
 package com.example.finalProject.entity;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -43,4 +40,8 @@ public class Promotion extends AbstractDate {
 
     @NotNull
     Date endDate;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "promotion")
+    List<Transaction> transaction;
 }

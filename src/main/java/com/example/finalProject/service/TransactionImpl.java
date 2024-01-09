@@ -83,7 +83,7 @@ public class TransactionImpl {
                 return response.error("Not Enough Seat", Config.EROR_CODE_404);
             }
             flight1Data.setCapacity(capacity - totalSeat);
-            totalPrice += capacity * totalSeat;
+            totalPrice += flight1Data.getPrice() * totalSeat;
 
             if (transaction.getFlight2Id() != null) {
                 Optional<Flight> checkFlight2Data = flightRepository.findById(transaction.getFlight2Id());
@@ -98,7 +98,7 @@ public class TransactionImpl {
                     return response.error("Not Enough Seat", Config.EROR_CODE_404);
                 }
                 flight2Data.setCapacity(capacity - totalSeat);
-                totalPrice += capacity * totalSeat;
+                totalPrice += flight2Data.getPrice() * totalSeat;
             }
             convertTotransaction.setTotalPrice(totalPrice);
 
@@ -179,8 +179,9 @@ public class TransactionImpl {
                     return response.error("Not Enough Seat", Config.EROR_CODE_404);
                 }
                 flight1Data.setCapacity(capacity - totalSeat);
-                totalPrice += capacity * totalSeat;
+                totalPrice += flight1Data.getPrice() * totalSeat;
 
+                flightRepository.save(flight1Data);
 //                reversing
                 formerFlight1 = updatedTransaction.getFlight1();
                 formerFlight1.setCapacity(formerFlight1.getCapacity() + updatedTransaction.getTotalSeat());
@@ -199,7 +200,9 @@ public class TransactionImpl {
                     return response.error("Not Enough Seat", Config.EROR_CODE_404);
                 }
                 flight2Data.setCapacity(capacity - totalSeat);
-                totalPrice += capacity * totalSeat;
+                totalPrice += flight2Data.getPrice() * totalSeat;
+
+                flightRepository.save(flight2Data);
 
 //                reversing
                 if (updatedTransaction.getFlight2() != null) {
@@ -210,14 +213,8 @@ public class TransactionImpl {
                 updatedTransaction.setFlight2(flight2Data);
             }
 
-//            updating data
-            if (flight1Data != null){
-                flightRepository.save(flight1Data);
-            }
-
-            if (flight2Data != null){
-                flightRepository.save(flight2Data);
-            }
+            updatedTransaction.setTotalSeat(totalSeat);
+            updatedTransaction.setTotalPrice(totalPrice);
 
             if (formerFlight1 != null){
                 flightRepository.save(formerFlight1);

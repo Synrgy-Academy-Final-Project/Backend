@@ -1,6 +1,7 @@
 package com.example.finalProject.entity;
 
 import com.example.finalProject.model.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class Transaction extends AbstractDate {
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
+    @JsonIgnore
     @NotNull
     @ManyToOne
     @JoinColumn

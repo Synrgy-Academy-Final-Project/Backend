@@ -1,9 +1,12 @@
 package com.example.finalProject.model.user;
 
+import com.example.finalProject.entity.Transaction;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -39,4 +42,7 @@ public class User {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userDetailId", referencedColumnName = "id")
     private UserDetails usersDetails;
+
+    @OneToMany(mappedBy = "user")
+    List<Transaction> transaction;
 }
