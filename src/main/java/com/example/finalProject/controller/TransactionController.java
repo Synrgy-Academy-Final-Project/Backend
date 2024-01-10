@@ -1,5 +1,6 @@
 package com.example.finalProject.controller;
 
+import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.dto.TransactionEntityDTO;
 import com.example.finalProject.service.TransactionImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +24,9 @@ public class TransactionController {
     TransactionImpl transactionImpl;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<Object> searchTransaction(@RequestParam(defaultValue = "0") int pageNumber,
-                                                    @RequestParam(defaultValue = "100") int pageSize,
-                                                    @RequestParam(defaultValue = "") String sortBy){
+    public ResponseEntity<ResponseDTO> searchTransaction(@RequestParam(defaultValue = "0") int pageNumber,
+                                                         @RequestParam(defaultValue = "100") int pageSize,
+                                                         @RequestParam(defaultValue = "") String sortBy){
         Pageable pageable;
         if (sortBy.isEmpty()){
             pageable = PageRequest.of(pageNumber, pageSize);
@@ -36,22 +37,22 @@ public class TransactionController {
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<Map> addTransaction(@RequestBody @Validated TransactionEntityDTO transaction){
+    public ResponseEntity<ResponseDTO> addTransaction(@RequestBody @Validated TransactionEntityDTO transaction){
         return new ResponseEntity<>(transactionImpl.save(transaction), HttpStatus.OK);
     }
 
     @GetMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> findTransaction(@PathVariable UUID id){
+    public ResponseEntity<ResponseDTO> findTransaction(@PathVariable UUID id){
         return new ResponseEntity<>(transactionImpl.findById(id), HttpStatus.OK);
     }
 
     @PutMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> updateTransaction(@PathVariable UUID id, @RequestBody  TransactionEntityDTO transaction){
+    public ResponseEntity<ResponseDTO> updateTransaction(@PathVariable UUID id, @RequestBody  TransactionEntityDTO transaction){
         return new ResponseEntity<>(transactionImpl.update(id, transaction), HttpStatus.OK);
     }
 
     @DeleteMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> deleteTransaction(@PathVariable UUID id){
+    public ResponseEntity<ResponseDTO> deleteTransaction(@PathVariable UUID id){
         return new ResponseEntity<>(transactionImpl.delete(id), HttpStatus.OK);
     }
 }

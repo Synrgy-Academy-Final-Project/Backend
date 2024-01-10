@@ -3,6 +3,7 @@ package com.example.finalProject.controller;
 import java.util.Map;
 import java.util.UUID;
 
+import com.example.finalProject.dto.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,11 +35,11 @@ public class TicketController {
     TicketImpl ticketImpl;
 
     @GetMapping({ "", "/" })
-    public ResponseEntity<Object> searchTicket(@RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "100") int pageSize,
-            @RequestParam(defaultValue = "") String sortBy,
-            @ModelAttribute("seat") String seat,
-            @ModelAttribute("gate") String gate) {
+    public ResponseEntity<ResponseDTO> searchTicket(@RequestParam(defaultValue = "0") int pageNumber,
+                                                    @RequestParam(defaultValue = "100") int pageSize,
+                                                    @RequestParam(defaultValue = "") String sortBy,
+                                                    @ModelAttribute("seat") String seat,
+                                                    @ModelAttribute("gate") String gate) {
         Pageable pageable;
         if (sortBy.isEmpty()) {
             pageable = PageRequest.of(pageNumber, pageSize);
@@ -49,23 +50,23 @@ public class TicketController {
     }
 
     @PostMapping({ "", "/" })
-    public ResponseEntity<Map<String, Object>> addTicket(@RequestBody @Validated TicketEntityDTO Ticket) {
+    public ResponseEntity<ResponseDTO> addTicket(@RequestBody @Validated TicketEntityDTO Ticket) {
         return new ResponseEntity<>(ticketImpl.save(Ticket), HttpStatus.OK);
     }
 
     @GetMapping({ "{id}", "{id}/" })
-    public ResponseEntity<Map<String, Object>> findTicket(@PathVariable UUID id) {
+    public ResponseEntity<ResponseDTO> findTicket(@PathVariable UUID id) {
         return new ResponseEntity<>(ticketImpl.findById(id), HttpStatus.OK);
     }
 
     @PutMapping({ "{id}", "{id}/" })
-    public ResponseEntity<Map<String, Object>> updateTicket(@PathVariable UUID id,
+    public ResponseEntity<ResponseDTO> updateTicket(@PathVariable UUID id,
             @RequestBody TicketEntityDTO Ticket) {
         return new ResponseEntity<>(ticketImpl.update(id, Ticket), HttpStatus.OK);
     }
 
     @DeleteMapping({ "{id}", "{id}/" })
-    public ResponseEntity<Map<String, Object>> deleteTicket(@PathVariable UUID id) {
+    public ResponseEntity<ResponseDTO> deleteTicket(@PathVariable UUID id) {
 
         return new ResponseEntity<>(ticketImpl.delete(id), HttpStatus.OK);
     }

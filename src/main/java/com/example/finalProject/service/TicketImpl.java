@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.entity.Transaction;
 import com.example.finalProject.repository.TransactionRepository;
 import org.modelmapper.ModelMapper;
@@ -35,52 +36,46 @@ public class TicketImpl {
     @Autowired
     TransactionRepository transactionRepository;
 
-    public Page<Ticket> searchAll(String seat, String gate, Pageable pageable) {
+    public ResponseDTO searchAll(String seat, String gate, Pageable pageable) {
         String updatedSeat = generalFunction.createLikeQuery(seat);
         String updateGate = generalFunction.createLikeQuery(gate);
-        return ticketRepository.searchAll(updatedSeat, updateGate, pageable);
+
+        return response.suksesDTO(ticketRepository.searchAll(updatedSeat, updateGate, pageable));
     }
 
-    public Map<String, Object> save(TicketEntityDTO ticket) {
-        Map<String, Object> map = new HashMap<>();
-
+    public ResponseDTO save(TicketEntityDTO ticket) {
         try {
             ModelMapper modelMapper = new ModelMapper();
             Ticket convertToticket = modelMapper.map(ticket, Ticket.class);
 
             Optional<Transaction> checkTransactionData = transactionRepository.findById(ticket.getTransactionId());
             if(checkTransactionData.isEmpty()){
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
             convertToticket.setTransaction(checkTransactionData.get());
 
             Ticket result = ticketRepository.save(convertToticket);
 
-            map = response.sukses(result);
+            return response.suksesDTO(result);
         } catch (Exception e) {
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
-    public Map<String, Object> findById(UUID id) {
-        Map<String, Object> map;
-
+    public ResponseDTO findById(UUID id) {
         Optional<Ticket> checkData = ticketRepository.findById(id);
         if (checkData.isEmpty()) {
-            map = response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+            return response.errorDTO(404, Config.DATA_NOT_FOUND);
         } else {
-            map = response.sukses(checkData.get());
+            return response.suksesDTO(checkData.get());
         }
-        return map;
     }
 
-    public Map<String, Object> update(UUID id, TicketEntityDTO ticket) {
-        Map<String, Object> map;
+    public ResponseDTO update(UUID id, TicketEntityDTO ticket) {
         try {
             Optional<Ticket> checkData = ticketRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
 
             Ticket updateTicket = checkData.get();
@@ -88,7 +83,7 @@ public class TicketImpl {
             if (ticket.getTransactionId() != null) {
                 Optional<Transaction> checkTransactionData = transactionRepository.findById(ticket.getTransactionId());
                 if(checkTransactionData.isEmpty()){
-                    return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
                 }
                 updateTicket.setTransaction(checkTransactionData.get());
             }
@@ -101,26 +96,23 @@ public class TicketImpl {
 
             Ticket saveTicket = ticketRepository.save(updateTicket);
 
-            map = response.sukses(saveTicket);
+            return response.suksesDTO(saveTicket);
         } catch (Exception e) {
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
-    public Map<String, Object> delete(UUID id) {
-        Map<String, Object> map;
+    public ResponseDTO delete(UUID id) {
         try {
             Optional<Ticket> checkData = ticketRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
             Ticket deletedTicket = checkData.get();
             deletedTicket.setDeletedDate(new Date());
-            map = response.sukses(ticketRepository.save(deletedTicket));
+            return response.suksesDTO(ticketRepository.save(deletedTicket));
         } catch (Exception e) {
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 }

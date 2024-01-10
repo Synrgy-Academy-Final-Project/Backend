@@ -1,5 +1,6 @@
 package com.example.finalProject.service.user;
 
+import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.dto.request.user.UserUpdateRequest;
 import com.example.finalProject.dto.response.user.UserUpdateResponse;
 import com.example.finalProject.model.user.User;
@@ -37,31 +38,28 @@ public class UsersServiceImpl implements UsersService{
 
     @Transactional
     @Override
-    public Map deleteUser(Principal principal) {
-        Map map = new HashMap<>();
+    public ResponseDTO deleteUser(Principal principal) {
         try {
             User idUser = authenticationService.getIdUser(principal.getName());
             if(idUser.isUserActive() && idUser.getDeletedDate() == null){
                 idUser.setUserActive(false);
                 idUser.setDeletedDate(Timestamp.valueOf(LocalDateTime.now()));
                 usersRepository.save(idUser);
-                map = response.sukses("Account has been deleted");
                 logger.info("Success delete user");
+                return response.suksesDTO("Account has been deleted");
             }else {
-                map = response.error("Account is not active", Config.EROR_CODE_404);
+                return response.errorDTO(404, "Account is not active");
             }
 
         }catch (Exception e){
             logger.error(e.getMessage());
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
     @Transactional
     @Override
-    public Map createUser(Principal principal, UserUpdateRequest request) {
-        Map map = new HashMap<>();
+    public ResponseDTO createUser(Principal principal, UserUpdateRequest request) {
         try {
             User idUser = authenticationService.getIdUser(principal.getName());
             if (idUser.getUsersDetails() == null){
@@ -92,25 +90,25 @@ public class UsersServiceImpl implements UsersService{
                 userUpdateResponse.setResidentPermit(userDetails.getResidentPermit());
                 userUpdateResponse.setNik(userDetails.getNik());
 
-                return response.sukses(userUpdateResponse);
+                return response.suksesDTO(userUpdateResponse);
             }else {
-                return response.fail("User has profile");
+                return response.errorDTO(400, "User has profile");
             }
 
         }catch (Exception e){
             logger.error(e.getMessage());
-            return response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
     }
 
     @Transactional
     @Override
-    public Map updateUser(UUID userDetailsId, UserUpdateRequest request) {
+    public ResponseDTO updateUser(UUID userDetailsId, UserUpdateRequest request) {
         try {
             Optional<UserDetails> checkUserDetails = userDetailsRepository.findById(userDetailsId);
 
             if (checkUserDetails.isEmpty()){
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
 
             UserDetails userDetails = checkUserDetails.get();
@@ -133,19 +131,18 @@ public class UsersServiceImpl implements UsersService{
             userUpdateResponse.setResidentPermit(userDetails.getResidentPermit());
             userUpdateResponse.setNik(userDetails.getNik());
 
-            return response.sukses(userUpdateResponse);
+            return response.suksesDTO(userUpdateResponse);
         }catch (Exception e){
             logger.error(e.getMessage());
-            return response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
     }
 
     @Override
-    public Map findById(UUID id) {
-        Map map;
+    public ResponseDTO findById(UUID id) {
         Optional<UserDetails> checkData= userDetailsRepository.findById(id);
         if (checkData.isEmpty()){
-            map = response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+            return response.errorDTO(404, Config.DATA_NOT_FOUND);
         }else{
             UserUpdateResponse userUpdateResponse = new UserUpdateResponse();
             userUpdateResponse.setAddress(checkData.get().getAddress());
@@ -155,16 +152,13 @@ public class UsersServiceImpl implements UsersService{
             userUpdateResponse.setPassport(checkData.get().getPassport());
             userUpdateResponse.setResidentPermit(checkData.get().getResidentPermit());
             userUpdateResponse.setNik(checkData.get().getNik());
-            map = response.sukses(userUpdateResponse);
+            return response.suksesDTO(userUpdateResponse);
         }
-        return map;
     }
 
     @Override
-    public Page<UserDetails> searchAll(String query, Pageable pageable) {
+    public ResponseDTO searchAll(String query, Pageable pageable) {
         String updatedQuery = generalFunction.createLikeQuery(query);
-        return userDetailsRepository.searchAll(updatedQuery, pageable);
+        return response.suksesDTO(userDetailsRepository.searchAll(updatedQuery, pageable));
     }
-
-
 }

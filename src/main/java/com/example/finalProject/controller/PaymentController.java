@@ -3,6 +3,7 @@ package com.example.finalProject.controller;
 import java.util.Map;
 import java.util.UUID;
 
+import com.example.finalProject.dto.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,11 +34,11 @@ public class PaymentController {
     PaymentImpl paymentImpl;
 
     @GetMapping({ "", "/" })
-    public ResponseEntity<Object> searchPayment(@RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "100") int pageSize,
-            @RequestParam(defaultValue = "") String sortBy,
-            @ModelAttribute("accountNumber") String accountNumber,
-            @ModelAttribute("bankName") String bankName) {
+    public ResponseEntity<ResponseDTO> searchPayment(@RequestParam(defaultValue = "0") int pageNumber,
+                                                     @RequestParam(defaultValue = "100") int pageSize,
+                                                     @RequestParam(defaultValue = "") String sortBy,
+                                                     @ModelAttribute("accountNumber") String accountNumber,
+                                                     @ModelAttribute("bankName") String bankName) {
         Pageable pageable;
         if (sortBy.isEmpty()) {
             pageable = PageRequest.of(pageNumber, pageSize);
@@ -48,23 +49,23 @@ public class PaymentController {
     }
 
     @PostMapping({ "", "/" })
-    public ResponseEntity<Map<String, Object>> addPayment(@RequestBody @Validated PaymentEntityDTO payment) {
+    public ResponseEntity<ResponseDTO> addPayment(@RequestBody @Validated PaymentEntityDTO payment) {
         return new ResponseEntity<>(paymentImpl.save(payment), HttpStatus.OK);
     }
 
     @GetMapping({ "{id}", "{id}/" })
-    public ResponseEntity<Map<String, Object>> findPayment(@PathVariable UUID id) {
+    public ResponseEntity<ResponseDTO> findPayment(@PathVariable UUID id) {
         return new ResponseEntity<>(paymentImpl.findById(id), HttpStatus.OK);
     }
 
     @PutMapping({ "{id}", "{id}/" })
-    public ResponseEntity<Map<String, Object>> updatePayment(@PathVariable UUID id,
+    public ResponseEntity<ResponseDTO> updatePayment(@PathVariable UUID id,
             @RequestBody PaymentEntityDTO payment) {
         return new ResponseEntity<>(paymentImpl.update(id, payment), HttpStatus.OK);
     }
 
     @DeleteMapping({ "{id}", "{id}/" })
-    public ResponseEntity<Map<String, Object>> deletePayment(@PathVariable UUID id) {
+    public ResponseEntity<ResponseDTO> deletePayment(@PathVariable UUID id) {
 
         return new ResponseEntity<>(paymentImpl.delete(id), HttpStatus.OK);
     }

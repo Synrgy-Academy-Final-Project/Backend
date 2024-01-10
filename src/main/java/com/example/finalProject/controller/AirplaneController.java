@@ -1,6 +1,7 @@
 package com.example.finalProject.controller;
 
 import com.example.finalProject.dto.AirplaneEntityDTO;
+import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.service.AirplaneImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,11 @@ public class AirplaneController {
     AirplaneImpl airplaneImpl;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<Object> searchAirplane(@RequestParam(defaultValue = "0") int pageNumber,
-                                                 @RequestParam(defaultValue = "100") int pageSize,
-                                                 @RequestParam(defaultValue = "") String sortBy,
-                                                 @ModelAttribute("name") String name,
-                                                 @ModelAttribute("code") String code){
+    public ResponseEntity<ResponseDTO> searchAirplane(@RequestParam(defaultValue = "0") int pageNumber,
+                                                      @RequestParam(defaultValue = "100") int pageSize,
+                                                      @RequestParam(defaultValue = "") String sortBy,
+                                                      @ModelAttribute("name") String name,
+                                                      @ModelAttribute("code") String code){
         Pageable pageable;
         if (sortBy.isEmpty()){
             pageable = PageRequest.of(pageNumber, pageSize);
@@ -38,22 +39,22 @@ public class AirplaneController {
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<Map> addAirplane(@RequestBody @Validated AirplaneEntityDTO airplane){
+    public ResponseEntity<ResponseDTO> addAirplane(@RequestBody @Validated AirplaneEntityDTO airplane){
         return new ResponseEntity<>(airplaneImpl.save(airplane), HttpStatus.OK);
     }
 
     @GetMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> findAirplane(@PathVariable UUID id){
+    public ResponseEntity<ResponseDTO> findAirplane(@PathVariable UUID id){
         return new ResponseEntity<>(airplaneImpl.findById(id), HttpStatus.OK);
     }
 
     @PutMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> updateAirplane(@PathVariable UUID id, @RequestBody  AirplaneEntityDTO airplane){
+    public ResponseEntity<ResponseDTO> updateAirplane(@PathVariable UUID id, @RequestBody  AirplaneEntityDTO airplane){
         return new ResponseEntity<>(airplaneImpl.update(id, airplane), HttpStatus.OK);
     }
 
     @DeleteMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> deleteAirplane(@PathVariable UUID id){
+    public ResponseEntity<ResponseDTO> deleteAirplane(@PathVariable UUID id){
         return new ResponseEntity<>(airplaneImpl.delete(id), HttpStatus.OK);
     }
 }

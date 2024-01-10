@@ -1,5 +1,6 @@
 package com.example.finalProject.service;
 
+import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.dto.TransactionEntityDTO;
 import com.example.finalProject.entity.Flight;
 import com.example.finalProject.entity.Payment;
@@ -42,13 +43,12 @@ public class TransactionImpl {
     @Autowired
     GeneralFunction generalFunction;
 
-    public Page<Transaction> searchAll(Pageable pageable) {
-        return transactionRepository.findAll(pageable);
+    public ResponseDTO searchAll(Pageable pageable) {
+        return response.suksesDTO(transactionRepository.findAll(pageable));
     }
 
     @Transactional
-    public Map save(TransactionEntityDTO transaction) {
-        Map map = new HashMap<>();
+    public ResponseDTO save(TransactionEntityDTO transaction) {
         int totalPrice = 0;
         int capacity;
         int totalSeat;
@@ -61,26 +61,26 @@ public class TransactionImpl {
 
             Optional<User> checkUserData = userRepository.findById(transaction.getUserId());
             if (checkUserData.isEmpty()) {
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
             convertTotransaction.setUser(checkUserData.get());
 
             Optional<Payment> checkPaymentData = paymentRepository.findById(transaction.getPaymentId());
             if (checkPaymentData.isEmpty()) {
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
             convertTotransaction.setPayment(checkPaymentData.get());
 
             Optional<Flight> checkFlight1Data = flightRepository.findById(transaction.getFlight1Id());
             if (checkFlight1Data.isEmpty()) {
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
             flight1Data = checkFlight1Data.get();
             convertTotransaction.setFlight1(flight1Data);
             capacity = flight1Data.getCapacity();
             totalSeat = transaction.getTotalSeat();
             if (capacity < totalSeat) {
-                return response.error("Not Enough Seat", Config.EROR_CODE_404);
+                return response.errorDTO(404, "Not Enough Seat");
             }
             flight1Data.setCapacity(capacity - totalSeat);
             totalPrice += flight1Data.getPrice() * totalSeat;
@@ -88,14 +88,14 @@ public class TransactionImpl {
             if (transaction.getFlight2Id() != null) {
                 Optional<Flight> checkFlight2Data = flightRepository.findById(transaction.getFlight2Id());
                 if (checkFlight2Data.isEmpty()) {
-                    return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
                 }
                 flight2Data = checkFlight2Data.get();
                 convertTotransaction.setFlight2(flight2Data);
                 capacity = flight2Data.getCapacity();
                 totalSeat = transaction.getTotalSeat();
                 if (capacity < totalSeat) {
-                    return response.error("Not Enough Seat", Config.EROR_CODE_404);
+                    return response.errorDTO(404, "Not Enough Seat");
                 }
                 flight2Data.setCapacity(capacity - totalSeat);
                 totalPrice += flight2Data.getPrice() * totalSeat;
@@ -111,27 +111,22 @@ public class TransactionImpl {
 
             Transaction result = transactionRepository.save(convertTotransaction);
 
-            map = response.sukses(result);
+            return response.suksesDTO(result);
         }catch (Exception e){
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
-    public Map findById(UUID id) {
-        Map map;
-
+    public ResponseDTO findById(UUID id) {
         Optional<Transaction> checkData= transactionRepository.findById(id);
         if (checkData.isEmpty()){
-            map = response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+            return response.errorDTO(404, Config.DATA_NOT_FOUND);
         }else{
-            map = response.sukses(checkData.get());
+            return response.suksesDTO(checkData.get());
         }
-        return map;
     }
     @Transactional
-    public Map update(UUID id, TransactionEntityDTO transaction) {
-        Map map;
+    public ResponseDTO update(UUID id, TransactionEntityDTO transaction) {
         int capacity;
         int totalPrice = 0;
         int totalSeat;
@@ -142,7 +137,7 @@ public class TransactionImpl {
         try {
             Optional<Transaction> checkData = transactionRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
 
             Transaction updatedTransaction = checkData.get();
@@ -156,14 +151,14 @@ public class TransactionImpl {
             if (transaction.getUserId() != null) {
                 Optional<User> checkUserData = userRepository.findById(transaction.getUserId());
                 if (checkUserData.isEmpty()) {
-                    return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
                 }
                 updatedTransaction.setUser(checkUserData.get());
             }
             if (transaction.getPaymentId() != null) {
                 Optional<Payment> checkPaymentData = paymentRepository.findById(transaction.getPaymentId());
                 if (checkPaymentData.isEmpty()) {
-                    return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
                 }
                 updatedTransaction.setPayment(checkPaymentData.get());
             }
@@ -171,12 +166,12 @@ public class TransactionImpl {
             if (transaction.getFlight1Id() != null) {
                 Optional<Flight> checkFlight1Data = flightRepository.findById(transaction.getFlight1Id());
                 if (checkFlight1Data.isEmpty()) {
-                    return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
                 }
                 flight1Data = checkFlight1Data.get();
                 capacity = flight1Data.getCapacity();
                 if (capacity < totalSeat) {
-                    return response.error("Not Enough Seat", Config.EROR_CODE_404);
+                    return response.errorDTO(404, "Not Enough Seat");
                 }
                 flight1Data.setCapacity(capacity - totalSeat);
                 totalPrice += flight1Data.getPrice() * totalSeat;
@@ -192,12 +187,12 @@ public class TransactionImpl {
             if (transaction.getFlight2Id() != null) {
                 Optional<Flight> checkFlight2Data = flightRepository.findById(transaction.getFlight2Id());
                 if (checkFlight2Data.isEmpty()) {
-                    return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
                 }
                 flight2Data = checkFlight2Data.get();
                 capacity = flight2Data.getCapacity();
                 if (capacity < totalSeat) {
-                    return response.error("Not Enough Seat", Config.EROR_CODE_404);
+                    return response.errorDTO(404, "Not Enough Seat");
                 }
                 flight2Data.setCapacity(capacity - totalSeat);
                 totalPrice += flight2Data.getPrice() * totalSeat;
@@ -224,22 +219,20 @@ public class TransactionImpl {
                 flightRepository.save(formerFlight2);
             }
 
-            map = response.sukses(transactionRepository.save(updatedTransaction));
+            return response.suksesDTO(transactionRepository.save(updatedTransaction));
         }catch (Exception e){
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
-    public Map delete(UUID id) {
-        Map map;
+    public ResponseDTO delete(UUID id) {
         Flight flight1Data = null;
         Flight flight2Data = null;
 
         try{
             Optional<Transaction> checkData = transactionRepository.findById(id);
             if(checkData.isEmpty()){
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
 
             Transaction deletedTransaction = checkData.get();
@@ -255,10 +248,9 @@ public class TransactionImpl {
                 flightRepository.save(flight2Data);
             }
 
-            map = response.sukses(transactionRepository.save(deletedTransaction));
+            return response.suksesDTO(transactionRepository.save(deletedTransaction));
         }catch (Exception e){
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 }
