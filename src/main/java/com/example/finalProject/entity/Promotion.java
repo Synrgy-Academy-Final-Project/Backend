@@ -30,7 +30,7 @@ public class Promotion extends AbstractDate {
     String code;
 
     @NotNull
-    String discount;
+    int discount;
 
     @NotNull
     String terms;

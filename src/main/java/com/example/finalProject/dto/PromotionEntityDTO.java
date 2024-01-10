@@ -21,7 +21,7 @@ public class PromotionEntityDTO {
     String code;
 
     @NotNull
-    String discount;
+    Integer discount;
 
     @NotNull
     String terms;
