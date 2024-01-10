@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/company")
 @Slf4j
 public class CompanyController {
