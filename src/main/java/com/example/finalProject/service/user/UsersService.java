@@ -1,5 +1,6 @@
 package com.example.finalProject.service.user;
 
+import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.dto.request.user.UserUpdateRequest;
 import com.example.finalProject.model.user.UserDetails;
 import jakarta.transaction.Transactional;
@@ -15,15 +16,15 @@ import java.util.UUID;
 public interface UsersService {
 
     @Transactional
-    Map deleteUser(Principal principal);
+    ResponseDTO deleteUser(Principal principal);
 
     @Transactional
-    Map createUser(Principal principal, UserUpdateRequest request);
+    ResponseDTO createUser(Principal principal, UserUpdateRequest request);
 
     @Transactional
-    Map updateUser(UUID userDetailsId, UserUpdateRequest request);
+    ResponseDTO updateUser(UUID userDetailsId, UserUpdateRequest request);
 
-    Map findById(UUID id);
+    ResponseDTO findById(UUID id);
 
-    Page<UserDetails> searchAll(String query, Pageable pageable);
+    ResponseDTO searchAll(String query, Pageable pageable);
 }

@@ -1,6 +1,7 @@
 package com.example.finalProject.controller;
 
 import com.example.finalProject.dto.FlightEntityDTO;
+import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.service.FlightImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -21,41 +22,40 @@ public class FlightController {
     @Autowired
     FlightImpl flightImpl;
     @GetMapping({"", "/"})
-    public ResponseEntity<Object> searchFlight(@RequestParam(defaultValue = "0") int pageNumber,
-                                               @RequestParam(defaultValue = "100") int pageSize,
-                                               @RequestParam(defaultValue = "") String sortBy,
-                                               @ModelAttribute("fromAirportCode") String fromAirportCode,
-                                               @ModelAttribute("toAirportCode") String toAirportCode,
-                                               @ModelAttribute("departureDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date departureDate,
-                                               @ModelAttribute("arrivalDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date arrivalDate,
-                                               @ModelAttribute("capacity") String capacity,
-                                               @ModelAttribute("airplaneClass") String airplaneClass){
+    public ResponseEntity<ResponseDTO> searchFlight(@RequestParam(defaultValue = "0") int pageNumber,
+                                                    @RequestParam(defaultValue = "100") int pageSize,
+                                                    @RequestParam(defaultValue = "") String sortBy,
+                                                    @ModelAttribute("fromAirportCode") String fromAirportCode,
+                                                    @ModelAttribute("toAirportCode") String toAirportCode,
+                                                    @ModelAttribute("departureDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date departureDate,
+                                                    @ModelAttribute("capacity") String capacity,
+                                                    @ModelAttribute("airplaneClass") String airplaneClass){
         Pageable pageable;
         if (sortBy.isEmpty()){
             pageable = PageRequest.of(pageNumber, pageSize);
         }else{
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        return new ResponseEntity<>(flightImpl.searchAll(fromAirportCode, toAirportCode, departureDate, arrivalDate, Integer.parseInt(capacity), airplaneClass, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(flightImpl.searchAll(fromAirportCode, toAirportCode, departureDate, Integer.parseInt(capacity), airplaneClass, pageable), HttpStatus.OK);
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<Map> addFlight(@RequestBody @Validated FlightEntityDTO flight){
+    public ResponseEntity<ResponseDTO> addFlight(@RequestBody @Validated FlightEntityDTO flight){
         return new ResponseEntity<>(flightImpl.save(flight), HttpStatus.OK);
     }
 
     @GetMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> findFlight(@PathVariable UUID id){
+    public ResponseEntity<ResponseDTO> findFlight(@PathVariable UUID id){
         return new ResponseEntity<>(flightImpl.findById(id), HttpStatus.OK);
     }
 
     @PutMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> updateFlight(@PathVariable UUID id, @RequestBody  FlightEntityDTO flight){
+    public ResponseEntity<ResponseDTO> updateFlight(@PathVariable UUID id, @RequestBody  FlightEntityDTO flight){
         return new ResponseEntity<>(flightImpl.update(id, flight), HttpStatus.OK);
     }
 
     @DeleteMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> deleteFlight(@PathVariable UUID id){
+    public ResponseEntity<ResponseDTO> deleteFlight(@PathVariable UUID id){
         return new ResponseEntity<>(flightImpl.delete(id), HttpStatus.OK);
     }
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.example.finalProject.dto.ResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,45 +31,39 @@ public class PaymentImpl {
     @Autowired
     PaymentRepository paymentRepository;
 
-    public Page<Payment> searchAll(String accountNumber, String bankName, Pageable pageable) {
+    public ResponseDTO searchAll(String accountNumber, String bankName, Pageable pageable) {
         String updatedAccountNumber = generalFunction.createLikeQuery(accountNumber);
         String updateBankName = generalFunction.createLikeQuery(bankName);
-        return paymentRepository.searchAll(updatedAccountNumber, updateBankName, pageable);
+
+        return response.suksesDTO(paymentRepository.searchAll(updatedAccountNumber, updateBankName, pageable));
     }
 
-    public Map<String, Object> save(PaymentEntityDTO payment) {
-        Map<String, Object> map = new HashMap<>();
-
+    public ResponseDTO save(PaymentEntityDTO payment) {
         try {
             ModelMapper modelMapper = new ModelMapper();
             Payment convertToairplane = modelMapper.map(payment, Payment.class);
             Payment result = paymentRepository.save(convertToairplane);
 
-            map = response.sukses(result);
+            return response.suksesDTO(result);
         } catch (Exception e) {
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
-    public Map<String, Object> findById(UUID id) {
-        Map<String, Object> map;
-
+    public ResponseDTO findById(UUID id) {
         Optional<Payment> checkData = paymentRepository.findById(id);
         if (checkData.isEmpty()) {
-            map = response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+            return response.errorDTO(404, Config.DATA_NOT_FOUND);
         } else {
-            map = response.sukses(checkData.get());
+            return response.suksesDTO(checkData.get());
         }
-        return map;
     }
 
-    public Map<String, Object> update(UUID id, PaymentEntityDTO payment) {
-        Map<String, Object> map;
+    public ResponseDTO update(UUID id, PaymentEntityDTO payment) {
         try {
             Optional<Payment> checkData = paymentRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
 
             Payment updatedPayment = checkData.get();
@@ -86,27 +81,24 @@ public class PaymentImpl {
             // Save the updated Payment
             Payment savePayment = paymentRepository.save(updatedPayment);
 
-            map = response.sukses(savePayment);
+            return response.suksesDTO(savePayment);
         } catch (Exception e) {
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
-    public Map<String, Object> delete(UUID id) {
-        Map<String, Object> map;
+    public ResponseDTO delete(UUID id) {
         try {
             Optional<Payment> checkData = paymentRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
             Payment deletedPayment = checkData.get();
             deletedPayment.setDeletedDate(new Date());
-            map = response.sukses(paymentRepository.save(deletedPayment));
+            return response.suksesDTO(paymentRepository.save(deletedPayment));
         } catch (Exception e) {
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
 }

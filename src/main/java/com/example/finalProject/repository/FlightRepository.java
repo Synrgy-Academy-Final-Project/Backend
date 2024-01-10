@@ -17,10 +17,9 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
             "\ta.code ilike ?1 \n" +
             "\tand a2.code ilike ?2 \n" +
             "\tand DATE(departure_date) = ?3 \n" +
-            "\tand DATE(arrival_date) = ?4 \n" +
-            "\tand airplane_class ilike ?5 \n" +
-            "\tand capacity >= ?6",
+            "\tand airplane_class ilike ?4 \n" +
+            "\tand capacity >= ?5",
             nativeQuery = true)
-    public Page<Flight> searchAll(String fromAirportCode, String toAirportCode, Date departureDate, Date arrivalDate, String airplaneClass, int capacity, Pageable pageable);
+    public Page<Flight> searchAll(String fromAirportCode, String toAirportCode, Date departureDate, String airplaneClass, int capacity, Pageable pageable);
 
 }

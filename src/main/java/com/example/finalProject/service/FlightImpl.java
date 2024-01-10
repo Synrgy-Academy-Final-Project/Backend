@@ -1,6 +1,7 @@
 package com.example.finalProject.service;
 
 import com.example.finalProject.dto.FlightEntityDTO;
+import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.entity.Airplane;
 import com.example.finalProject.entity.Airport;
 import com.example.finalProject.entity.Flight;
@@ -33,66 +34,59 @@ public class FlightImpl {
     @Autowired
     GeneralFunction generalFunction;
 
-    public Page<Flight> searchAll(String fromAirportCode, String toAirportCode, Date departureDate, Date arrivalDate, int capacity, String airplaneClass, Pageable pageable) {
+    public ResponseDTO searchAll(String fromAirportCode, String toAirportCode, Date departureDate, int capacity, String airplaneClass, Pageable pageable) {
         String updatedFromAirportCode = generalFunction.createLikeQuery(fromAirportCode);
         String updatedToAirportCode = generalFunction.createLikeQuery(toAirportCode);
         String updatedAirplaneClass = generalFunction.createLikeQuery(airplaneClass);
 
-        return flightRepository.searchAll(updatedFromAirportCode, updatedToAirportCode, departureDate, arrivalDate, updatedAirplaneClass, capacity, pageable);
+        return response.suksesDTO(flightRepository.searchAll(updatedFromAirportCode, updatedToAirportCode, departureDate, updatedAirplaneClass, capacity, pageable));
     }
 
-    public Map save(FlightEntityDTO flight) {
-        Map map = new HashMap<>();
-
+    public ResponseDTO save(FlightEntityDTO flight) {
         try{
             ModelMapper modelMapper = new ModelMapper();
             Flight convertToFlight = modelMapper.map(flight, Flight.class);
 
             Optional<Airplane> checkAirplane = airplaneRepository.findById(flight.getAirplaneId());
             if(checkAirplane.isEmpty()){
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
             convertToFlight.setAirplane(checkAirplane.get());
 
             Optional<Airport> checkFromAirport = airportRepository.findById(flight.getFromAirportId());
             if(checkFromAirport.isEmpty()){
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
             convertToFlight.setFromAirport(checkFromAirport.get());
 
             Optional<Airport> checkToAirport = airportRepository.findById(flight.getToAirportId());
             if(checkToAirport.isEmpty()){
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
             convertToFlight.setToAirport(checkToAirport.get());
 
             Flight result = flightRepository.save(convertToFlight);
 
-            map = response.sukses(result);
+            return response.suksesDTO(result);
         }catch (Exception e){
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
-    public Map findById(UUID id) {
-        Map map;
-
+    public ResponseDTO findById(UUID id) {
         Optional<Flight> checkData= flightRepository.findById(id);
         if (checkData.isEmpty()){
-            map = response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+            return response.errorDTO(404, Config.DATA_NOT_FOUND);
         }else{
-            map = response.sukses(checkData.get());
+            return response.suksesDTO(checkData.get());
         }
-        return map;
     }
 
-    public Map update(UUID id, FlightEntityDTO flight) {
-        Map map;
+    public ResponseDTO update(UUID id, FlightEntityDTO flight) {
         try{
             Optional<Flight> checkData = flightRepository.findById(id);
             if(checkData.isEmpty()){
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
 
             Flight updatedFlight = checkData.get();
@@ -100,7 +94,7 @@ public class FlightImpl {
             if(flight.getAirplaneId() != null){
                 Optional<Airplane> checkAirplaneData = airplaneRepository.findById(flight.getAirplaneId());
                 if(checkAirplaneData.isEmpty()){
-                    return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
                 }
                 updatedFlight.setAirplane(checkAirplaneData.get());
             }
@@ -124,7 +118,7 @@ public class FlightImpl {
             if(flight.getFromAirportId() != null){
                 Optional<Airport> checkAirportData = airportRepository.findById(flight.getFromAirportId());
                 if(checkAirportData.isEmpty()){
-                    return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
                 }
                 updatedFlight.setFromAirport(checkAirportData.get());
             }
@@ -132,7 +126,7 @@ public class FlightImpl {
             if(flight.getToAirportId() != null){
                 Optional<Airport> checkAirportData = airportRepository.findById(flight.getToAirportId());
                 if(checkAirportData.isEmpty()){
-                    return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
                 }
                 updatedFlight.setToAirport(checkAirportData.get());
             }
@@ -141,27 +135,24 @@ public class FlightImpl {
                 updatedFlight.setPrice(flight.getPrice());
             }
 
-            map = response.sukses(flightRepository.save(updatedFlight));
+            return response.suksesDTO(flightRepository.save(updatedFlight));
         }catch (Exception e){
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
-    public Map delete(UUID id) {
-        Map map;
+    public ResponseDTO delete(UUID id) {
         try{
             Optional<Flight> checkData = flightRepository.findById(id);
             if(checkData.isEmpty()){
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
 
             Flight deletedFlight = checkData.get();
             deletedFlight.setDeletedDate(new Date());
-            map = response.sukses(flightRepository.save(deletedFlight));
+            return response.suksesDTO(flightRepository.save(deletedFlight));
         }catch (Exception e){
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 }
