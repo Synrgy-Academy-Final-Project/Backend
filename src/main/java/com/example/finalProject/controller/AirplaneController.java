@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/airplane")
 @Slf4j
 public class AirplaneController {
