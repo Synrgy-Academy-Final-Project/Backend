@@ -27,7 +27,6 @@ public class FlightController {
                                                @ModelAttribute("fromAirportCode") String fromAirportCode,
                                                @ModelAttribute("toAirportCode") String toAirportCode,
                                                @ModelAttribute("departureDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date departureDate,
-                                               @ModelAttribute("arrivalDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date arrivalDate,
                                                @ModelAttribute("capacity") String capacity,
                                                @ModelAttribute("airplaneClass") String airplaneClass){
         Pageable pageable;
@@ -36,7 +35,7 @@ public class FlightController {
         }else{
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        return new ResponseEntity<>(flightImpl.searchAll(fromAirportCode, toAirportCode, departureDate, arrivalDate, Integer.parseInt(capacity), airplaneClass, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(flightImpl.searchAll(fromAirportCode, toAirportCode, departureDate, Integer.parseInt(capacity), airplaneClass, pageable), HttpStatus.OK);
     }
 
     @PostMapping({"", "/"})

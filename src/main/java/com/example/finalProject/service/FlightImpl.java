@@ -33,12 +33,12 @@ public class FlightImpl {
     @Autowired
     GeneralFunction generalFunction;
 
-    public Page<Flight> searchAll(String fromAirportCode, String toAirportCode, Date departureDate, Date arrivalDate, int capacity, String airplaneClass, Pageable pageable) {
+    public Page<Flight> searchAll(String fromAirportCode, String toAirportCode, Date departureDate, int capacity, String airplaneClass, Pageable pageable) {
         String updatedFromAirportCode = generalFunction.createLikeQuery(fromAirportCode);
         String updatedToAirportCode = generalFunction.createLikeQuery(toAirportCode);
         String updatedAirplaneClass = generalFunction.createLikeQuery(airplaneClass);
 
-        return flightRepository.searchAll(updatedFromAirportCode, updatedToAirportCode, departureDate, arrivalDate, updatedAirplaneClass, capacity, pageable);
+        return flightRepository.searchAll(updatedFromAirportCode, updatedToAirportCode, departureDate, updatedAirplaneClass, capacity, pageable);
     }
 
     public Map save(FlightEntityDTO flight) {
