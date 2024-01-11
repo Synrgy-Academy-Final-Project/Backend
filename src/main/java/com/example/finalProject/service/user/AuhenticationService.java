@@ -1,11 +1,9 @@
 package com.example.finalProject.service.user;
 
 
-import com.example.finalProject.dto.request.user.ChangePasswordRequest;
-import com.example.finalProject.dto.request.user.ForgotPasswordRequest;
-import com.example.finalProject.dto.request.user.LoginRequest;
-import com.example.finalProject.dto.request.user.RegisterRequest;
+import com.example.finalProject.dto.request.user.*;
 import com.example.finalProject.dto.response.user.*;
+import com.example.finalProject.exception.*;
 import com.example.finalProject.model.user.ERole;
 import com.example.finalProject.model.user.Role;
 import com.example.finalProject.model.user.User;
@@ -13,23 +11,23 @@ import com.example.finalProject.model.user.User;
 import java.util.Map;
 
 public interface AuhenticationService{
-    Map register(RegisterRequest request);
+    Map register(RegisterRequest request) throws NullRequestException, UserExistException;
 
-    JwtResponseRegister verifyAccount(String email, String otp);
+    Map verifyAccount(String email, String otp) throws NullRequestException, UserNotVerifiedException, WrongOtpException, UserNotFoundException;
 
-    RegenerateOtpResponse regenerateOtp(String email);
+    Map regenerateOtp(String email) throws UserNotFoundException;
 
-    Map login(LoginRequest request);
+    Map login(LoginRequest request) throws NullRequestException, BadCredentials, UserNotVerifiedException, UserNotFoundException;
     Role addRole(ERole role);
-    User getIdUser(String name);
+    User getIdUser(String name) throws UserNotFoundException;
 
-    JwtResponseVerifyForgot changePassword(ChangePasswordRequest request, String email);
+    Map changePassword(ChangePasswordAndroidRequest request, String email) throws NullRequestException, WrongOtpException, PasswordNotSameException, UserNotFoundException;
 
-    JwtResponseForgotPassword forgotPassword(ForgotPasswordRequest request);
+    Map forgotPassword(ForgotPasswordRequest request) throws UserNotFoundException;
 
-    JwtResponseForgotPassword forgotPasswordWeb(ForgotPasswordRequest request);
+    Map forgotPasswordWeb(ForgotPasswordRequest request) throws UserNotFoundException;
 
-    TokenResponse verifyAccountPassword(String email, String otp);
+    Map verifyAccountPassword(String email, String otp) throws NullRequestException, WrongOtpException, UserNotFoundException;
 
-    JwtResponseVerifyForgot changePasswordWeb(String email, String token, ChangePasswordRequest request);
+    Map changePasswordWeb(String email, String token, ChangePasswordRequest request) throws PasswordNotSameException, UserNotVerifiedException, WrongOtpException, NullRequestException, UserNotFoundException;
 }

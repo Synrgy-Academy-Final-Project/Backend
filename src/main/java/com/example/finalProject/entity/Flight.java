@@ -1,5 +1,6 @@
 package com.example.finalProject.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -56,4 +57,5 @@ public class Flight extends AbstractDate {
     @JsonIgnore
     @OneToMany(mappedBy = "flight2")
     List<Transaction> transaction2;
+
 }
