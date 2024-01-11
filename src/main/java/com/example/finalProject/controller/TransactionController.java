@@ -34,26 +34,31 @@ public class TransactionController {
         }else{
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        return new ResponseEntity<>(transactionImpl.searchAll(pageable), HttpStatus.OK);
+        ResponseDTO result = transactionImpl.searchAll(pageable);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PostMapping({"", "/"})
     public ResponseEntity<ResponseDTO> addTransaction(@RequestBody @Validated TransactionEntityDTO transaction){
-        return new ResponseEntity<>(transactionImpl.save(transaction), HttpStatus.OK);
+        ResponseDTO result = transactionImpl.save(transaction);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @GetMapping({"{id}", "{id}/"})
     public ResponseEntity<ResponseDTO> findTransaction(@PathVariable UUID id){
-        return new ResponseEntity<>(transactionImpl.findById(id), HttpStatus.OK);
+        ResponseDTO result = transactionImpl.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PutMapping({"{id}", "{id}/"})
     public ResponseEntity<ResponseDTO> updateTransaction(@PathVariable UUID id, @RequestBody  TransactionEntityDTO transaction){
-        return new ResponseEntity<>(transactionImpl.update(id, transaction), HttpStatus.OK);
+        ResponseDTO result = transactionImpl.update(id, transaction);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @DeleteMapping({"{id}", "{id}/"})
     public ResponseEntity<ResponseDTO> deleteTransaction(@PathVariable UUID id){
-        return new ResponseEntity<>(transactionImpl.delete(id), HttpStatus.OK);
+        ResponseDTO result = transactionImpl.delete(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 }

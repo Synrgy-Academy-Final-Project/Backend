@@ -36,28 +36,32 @@ public class AirportController {
         } else {
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        return new ResponseEntity<>(airportImpl.searchAll(code, name, pageable), HttpStatus.OK);
+        ResponseDTO result = airportImpl.searchAll(code, name, pageable);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PostMapping({ "", "/" })
     public ResponseEntity<ResponseDTO> addAirport(@RequestBody @Validated AirportEntityDTO airport) {
-        return new ResponseEntity<>(airportImpl.save(airport), HttpStatus.OK);
+        ResponseDTO result = airportImpl.save(airport);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @GetMapping({ "{id}", "{id}/" })
     public ResponseEntity<ResponseDTO> findAirport(@PathVariable UUID id) {
-        return new ResponseEntity<>(airportImpl.findById(id), HttpStatus.OK);
+        ResponseDTO result = airportImpl.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PutMapping({ "{id}", "{id}/" })
     public ResponseEntity<ResponseDTO> updateAirport(@PathVariable UUID id,
-            @RequestBody AirportEntityDTO airport) {
-        return new ResponseEntity<>(airportImpl.update(id, airport), HttpStatus.OK);
+                                                     @RequestBody AirportEntityDTO airport) {
+        ResponseDTO result = airportImpl.update(id, airport);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @DeleteMapping({ "{id}", "{id}/" })
     public ResponseEntity<ResponseDTO> deleteAirport(@PathVariable UUID id) {
-
-        return new ResponseEntity<>(airportImpl.delete(id), HttpStatus.OK);
+        ResponseDTO result = airportImpl.delete(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 }

@@ -35,14 +35,14 @@ public class CompanyImpl {
             Company result = companyRepository.save(convertToCompany);
             return response.suksesDTO(result);
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
     public ResponseDTO findById(UUID id) {
         Optional<Company> checkData= companyRepository.findById(id);
         if (checkData.isEmpty()){
-            return response.errorDTO(404, Config.DATA_NOT_FOUND);
+            return response.dataNotFound("Company");
         }else{
             return response.suksesDTO(checkData.get());
         }
@@ -52,14 +52,14 @@ public class CompanyImpl {
         try{
             Optional<Company> checkData = companyRepository.findById(id);
             if(checkData.isEmpty()){
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Company");
             }
 
             Company updatedCompany = checkData.get();
             updatedCompany.setName(company.getName());
             return response.suksesDTO(companyRepository.save(updatedCompany));
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
@@ -67,14 +67,14 @@ public class CompanyImpl {
         try{
             Optional<Company> checkData = companyRepository.findById(id);
             if(checkData.isEmpty()){
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Company");
             }
 
             Company deletedCompany = checkData.get();
             deletedCompany.setDeletedDate(new Date());
             return response.suksesDTO(companyRepository.save(deletedCompany));
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 }

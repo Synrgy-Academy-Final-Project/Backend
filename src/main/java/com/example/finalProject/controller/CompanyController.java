@@ -38,26 +38,31 @@ public class CompanyController {
             System.out.println("false");
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        return new ResponseEntity<>(companyImpl.searchAll(name, pageable), HttpStatus.OK);
+        ResponseDTO result = companyImpl.searchAll(name, pageable);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PostMapping({"", "/"})
     public ResponseEntity<ResponseDTO> addCompany(@RequestBody @Validated CompanyEntityDTO company){
-        return new ResponseEntity<>(companyImpl.save(company), HttpStatus.OK);
+        ResponseDTO result = companyImpl.save(company);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @GetMapping({"{id}", "{id}/"})
     public ResponseEntity<ResponseDTO> findCompany(@PathVariable UUID id){
-        return new ResponseEntity<>(companyImpl.findById(id), HttpStatus.OK);
+        ResponseDTO result = companyImpl.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PutMapping({"{id}", "{id}/"})
     public ResponseEntity<ResponseDTO> updateCompany(@PathVariable UUID id, @RequestBody  @Validated CompanyEntityDTO company){
-        return new ResponseEntity<>(companyImpl.update(id, company), HttpStatus.OK);
+        ResponseDTO result = companyImpl.update(id, company);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @DeleteMapping({"{id}", "{id}/"})
     public ResponseEntity<ResponseDTO> deleteCompany(@PathVariable UUID id){
-        return new ResponseEntity<>(companyImpl.delete(id), HttpStatus.OK);
+        ResponseDTO result = companyImpl.delete(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 }

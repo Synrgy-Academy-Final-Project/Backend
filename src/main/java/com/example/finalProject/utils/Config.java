@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 public class Config {
 
     public static Integer  EROR_CODE_404 =404;
+
     public  static  String DATA_NOT_FOUND = "Data not found.";
     public static String REQUIREMENT_NOT_SATISFIED = "required parameter not satisfied";
     public static String CANNOT_FIND_USER = "cannot find related user";

@@ -32,33 +32,11 @@ public class Response {
         return new ResponseDTO(status, message);
     }
 
-    public Map Error(Object objek){
-        Map map = new HashMap();
-        map.put("message", objek);
-        map.put("status", 404);
-        return map;
+    public ResponseDTO dataNotFound(String object){
+        String msg = "relevant "+object+" data couldn't be found";
+        return new ResponseDTO(404, msg);
     }
 
-    public Map templateSukses(Object objek){
-        Map map = new HashMap();
-        map.put("data", objek);
-        map.put("message", "sukses");
-        map.put("status", 200);
-        return map;
-    }
-
-    public Map templateEror(Object objek){
-        Map map = new HashMap();
-        map.put("message", objek);
-        map.put("status", 404);
-        return map;
-    }
-    public Map notFound(Object objek){
-        Map map = new HashMap();
-        map.put("message", objek);
-        map.put("status", 404);
-        return map;
-    }
     public boolean isValidEmail(String email)
     {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+

@@ -37,28 +37,32 @@ public class PromotionController {
         } else {
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        return new ResponseEntity<>(promotionImpl.searchAll(code, title, pageable), HttpStatus.OK);
+        ResponseDTO result = promotionImpl.searchAll(code, title, pageable);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PostMapping({ "", "/" })
     public ResponseEntity<ResponseDTO> addPromotion(@RequestBody @Validated PromotionEntityDTO Promotion) {
-        return new ResponseEntity<>(promotionImpl.save(Promotion), HttpStatus.OK);
+        ResponseDTO result = promotionImpl.save(Promotion);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @GetMapping({ "{id}", "{id}/" })
     public ResponseEntity<ResponseDTO> findPromotion(@PathVariable UUID id) {
-        return new ResponseEntity<>(promotionImpl.findById(id), HttpStatus.OK);
+        ResponseDTO result = promotionImpl.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PutMapping({ "{id}", "{id}/" })
     public ResponseEntity<ResponseDTO> updatePromotion(@PathVariable UUID id,
             @RequestBody PromotionEntityDTO Promotion) {
-        return new ResponseEntity<>(promotionImpl.update(id, Promotion), HttpStatus.OK);
+        ResponseDTO result = promotionImpl.update(id, Promotion);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @DeleteMapping({ "{id}", "{id}/" })
     public ResponseEntity<ResponseDTO> deletePromotion(@PathVariable UUID id) {
-
-        return new ResponseEntity<>(promotionImpl.delete(id), HttpStatus.OK);
+        ResponseDTO result = promotionImpl.delete(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 }
