@@ -1,5 +1,8 @@
 package com.example.finalProject.dto.request.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Data
@@ -9,6 +12,9 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class LoginRequest {
+    @NotNull(message = "email shouldn't be null")
+    @Email(message = "invalid email address")
     private String email;
+    @NotNull(message = "password shouldn't be null")
     private String password;
 }

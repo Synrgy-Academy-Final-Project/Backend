@@ -1,13 +1,15 @@
 package com.example.finalProject.dto.response.user;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
-@Data
-@Getter
 @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
 @Builder
-public class JwtResponseVerifyForgot {
+@AllArgsConstructor
+@Accessors(chain = true)
+public class MessageResponse {
     private String message;
+
 }

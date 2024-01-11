@@ -2,7 +2,9 @@ package com.example.finalProject.controller;
 
 import com.example.finalProject.dto.request.user.*;
 import com.example.finalProject.dto.response.user.*;
+import com.example.finalProject.exception.*;
 import com.example.finalProject.service.user.AuthenticationServiceImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,71 +20,65 @@ public class AuthenticationController {
     private final AuthenticationServiceImpl authenticationServiceImpl;
 
     @PostMapping("/register")
-    public ResponseEntity<Map> register(
-            @RequestBody RegisterRequest request
-    ){
+    public ResponseEntity<Map>  register(
+            @RequestBody @Valid RegisterRequest request
+    ) throws NullRequestException, UserExistException {
         return new ResponseEntity<>(authenticationServiceImpl.register(request), HttpStatus.OK);
     }
 
     @PutMapping("/verify-account")
-    public ResponseEntity<?> verifyAccount(
+    public ResponseEntity<Map> verifyAccount(
             @RequestParam String email,
-            @RequestBody VerifyAccountRequest verifyAccountRequest
-            ) {
-        JwtResponseRegister verify = authenticationServiceImpl.verifyAccount(email, verifyAccountRequest.getOtp());
-        return ResponseHandler.generateResponse("success", verify, null, HttpStatus.OK);
+            @RequestBody @Valid VerifyAccountRequest verifyAccountRequest
+            ) throws NullRequestException, WrongOtpException, UserNotFoundException {
+        return new ResponseEntity<>(authenticationServiceImpl.verifyAccount(email, verifyAccountRequest.getOtp()), HttpStatus.OK);
     }
+
     @PutMapping("/regenerate-otp")
-    public ResponseEntity<?> regenerateOtp(@RequestParam String email) {
-        RegenerateOtpResponse regenerateOtpResponse = authenticationServiceImpl.regenerateOtp(email);
-        return ResponseHandler.generateResponse("success", regenerateOtpResponse, null, HttpStatus.OK);
+    public ResponseEntity<?> regenerateOtp(@RequestParam String email) throws UserNotFoundException {
+        return new ResponseEntity<>(authenticationServiceImpl.regenerateOtp(email), HttpStatus.OK);
     }
 
     @PostMapping("/login")
     public ResponseEntity<Map> login(
-            @RequestBody LoginRequest request
-    ){
+            @RequestBody @Valid LoginRequest request
+    ) throws NullRequestException, BadCredentials, UserNotVerifiedException, UserNotFoundException {
         return new ResponseEntity<>(authenticationServiceImpl.login(request), HttpStatus.OK);
     }
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(
-            @RequestBody ForgotPasswordRequest request
-    ){
-        JwtResponseForgotPassword forgotPassword = authenticationServiceImpl.forgotPassword(request);
-        return ResponseHandler.generateResponse("success", forgotPassword, null, HttpStatus.OK);
+            @RequestBody @Valid ForgotPasswordRequest request
+    ) throws UserNotFoundException {
+        return new ResponseEntity<>(authenticationServiceImpl.forgotPassword(request), HttpStatus.OK);
     }
 
     @PostMapping("/forgot-password-web")
     public ResponseEntity<?> forgotPasswordWeb(
-            @RequestBody ForgotPasswordRequest request
-    ){
-        JwtResponseForgotPassword forgotPassword = authenticationServiceImpl.forgotPasswordWeb(request);
-        return ResponseHandler.generateResponse("success", forgotPassword, null, HttpStatus.OK);
+            @RequestBody @Valid ForgotPasswordRequest request
+    ) throws UserNotFoundException {
+        return new ResponseEntity<>(authenticationServiceImpl.forgotPasswordWeb(request), HttpStatus.OK);
     }
 
 
     @PutMapping("/verify-account-forgot")
-    public ResponseEntity<?> verifyAccountForgot(@RequestParam String email,
-                                                 @RequestBody VerifyAccountRequest verifyAccountRequest) {
-        TokenResponse verifyAcount = authenticationServiceImpl.verifyAccountPassword(email, verifyAccountRequest.getOtp());
-        return ResponseHandler.generateResponse("success", verifyAcount, null, HttpStatus.OK);
+    public ResponseEntity<Map> verifyAccountForgot(@RequestParam String email,
+                                                 @RequestBody @Valid VerifyAccountRequest verifyAccountRequest) throws NullRequestException, WrongOtpException, UserNotFoundException {
+        return new ResponseEntity<>(authenticationServiceImpl.verifyAccountPassword(email, verifyAccountRequest.getOtp()), HttpStatus.OK);
     }
 
     @PutMapping("/forgotpassword-web")
-    public ResponseEntity<?> forgotPasswordWeb(@RequestParam String email,
+    public ResponseEntity<Map> forgotPasswordWeb(@RequestParam String email,
                                                  @RequestParam String token,
-                                               @RequestBody ChangePasswordRequest request) {
-        JwtResponseVerifyForgot changePassword = authenticationServiceImpl.changePasswordWeb(email, token, request);
-        return ResponseHandler.generateResponse("success", changePassword, null, HttpStatus.OK);
+                                               @RequestBody @Valid ChangePasswordRequest request) throws UserNotVerifiedException, PasswordNotSameException, NullRequestException, WrongOtpException, UserNotFoundException {
+        return new ResponseEntity<>(authenticationServiceImpl.changePasswordWeb(email, token, request), HttpStatus.OK);
     }
 
     @PatchMapping("/change-password")
     public ResponseEntity<?> changePassword(
-            @RequestBody ChangePasswordRequest request,
+            @RequestBody @Valid ChangePasswordAndroidRequest request,
             @RequestParam String email
-    ) {
-        JwtResponseVerifyForgot change = authenticationServiceImpl.changePassword(request, email);
-        return ResponseHandler.generateResponse("success", change, null, HttpStatus.OK);
+    ) throws PasswordNotSameException, NullRequestException, WrongOtpException, UserNotFoundException {
+        return new ResponseEntity<>(authenticationServiceImpl.changePassword(request, email), HttpStatus.OK);
     }
 }

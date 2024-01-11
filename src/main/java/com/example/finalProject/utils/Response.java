@@ -13,7 +13,6 @@ public class Response {
         Map map = new HashMap();
         map.put("data", obj);
         map.put("status", 200);// jadiin patokan succrss
-        map.put("message", "Success");
         return map;
     }
 
@@ -119,16 +118,12 @@ public class Response {
         return pat.matcher(email).matches();
     }
 
-    public boolean isValidPassword(String password) {
-        String passRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&*()-_+=!]).{8,}$";
-
-        return password.matches(passRegex);
-    }
-
-    public Map fail(String message) {
+    public Map fail(Object obj) {
         Map map = new HashMap();
-        map.put("message", message);
-        map.put("status", 400);
+        map.put("data", obj);
+        map.put("status", 200);// jadiin patokan succrss
+        map.put("message", "fail");
         return map;
     }
+
 }
