@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
+
 import java.util.List;
 import java.util.UUID;
 
@@ -51,4 +52,5 @@ public class Transaction extends AbstractDate {
 
     @NotNull
     int totalPrice;
+
 }

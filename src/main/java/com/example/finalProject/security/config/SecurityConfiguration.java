@@ -32,7 +32,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests( auth ->
                                 auth
                                         .requestMatchers("/api/v1/auth/**").permitAll()
-//                                        .anyRequest().authenticated()
                                         .anyRequest().permitAll()
                 );
         http.authenticationProvider(applicationConfig.authenticationProvider());

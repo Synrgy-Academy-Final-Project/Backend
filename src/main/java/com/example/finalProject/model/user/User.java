@@ -1,6 +1,7 @@
 package com.example.finalProject.model.user;
 
 import com.example.finalProject.entity.Transaction;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,8 +43,9 @@ public class User {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userDetailId", referencedColumnName = "id")
     private UserDetails usersDetails;
-
+  
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     List<Transaction> transaction;
+
 }

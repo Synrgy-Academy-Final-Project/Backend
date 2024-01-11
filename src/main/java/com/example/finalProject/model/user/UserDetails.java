@@ -32,7 +32,7 @@ public class UserDetails {
     private String visa;
     private String passport;
     private String residentPermit;
-    private String nik;
+    private String NIK;
     private Timestamp createdDate;
     private Timestamp updatedDate;
     private Timestamp deletedDate;
