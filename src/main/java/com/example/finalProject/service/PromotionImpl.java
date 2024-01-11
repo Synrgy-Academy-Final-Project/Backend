@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.example.finalProject.dto.ResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,45 +31,38 @@ public class PromotionImpl {
     @Autowired
     PromotionRepository promotionRepository;
 
-    public Page<Promotion> searchAll(String code, String name, Pageable pageable) {
+    public ResponseDTO searchAll(String code, String name, Pageable pageable) {
         String updatedCode = generalFunction.createLikeQuery(code);
         String updatedName = generalFunction.createLikeQuery(name);
-        return promotionRepository.searchAll(updatedCode, updatedName, pageable);
+        return response.suksesDTO(promotionRepository.searchAll(updatedCode, updatedName, pageable));
     }
 
-    public Map<String, Object> save(PromotionEntityDTO airplane) {
-        Map<String, Object> map = new HashMap<>();
-
+    public ResponseDTO save(PromotionEntityDTO promotion) {
         try {
             ModelMapper modelMapper = new ModelMapper();
-            Promotion convertToairplane = modelMapper.map(airplane, Promotion.class);
-            Promotion result = promotionRepository.save(convertToairplane);
+            Promotion convertTopromotion = modelMapper.map(promotion, Promotion.class);
+            Promotion result = promotionRepository.save(convertTopromotion);
 
-            map = response.sukses(result);
+            return response.suksesDTO(result);
         } catch (Exception e) {
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
-    public Map<String, Object> findById(UUID id) {
-        Map<String, Object> map;
-
+    public ResponseDTO findById(UUID id) {
         Optional<Promotion> checkData = promotionRepository.findById(id);
         if (checkData.isEmpty()) {
-            map = response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+            return response.errorDTO(404, Config.DATA_NOT_FOUND);
         } else {
-            map = response.sukses(checkData.get());
+            return response.suksesDTO(checkData.get());
         }
-        return map;
     }
 
-    public Map<String, Object> update(UUID id, PromotionEntityDTO promotion) {
-        Map<String, Object> map;
+    public ResponseDTO update(UUID id, PromotionEntityDTO promotion) {
         try {
             Optional<Promotion> checkData = promotionRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
 
             Promotion updatedPromotion = checkData.get();
@@ -98,26 +92,23 @@ public class PromotionImpl {
             // Save the updated promotion
             Promotion savedPromotion = promotionRepository.save(updatedPromotion);
 
-            map = response.sukses(savedPromotion);
+            return response.suksesDTO(savedPromotion);
         } catch (Exception e) {
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 
-    public Map<String, Object> delete(UUID id) {
-        Map<String, Object> map;
+    public ResponseDTO delete(UUID id) {
         try {
             Optional<Promotion> checkData = promotionRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.error(Config.DATA_NOT_FOUND, Config.EROR_CODE_404);
+                return response.errorDTO(404, Config.DATA_NOT_FOUND);
             }
             Promotion deletedPromotion = checkData.get();
             deletedPromotion.setDeletedDate(new Date());
-            map = response.sukses(promotionRepository.save(deletedPromotion));
+            return response.suksesDTO(promotionRepository.save(deletedPromotion));
         } catch (Exception e) {
-            map = response.error(e.getMessage(), Config.EROR_CODE_404);
+            return response.errorDTO(404, e.getMessage());
         }
-        return map;
     }
 }

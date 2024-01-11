@@ -1,37 +1,51 @@
 package com.example.finalProject.entity;
 
 import com.example.finalProject.model.user.User;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+
 
 import java.util.List;
 import java.util.UUID;
 
-@Data
-@Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@Data
 @Table(name = "transactions")
-public class Transaction extends AbstractDate{
+@Where(clause = "deleted_date is null")
+public class Transaction extends AbstractDate {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    @NotNull
-    Integer totalSeat;
-    @NotNull
-    Integer totalPrice;
+    UUID id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @NotNull
+    @ManyToOne
+    @JoinColumn
+    User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "transaction_flight", joinColumns = @JoinColumn(name = "transaction_id"),
-            inverseJoinColumns = @JoinColumn(name = "flight_id"))
-    private List<Flight> flights;
+    @NotNull
+    @ManyToOne
+    @JoinColumn
+    Payment payment;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn
+    Flight flight1;
+
+    @ManyToOne
+    @JoinColumn
+    Flight flight2;
+
+    @ManyToOne
+    @JoinColumn
+    Promotion promotion;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "transaction")
+    List<Ticket> ticket;
+
+    @NotNull
+    int totalSeat;
+
+    @NotNull
+    int totalPrice;
 
 }

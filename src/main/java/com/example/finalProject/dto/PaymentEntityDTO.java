@@ -6,19 +6,15 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class AirportEntityDTO {
-
+public class PaymentEntityDTO {
     private UUID id;
 
     @NotNull
-    private String name;
+    String accountName;
 
     @NotNull
-    String code;
+    String accountNumber;
 
     @NotNull
-    String city;
-
-    @NotNull
-    String country;
+    String bankName;
 }

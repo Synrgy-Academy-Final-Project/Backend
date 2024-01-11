@@ -1,5 +1,6 @@
 package com.example.finalProject.utils;
 
+import com.example.finalProject.dto.ResponseDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -16,6 +17,10 @@ public class Response {
         return map;
     }
 
+    public ResponseDTO suksesDTO(Object obj){
+        return new ResponseDTO(200, "success", obj);
+    }
+
     public Map error(Object obj, Object code){
         Map map = new HashMap();
         map.put("status", code);
@@ -23,66 +28,13 @@ public class Response {
         return map;
     }
 
-    public boolean nameNotSimbol(String nama){
-        String nameRegex = "^[a-zA-Z\\s]*$";
-
-        Pattern pat = Pattern.compile(nameRegex);
-
-        return pat.matcher(nama).matches();
+    public ResponseDTO errorDTO(int status, String message){
+        return new ResponseDTO(status, message);
     }
-
 
     public Map Error(Object objek){
         Map map = new HashMap();
         map.put("message", objek);
-        map.put("status", 404);
-        return map;
-    }
-
-    public boolean chekNull(Object obj){
-        if(obj == null){
-            return true;
-        }
-        return  false;
-    }
-
-    public Double convDoubleIfNull(Double obj){
-        if(obj == null){
-            return 0.0;
-        }
-        return  obj;
-    }
-    public Integer convIntegerIfNull(Integer obj){
-        if(obj == null){
-            return 0;
-        }
-        return  obj;
-    }
-
-    public String convStringIfNull(String obj){
-        if(obj == null){
-            return "";
-        }
-        return  obj;
-    }
-    public Boolean convBooleanIfNull(Boolean obj){
-        if(obj == null){
-            return false;
-        }
-        return  obj;
-    }
-
-    public Boolean isRequired(Object obj){
-        if(obj == null){
-            return  true;
-        }
-        return false;
-    }
-
-
-    public Map isRequired(String obj)  {
-        Map map = new HashMap();
-        map.put("message", obj);
         map.put("status", 404);
         return map;
     }

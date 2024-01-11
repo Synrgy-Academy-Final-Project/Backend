@@ -1,6 +1,7 @@
 package com.example.finalProject.controller;
 
 import com.example.finalProject.dto.CompanyEntityDTO;
+import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.service.CompanyImpl;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/company")
 @Slf4j
 public class CompanyController {
@@ -24,10 +26,10 @@ public class CompanyController {
     CompanyImpl companyImpl;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<Object> searchCompany(@RequestParam(defaultValue = "0") int pageNumber,
-                                                 @RequestParam(defaultValue = "100") int pageSize,
-                                                 @RequestParam(defaultValue = "") String sortBy,
-                                                 @ModelAttribute("name") String name){
+    public ResponseEntity<ResponseDTO> searchCompany(@RequestParam(defaultValue = "0") int pageNumber,
+                                                     @RequestParam(defaultValue = "100") int pageSize,
+                                                     @RequestParam(defaultValue = "") String sortBy,
+                                                     @ModelAttribute("name") String name){
         Pageable pageable;
         if (sortBy.isEmpty()){
             System.out.println("true");
@@ -40,22 +42,22 @@ public class CompanyController {
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<Map> addCompany(@RequestBody @Validated CompanyEntityDTO company){
+    public ResponseEntity<ResponseDTO> addCompany(@RequestBody @Validated CompanyEntityDTO company){
         return new ResponseEntity<>(companyImpl.save(company), HttpStatus.OK);
     }
 
     @GetMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> findCompany(@PathVariable UUID id){
+    public ResponseEntity<ResponseDTO> findCompany(@PathVariable UUID id){
         return new ResponseEntity<>(companyImpl.findById(id), HttpStatus.OK);
     }
 
     @PutMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> updateCompany(@PathVariable UUID id, @RequestBody  @Validated CompanyEntityDTO company){
+    public ResponseEntity<ResponseDTO> updateCompany(@PathVariable UUID id, @RequestBody  @Validated CompanyEntityDTO company){
         return new ResponseEntity<>(companyImpl.update(id, company), HttpStatus.OK);
     }
 
     @DeleteMapping({"{id}", "{id}/"})
-    public ResponseEntity<Map> deleteCompany(@PathVariable UUID id){
+    public ResponseEntity<ResponseDTO> deleteCompany(@PathVariable UUID id){
         return new ResponseEntity<>(companyImpl.delete(id), HttpStatus.OK);
     }
 }

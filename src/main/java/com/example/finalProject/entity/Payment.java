@@ -1,6 +1,6 @@
 package com.example.finalProject.entity;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,35 +13,23 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "promotions")
+@Table(name = "payments")
 @Where(clause = "deleted_date is null")
-public class Promotion extends AbstractDate {
+public class Payment extends AbstractDate {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
     @NotNull
-    String title;
+    String accountName;
 
     @NotNull
-    String description;
+    String accountNumber;
 
     @NotNull
-    String code;
-
-    @NotNull
-    int discount;
-
-    @NotNull
-    String terms;
-
-    @NotNull
-    Date startDate;
-
-    @NotNull
-    Date endDate;
+    String bankName;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "promotion")
+    @OneToMany(mappedBy = "payment")
     List<Transaction> transaction;
 }

@@ -1,6 +1,5 @@
 package com.example.finalProject.entity;
 
-import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,30 +11,22 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "airports")
+@Table(name = "tickets")
 @Where(clause = "deleted_date is null")
-public class Airport extends AbstractDate {
+public class Ticket extends AbstractDate {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    UUID id;
+    private UUID id;
 
     @NotNull
-    String name;
+    @Column(name = "seat")
+    private String seat;
 
     @NotNull
-    String code;
+    @Column(name = "gate")
+    private String gate;
 
-    @NotNull
-    String city;
-
-    @NotNull
-    String country;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "fromAirport")
-    List<Flight> startFlight;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "toAirport")
-    List<Flight> endFlight;
+    @ManyToOne
+    @JoinColumn
+    Transaction transaction;
 }

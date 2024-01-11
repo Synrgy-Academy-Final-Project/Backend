@@ -1,5 +1,6 @@
 package com.example.finalProject.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,6 +37,7 @@ public class UserDetails {
     private Timestamp updatedDate;
     private Timestamp deletedDate;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "usersDetails")
     private User user;
 }
