@@ -8,12 +8,10 @@ import com.example.finalProject.entity.Flight;
 import com.example.finalProject.repository.AirplaneRepository;
 import com.example.finalProject.repository.AirportRepository;
 import com.example.finalProject.repository.FlightRepository;
-import com.example.finalProject.utils.Config;
 import com.example.finalProject.utils.GeneralFunction;
 import com.example.finalProject.utils.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +21,6 @@ import java.util.*;
 public class FlightImpl {
     @Autowired
     Response response;
-    @Autowired
-    Config config;
     @Autowired
     FlightRepository flightRepository;
     @Autowired
@@ -49,19 +45,19 @@ public class FlightImpl {
 
             Optional<Airplane> checkAirplane = airplaneRepository.findById(flight.getAirplaneId());
             if(checkAirplane.isEmpty()){
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Airplane");
             }
             convertToFlight.setAirplane(checkAirplane.get());
 
             Optional<Airport> checkFromAirport = airportRepository.findById(flight.getFromAirportId());
             if(checkFromAirport.isEmpty()){
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Airport");
             }
             convertToFlight.setFromAirport(checkFromAirport.get());
 
             Optional<Airport> checkToAirport = airportRepository.findById(flight.getToAirportId());
             if(checkToAirport.isEmpty()){
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Airport");
             }
             convertToFlight.setToAirport(checkToAirport.get());
 
@@ -69,14 +65,14 @@ public class FlightImpl {
 
             return response.suksesDTO(result);
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
     public ResponseDTO findById(UUID id) {
         Optional<Flight> checkData= flightRepository.findById(id);
         if (checkData.isEmpty()){
-            return response.errorDTO(404, Config.DATA_NOT_FOUND);
+            return response.dataNotFound("Flight");
         }else{
             return response.suksesDTO(checkData.get());
         }
@@ -86,7 +82,7 @@ public class FlightImpl {
         try{
             Optional<Flight> checkData = flightRepository.findById(id);
             if(checkData.isEmpty()){
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Flight");
             }
 
             Flight updatedFlight = checkData.get();
@@ -94,7 +90,7 @@ public class FlightImpl {
             if(flight.getAirplaneId() != null){
                 Optional<Airplane> checkAirplaneData = airplaneRepository.findById(flight.getAirplaneId());
                 if(checkAirplaneData.isEmpty()){
-                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                    return response.dataNotFound("Airplane");
                 }
                 updatedFlight.setAirplane(checkAirplaneData.get());
             }
@@ -118,7 +114,7 @@ public class FlightImpl {
             if(flight.getFromAirportId() != null){
                 Optional<Airport> checkAirportData = airportRepository.findById(flight.getFromAirportId());
                 if(checkAirportData.isEmpty()){
-                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                    return response.dataNotFound("Airport");
                 }
                 updatedFlight.setFromAirport(checkAirportData.get());
             }
@@ -126,7 +122,7 @@ public class FlightImpl {
             if(flight.getToAirportId() != null){
                 Optional<Airport> checkAirportData = airportRepository.findById(flight.getToAirportId());
                 if(checkAirportData.isEmpty()){
-                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                    return response.dataNotFound("Airport");
                 }
                 updatedFlight.setToAirport(checkAirportData.get());
             }
@@ -137,7 +133,7 @@ public class FlightImpl {
 
             return response.suksesDTO(flightRepository.save(updatedFlight));
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
@@ -145,14 +141,14 @@ public class FlightImpl {
         try{
             Optional<Flight> checkData = flightRepository.findById(id);
             if(checkData.isEmpty()){
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Airport");
             }
 
             Flight deletedFlight = checkData.get();
             deletedFlight.setDeletedDate(new Date());
             return response.suksesDTO(flightRepository.save(deletedFlight));
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 }

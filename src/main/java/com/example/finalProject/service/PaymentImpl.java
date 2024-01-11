@@ -1,31 +1,24 @@
 package com.example.finalProject.service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-
+import com.example.finalProject.dto.PaymentEntityDTO;
 import com.example.finalProject.dto.ResponseDTO;
+import com.example.finalProject.entity.Payment;
+import com.example.finalProject.repository.PaymentRepository;
+import com.example.finalProject.utils.GeneralFunction;
+import com.example.finalProject.utils.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.finalProject.dto.PaymentEntityDTO;
-import com.example.finalProject.entity.Payment;
-import com.example.finalProject.repository.PaymentRepository;
-import com.example.finalProject.utils.Config;
-import com.example.finalProject.utils.GeneralFunction;
-import com.example.finalProject.utils.Response;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PaymentImpl {
     @Autowired
     Response response;
-    @Autowired
-    Config config;
     @Autowired
     GeneralFunction generalFunction;
     @Autowired
@@ -46,14 +39,14 @@ public class PaymentImpl {
 
             return response.suksesDTO(result);
         } catch (Exception e) {
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
     public ResponseDTO findById(UUID id) {
         Optional<Payment> checkData = paymentRepository.findById(id);
         if (checkData.isEmpty()) {
-            return response.errorDTO(404, Config.DATA_NOT_FOUND);
+            return response.dataNotFound("Payment");
         } else {
             return response.suksesDTO(checkData.get());
         }
@@ -63,7 +56,7 @@ public class PaymentImpl {
         try {
             Optional<Payment> checkData = paymentRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Payment");
             }
 
             Payment updatedPayment = checkData.get();
@@ -83,7 +76,7 @@ public class PaymentImpl {
 
             return response.suksesDTO(savePayment);
         } catch (Exception e) {
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
@@ -91,13 +84,13 @@ public class PaymentImpl {
         try {
             Optional<Payment> checkData = paymentRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Payment");
             }
             Payment deletedPayment = checkData.get();
             deletedPayment.setDeletedDate(new Date());
             return response.suksesDTO(paymentRepository.save(deletedPayment));
         } catch (Exception e) {
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
