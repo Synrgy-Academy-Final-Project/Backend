@@ -2,6 +2,7 @@ package com.example.finalProject.model.user;
 
 import com.example.finalProject.entity.Transaction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 

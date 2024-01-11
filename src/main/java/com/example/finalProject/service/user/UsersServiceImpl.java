@@ -74,7 +74,7 @@ public class UsersServiceImpl implements UsersService{
                 userDetails.setVisa(request.getVisa());
                 userDetails.setPassport(request.getPassport());
                 userDetails.setResidentPermit(request.getResidentPermit());
-                userDetails.setNik(request.getNik());
+                userDetails.setNIK(request.getNik());
                 userDetails.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
                 userDetails.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
                 userDetailsRepository.save(userDetails);
@@ -89,7 +89,7 @@ public class UsersServiceImpl implements UsersService{
                 userUpdateResponse.setVisa(userDetails.getVisa());
                 userUpdateResponse.setPassport(userDetails.getPassport());
                 userUpdateResponse.setResidentPermit(userDetails.getResidentPermit());
-                userUpdateResponse.setNik(userDetails.getNik());
+                userUpdateResponse.setNik(userDetails.getNIK());
 
                 return response.suksesDTO(userUpdateResponse);
             }else {
@@ -119,7 +119,7 @@ public class UsersServiceImpl implements UsersService{
             userDetails.setVisa(request.getVisa());
             userDetails.setPassport(request.getPassport());
             userDetails.setResidentPermit(request.getResidentPermit());
-            userDetails.setNik(request.getNik());
+            userDetails.setNIK(request.getNik());
             userDetails.setCreatedDate(userDetails.getCreatedDate());
             userDetails.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
 
@@ -130,7 +130,7 @@ public class UsersServiceImpl implements UsersService{
             userUpdateResponse.setVisa(userDetails.getVisa());
             userUpdateResponse.setPassport(userDetails.getPassport());
             userUpdateResponse.setResidentPermit(userDetails.getResidentPermit());
-            userUpdateResponse.setNik(userDetails.getNik());
+            userUpdateResponse.setNik(userDetails.getNIK());
 
             return response.suksesDTO(userUpdateResponse);
         }catch (Exception e){
@@ -152,7 +152,7 @@ public class UsersServiceImpl implements UsersService{
             userUpdateResponse.setVisa(checkData.get().getVisa());
             userUpdateResponse.setPassport(checkData.get().getPassport());
             userUpdateResponse.setResidentPermit(checkData.get().getResidentPermit());
-            userUpdateResponse.setNik(checkData.get().getNik());
+            userUpdateResponse.setNik(checkData.get().getNIK());
             return response.suksesDTO(userUpdateResponse);
         }
     }

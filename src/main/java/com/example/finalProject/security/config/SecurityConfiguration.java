@@ -32,10 +32,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests( auth ->
                                 auth
                                         .requestMatchers("/api/v1/auth/**").permitAll()
-<<<<<<< Updated upstream
-//                                        .anyRequest().authenticated()
-=======
->>>>>>> Stashed changes
                                         .anyRequest().permitAll()
                 );
         http.authenticationProvider(applicationConfig.authenticationProvider());
