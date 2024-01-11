@@ -37,28 +37,32 @@ public class PaymentController {
         } else {
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        return new ResponseEntity<>(paymentImpl.searchAll(accountNumber, bankName, pageable), HttpStatus.OK);
+        ResponseDTO result = paymentImpl.searchAll(accountNumber, bankName, pageable);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PostMapping({ "", "/" })
     public ResponseEntity<ResponseDTO> addPayment(@RequestBody @Validated PaymentEntityDTO payment) {
-        return new ResponseEntity<>(paymentImpl.save(payment), HttpStatus.OK);
+        ResponseDTO result = paymentImpl.save(payment);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @GetMapping({ "{id}", "{id}/" })
     public ResponseEntity<ResponseDTO> findPayment(@PathVariable UUID id) {
-        return new ResponseEntity<>(paymentImpl.findById(id), HttpStatus.OK);
+        ResponseDTO result = paymentImpl.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PutMapping({ "{id}", "{id}/" })
     public ResponseEntity<ResponseDTO> updatePayment(@PathVariable UUID id,
             @RequestBody PaymentEntityDTO payment) {
-        return new ResponseEntity<>(paymentImpl.update(id, payment), HttpStatus.OK);
+        ResponseDTO result = paymentImpl.update(id, payment);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @DeleteMapping({ "{id}", "{id}/" })
     public ResponseEntity<ResponseDTO> deletePayment(@PathVariable UUID id) {
-
-        return new ResponseEntity<>(paymentImpl.delete(id), HttpStatus.OK);
+        ResponseDTO result = paymentImpl.delete(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 }
