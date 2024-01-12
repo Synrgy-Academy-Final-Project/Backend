@@ -74,7 +74,7 @@ public class AuthenticationServiceImpl implements AuhenticationService {
                     .updatedDate(Timestamp.valueOf(LocalDateTime.now()))
                     .otp(passwordEncoder.encode(otp))
                     .otpGeneratedTime(Timestamp.valueOf(LocalDateTime.now()))
-                    .userActive(true)
+                    .userActive(false)
                     .build();
             userRepository.save(user);
             UserDetails userDetails = userService.loadUserByUsername(request.getEmail());
