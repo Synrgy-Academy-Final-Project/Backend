@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.Where;
 
 import jakarta.validation.constraints.NotNull;
@@ -20,13 +21,13 @@ public class Payment extends AbstractDate {
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @NotNull
+    @NotBlank
     String accountName;
 
-    @NotNull
+    @NotBlank
     String accountNumber;
 
-    @NotNull
+    @NotBlank
     String bankName;
 
     @JsonIgnore

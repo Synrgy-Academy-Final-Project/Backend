@@ -27,6 +27,5 @@ public class TransactionEntityDTO {
     @Positive
     Integer totalSeat;
 
-    @Positive
     int totalPrice;
 }

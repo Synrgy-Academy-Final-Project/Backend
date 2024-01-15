@@ -2,6 +2,7 @@ package com.example.finalProject.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.Where;
@@ -18,14 +19,16 @@ public class Airplane extends AbstractDate {
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @NotNull
+    @NotBlank
     String name;
-    @NotNull
+
+    @NotBlank
     String code;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn
+    @NotNull
     private Company company;
 
     @JsonIgnore
