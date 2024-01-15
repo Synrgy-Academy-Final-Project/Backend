@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import org.hibernate.annotations.Where;
 
 import jakarta.validation.constraints.NotNull;
@@ -20,19 +22,20 @@ public class Promotion extends AbstractDate {
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @NotNull
+    @NotBlank
     String title;
 
-    @NotNull
+    @NotBlank
     String description;
 
-    @NotNull
+    @NotBlank
     String code;
 
     @NotNull
+    @Positive
     int discount;
 
-    @NotNull
+    @NotBlank
     String terms;
 
     @NotNull

@@ -1,5 +1,6 @@
 package com.example.finalProject.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -9,10 +10,10 @@ import java.util.UUID;
 public class TicketEntityDTO {
     private UUID id;
 
-    @NotNull
+    @NotBlank
     String seat;
 
-    @NotNull
+    @NotBlank
     String gate;
 
     @NotNull
