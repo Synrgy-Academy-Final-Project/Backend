@@ -19,7 +19,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    @Value("${binarfood.app.jwtSecret}")
+    @Value("${flyid.app.jwtSecret}")
     private String jwtSecret;
 
     public String extractUsername(String token) { //manipulate JWT tokens generate one information, validate token
