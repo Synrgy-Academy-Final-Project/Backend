@@ -1,5 +1,6 @@
 package com.example.finalProject.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -9,12 +10,12 @@ import java.util.UUID;
 public class PaymentEntityDTO {
     private UUID id;
 
-    @NotNull
+    @NotBlank
     String accountName;
 
-    @NotNull
+    @NotBlank
     String accountNumber;
 
-    @NotNull
+    @NotBlank
     String bankName;
 }

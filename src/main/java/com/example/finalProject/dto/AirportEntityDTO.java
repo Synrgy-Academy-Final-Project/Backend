@@ -1,6 +1,8 @@
 package com.example.finalProject.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.UUID;
@@ -10,15 +12,16 @@ public class AirportEntityDTO {
 
     private UUID id;
 
-    @NotNull
+    @NotBlank
     private String name;
 
     @NotNull
+    @Size(min = 3, max = 3)
     String code;
 
-    @NotNull
+    @NotBlank
     String city;
 
-    @NotNull
+    @NotBlank
     String country;
 }

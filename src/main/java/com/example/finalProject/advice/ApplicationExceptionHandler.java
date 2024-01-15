@@ -4,6 +4,7 @@ import com.example.finalProject.exception.*;
 import com.example.finalProject.dto.ErrorDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -39,6 +40,15 @@ public class ApplicationExceptionHandler {
         message.addAll(collect);
         error.setMessage(message);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public Map handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        Map errorMap = new HashMap<>();
+        errorMap.put("message",ex.getMessage());
+        errorMap.put("status", HttpStatus.BAD_REQUEST.value());
+        return errorMap;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
