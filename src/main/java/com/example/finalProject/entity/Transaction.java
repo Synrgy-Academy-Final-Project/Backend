@@ -26,9 +26,8 @@ public class Transaction extends AbstractDate {
     @JoinColumn
     User user;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn
+    @JsonIgnore
+    @OneToOne(mappedBy = "transaction")
     Payment payment;
 
     @NotNull

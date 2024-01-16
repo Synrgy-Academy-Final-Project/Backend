@@ -3,6 +3,7 @@ package com.example.finalProject.controller;
 import java.util.Map;
 import java.util.UUID;
 
+import com.example.finalProject.dto.MidtransResponseDTO;
 import com.example.finalProject.dto.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.finalProject.dto.PaymentEntityDTO;
 import com.example.finalProject.service.PaymentImpl;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,9 +41,15 @@ public class PaymentController {
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
-    @PostMapping({ "", "/" })
-    public ResponseEntity<ResponseDTO> addPayment(@RequestBody @Validated PaymentEntityDTO payment) {
-        ResponseDTO result = paymentImpl.save(payment);
+//    @PostMapping({ "", "/" })
+//    public ResponseEntity<ResponseDTO> addPayment(@RequestBody @Validated PaymentEntityDTO payment) {
+//        ResponseDTO result = paymentImpl.save(payment);
+//        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+//    }
+
+    @PostMapping({ "midtrans/finish", "midtrans/finish/" })
+    public ResponseEntity<ResponseDTO> receiveMidtransPayment(@RequestBody @Validated MidtransResponseDTO midtransResponse) {
+        ResponseDTO result = paymentImpl.saveMidtrans(midtransResponse);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
@@ -53,12 +59,12 @@ public class PaymentController {
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
-    @PutMapping({ "{id}", "{id}/" })
-    public ResponseEntity<ResponseDTO> updatePayment(@PathVariable UUID id,
-            @RequestBody PaymentEntityDTO payment) {
-        ResponseDTO result = paymentImpl.update(id, payment);
-        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
-    }
+//    @PutMapping({ "{id}", "{id}/" })
+//    public ResponseEntity<ResponseDTO> updatePayment(@PathVariable UUID id,
+//            @RequestBody PaymentEntityDTO payment) {
+//        ResponseDTO result = paymentImpl.update(id, payment);
+//        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+//    }
 
     @DeleteMapping({ "{id}", "{id}/" })
     public ResponseEntity<ResponseDTO> deletePayment(@PathVariable UUID id) {

@@ -44,6 +44,12 @@ public class TransactionController {
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
+    @PostMapping({"midtrans", "/midtrans"})
+    public ResponseEntity<ResponseDTO> addAndCreateMidtrans(@RequestBody @Validated TransactionEntityDTO transaction){
+        ResponseDTO result = transactionImpl.createMidtransRequest(transaction);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+    }
+
     @GetMapping({"{id}", "{id}/"})
     public ResponseEntity<ResponseDTO> findTransaction(@PathVariable UUID id){
         ResponseDTO result = transactionImpl.findById(id);

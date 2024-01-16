@@ -1,5 +1,6 @@
 package com.example.finalProject.service;
 
+import com.example.finalProject.dto.MidtransRequestDTO;
 import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.dto.TransactionEntityDTO;
 import com.example.finalProject.entity.Flight;
@@ -17,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class TransactionImpl {
@@ -36,6 +35,32 @@ public class TransactionImpl {
 
     public ResponseDTO searchAll(Pageable pageable) {
         return response.suksesDTO(transactionRepository.findAll(pageable));
+    }
+
+    public ResponseDTO createMidtransRequest(TransactionEntityDTO transaction){
+        ResponseDTO saveResponse = save(transaction);
+        if (saveResponse.getStatus() >= 400){
+            return saveResponse;
+        }
+
+        Transaction savedTransaction = (Transaction) save(transaction).getData();
+
+        Map<String, Object> transactionDetails = new HashMap<>();
+        transactionDetails.put("order_id", savedTransaction.getId());
+        transactionDetails.put("gross_amount", savedTransaction.getTotalPrice());
+
+        User customer = savedTransaction.getUser();
+        Map<String, Object> customerDetails = new HashMap<>();
+        customerDetails.put("first_name", customer.getUsersDetails().getFirstName());
+        customerDetails.put("last_name", customer.getUsersDetails().getLastName());
+        customerDetails.put("email", customer.getEmail());
+        customerDetails.put("phone", customer.getUsersDetails().getPhoneNumber());
+
+        MidtransRequestDTO midtransRequest = new MidtransRequestDTO();
+        midtransRequest.setTransaction_details(transactionDetails);
+        midtransRequest.setCustomer_details(customerDetails);
+
+        return response.suksesDTO(midtransRequest);
     }
 
     @Transactional
@@ -55,12 +80,6 @@ public class TransactionImpl {
                 return response.dataNotFound("User");
             }
             convertTotransaction.setUser(checkUserData.get());
-
-            Optional<Payment> checkPaymentData = paymentRepository.findById(transaction.getPaymentId());
-            if (checkPaymentData.isEmpty()) {
-                return response.dataNotFound("Payment");
-            }
-            convertTotransaction.setPayment(checkPaymentData.get());
 
             Optional<Flight> checkFlight1Data = flightRepository.findById(transaction.getFlight1Id());
             if (checkFlight1Data.isEmpty()) {
