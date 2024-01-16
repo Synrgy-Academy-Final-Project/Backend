@@ -17,7 +17,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             nativeQuery = true)
     public Page<Transaction> searchAll(String code, String name, Pageable pageable);
 
-    @Query("select new com.example.finalProject.dto.ETicketDTO(u.fullName, a3.name, a3.code, " +
+    @Query("select new com.example.finalProject.dto.ETicketDTO('fullName', a3.name, a3.code, " +
             "f1.airplaneClass, f1.departureDate," +
             "a1.name, a1.code, a1.city, a1.country, " +
             "f1.arrivalDate, a2.name, a2.code, a2.city, a2.country," +
