@@ -26,6 +26,8 @@ public class UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    private String firstName;
+    private String lastName;
     private String address;
     private String gender;
     private String phoneNumber;
