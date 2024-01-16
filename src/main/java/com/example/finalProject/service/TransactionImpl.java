@@ -81,12 +81,6 @@ public class TransactionImpl {
             }
             convertTotransaction.setUser(checkUserData.get());
 
-            Optional<Payment> checkPaymentData = paymentRepository.findById(transaction.getPaymentId());
-            if (checkPaymentData.isEmpty()) {
-                return response.dataNotFound("Payment");
-            }
-            convertTotransaction.setPayment(checkPaymentData.get());
-
             Optional<Flight> checkFlight1Data = flightRepository.findById(transaction.getFlight1Id());
             if (checkFlight1Data.isEmpty()) {
                 return response.dataNotFound("Flight1");

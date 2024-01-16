@@ -1,5 +1,6 @@
 package com.example.finalProject.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -21,16 +22,27 @@ public class Payment extends AbstractDate {
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @NotBlank
-    String accountName;
+    LocalDateTime transaction_time;
 
-    @NotBlank
-    String accountNumber;
+    String transaction_status;
 
-    @NotBlank
-    String bankName;
+    String status_message;
+
+    int status_code;
+
+    String signature_key;
+
+    String payment_type;
+
+    String merchant_id;
+
+    double grossAmount;
+
+    String fraud_status;
+
+    String currency;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "payment")
-    List<Transaction> transaction;
+    @OneToOne
+    Transaction transaction;
 }

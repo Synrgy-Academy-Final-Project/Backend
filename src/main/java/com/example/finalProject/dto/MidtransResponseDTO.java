@@ -1,34 +1,40 @@
 package com.example.finalProject.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
+@Data
 public class MidtransResponseDTO {
-    @NotNull
-    LocalDateTime transaction_time;
-    @NotBlank
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    Date transaction_time;
+
     String transaction_status;
-    @NotNull
+
     UUID transaction_id;
-    @NotBlank
+
     String status_message;
+
     @NotNull
     int status_code;
-    @NotBlank
+
     String signature_key;
-    @NotBlank
+
     String payment_type;
-    @NotBlank
-    String order_id;
-    @NotBlank
+
+    UUID order_id;
+
     String merchant_id;
-    @NotNull
-    int gross_amount;
-    @NotBlank
+
+    String gross_amount;
+
     String fraud_status;
-    @NotBlank
+
     String currency;
 }
