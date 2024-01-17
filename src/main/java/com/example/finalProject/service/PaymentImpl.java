@@ -29,10 +29,8 @@ public class PaymentImpl {
     TransactionRepository transactionRepository;
 
     public ResponseDTO searchAll(String accountNumber, String bankName, Pageable pageable) {
-        String updatedAccountNumber = generalFunction.createLikeQuery(accountNumber);
-        String updateBankName = generalFunction.createLikeQuery(bankName);
 
-        return response.suksesDTO(paymentRepository.searchAll(updatedAccountNumber, updateBankName, pageable));
+        return response.suksesDTO(paymentRepository.searchAll(pageable));
     }
 
 //    public ResponseDTO save(PaymentEntityDTO payment) {
