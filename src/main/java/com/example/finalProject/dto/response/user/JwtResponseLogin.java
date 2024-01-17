@@ -14,7 +14,6 @@ import java.util.List;
 public class JwtResponseLogin {
     private String token;
     private String type;
-    private String fullName;
     private String email;
     private List<String> roles;
 }
