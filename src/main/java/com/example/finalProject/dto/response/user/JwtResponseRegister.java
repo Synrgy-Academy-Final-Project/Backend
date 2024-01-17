@@ -14,14 +14,7 @@ import java.util.List;
 public class JwtResponseRegister {
     private String message;
     private String type;
-    private String fullName;
     private String email;
     private List<String> roles;
 //    private LocalDateTime otpGeneratedTime;
-
-    public JwtResponseRegister(String token, String fullName,String email, List<String> roles) {
-        this.fullName = fullName;
-        this.email = email;
-        this.roles = roles;
-    }
 }
