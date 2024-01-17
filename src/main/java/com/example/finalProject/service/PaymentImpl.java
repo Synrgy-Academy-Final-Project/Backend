@@ -7,6 +7,7 @@ import com.example.finalProject.repository.PaymentRepository;
 import com.example.finalProject.repository.TransactionRepository;
 import com.example.finalProject.utils.GeneralFunction;
 import com.example.finalProject.utils.Response;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -45,9 +46,15 @@ public class PaymentImpl {
 //            return response.errorDTO(500, e.getMessage());
 //        }
 //    }
-
+    @Transactional
     public ResponseDTO saveMidtrans(MidtransResponseDTO midtransResponse) {
         try {
+            if(!generalFunction.validateMidtransResponse(midtransResponse)){
+                return response.errorDTO(422, "invalid payment response");
+            }
+
+            paymentRepository.deleteByTransactionId(midtransResponse.getOrder_id());
+
             ModelMapper modelMapper = new ModelMapper();
             Payment convertToPayment = modelMapper.map(midtransResponse, Payment.class);
 

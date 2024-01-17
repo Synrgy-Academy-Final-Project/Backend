@@ -12,12 +12,20 @@ import com.example.finalProject.repository.PaymentRepository;
 import com.example.finalProject.repository.TransactionRepository;
 import com.example.finalProject.repository.user.UserRepository;
 import com.example.finalProject.utils.Response;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.*;
 
 @Service
@@ -32,12 +40,14 @@ public class TransactionImpl {
     FlightRepository flightRepository;
     @Autowired
     PaymentRepository paymentRepository;
+    @Value("${midtrans.server.key}")
+    private String midtransServerKey;
 
     public ResponseDTO searchAll(Pageable pageable) {
         return response.suksesDTO(transactionRepository.findAll(pageable));
     }
 
-    public ResponseDTO createMidtransRequest(TransactionEntityDTO transaction){
+    public ResponseDTO createMidtransRequest(TransactionEntityDTO transaction) throws IOException, InterruptedException {
         ResponseDTO saveResponse = save(transaction);
         if (saveResponse.getStatus() >= 400){
             return saveResponse;
@@ -60,7 +70,25 @@ public class TransactionImpl {
         midtransRequest.setTransaction_details(transactionDetails);
         midtransRequest.setCustomer_details(customerDetails);
 
-        return response.suksesDTO(midtransRequest);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(midtransRequest);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://app.sandbox.midtrans.com/snap/v1/transactions"))
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Basic " +
+                        Base64.getEncoder().encodeToString((midtransServerKey).getBytes()))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        String midtransRedirectUrl = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
+        ObjectMapper mapper = new ObjectMapper();
+        Map result = mapper.readValue(midtransRedirectUrl, Map.class);
+
+        return response.suksesDTO(result);
     }
 
     @Transactional

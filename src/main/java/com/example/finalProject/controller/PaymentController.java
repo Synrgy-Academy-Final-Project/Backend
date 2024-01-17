@@ -47,10 +47,35 @@ public class PaymentController {
 //        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
 //    }
 
-    @PostMapping({ "midtrans/finish", "midtrans/finish/" })
+    @PostMapping({ "midtrans/handling", "midtrans/handling/" })
     public ResponseEntity<ResponseDTO> receiveMidtransPayment(@RequestBody @Validated MidtransResponseDTO midtransResponse) {
         ResponseDTO result = paymentImpl.saveMidtrans(midtransResponse);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+    }
+
+    @GetMapping({ "midtrans/unfinish", "midtrans/unfinish/" })
+    public String unfinishMidtransPayment() {
+        System.out.println("unfinish midtrans payment");
+        return "hello";
+    }
+
+    @GetMapping({ "midtrans/finish", "midtrans/finish/" })
+    public String finishMidtransPayment() {
+        System.out.println("finish midtrans payment");
+        return "hello";
+    }
+
+    @PostMapping({ "midtrans/finish", "midtrans/finish/" })
+    public String postfinishMidtransPayment(@RequestBody @Validated MidtransResponseDTO midtransResponse) {
+        System.out.println("post finish midtrans payment");
+        System.out.println(midtransResponse);
+        return "hello";
+    }
+
+    @GetMapping({ "midtrans/error", "midtrans/error/" })
+    public String errorMidtransPayment() {
+        System.out.println("error midtrans payment");
+        return "hello";
     }
 
     @GetMapping({ "{id}", "{id}/" })
