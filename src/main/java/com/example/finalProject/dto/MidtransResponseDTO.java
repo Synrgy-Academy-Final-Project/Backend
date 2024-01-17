@@ -13,7 +13,7 @@ import java.util.UUID;
 public class MidtransResponseDTO {
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    Date transaction_time;
+    LocalDateTime transaction_time;
 
     String transaction_status;
 
