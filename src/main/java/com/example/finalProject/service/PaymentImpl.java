@@ -51,6 +51,10 @@ public class PaymentImpl {
                 return response.errorDTO(422, "invalid payment response");
             }
 
+            if (transactionRepository.findById(midtransResponse.getOrder_id()).isEmpty()){
+                return response.dataNotFound("Transactions");
+            }
+
             paymentRepository.deleteByTransactionId(midtransResponse.getOrder_id());
 
             ModelMapper modelMapper = new ModelMapper();
