@@ -4,37 +4,42 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.Where;
 
-import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Data
-@Table(name = "airplanes")
+@Table(name = "basepriceAirports")
 @Where(clause = "deleted_date is null")
-public class Airplane extends AbstractDate {
+public class BasePriceAirport extends AbstractDate{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    UUID id;
+    private UUID id;
 
+    @JsonIgnore
     @NotNull
-    String name;
+    @ManyToOne
+    @JoinColumn
+    private Airport fromAirport;
+    private String departureCode;
+
+    @JsonIgnore
     @NotNull
-    String code;
+    @ManyToOne
+    @JoinColumn
+    private Airport toAirport;
+    private String arrivalCode;
+
+    private Integer duration;
 
     @NotNull
     @Positive
-    private Integer airplanePrice;
+    private Integer airportPrice;
 
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn
-    private Company company;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "airplane")
-    List<Flight> flight;
 }

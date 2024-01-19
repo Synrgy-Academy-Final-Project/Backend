@@ -21,6 +21,9 @@ public class Company extends AbstractDate {
     @NotNull
     String name;
 
+    @NotBlank
+    String url;
+
     @OneToMany(mappedBy = "company")
     List<Airplane> airplane;
 }

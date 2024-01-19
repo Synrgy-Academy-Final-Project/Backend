@@ -38,4 +38,12 @@ public class Airport extends AbstractDate {
     @JsonIgnore
     @OneToMany(mappedBy = "toAirport")
     List<Flight> endFlight;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "fromAirport")
+    List<BasePriceAirport> startFlightAirport;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "toAirport")
+    List<BasePriceAirport> endFlightAirport;
 }
