@@ -3,20 +3,26 @@ package com.example.finalProject.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Data;
+import lombok.*;
 
 import java.util.UUID;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class AirplaneEntityDTO {
+public class AirplaneClassDTO {
+
     private UUID id;
+
+    @NotNull
+    private UUID airplaneId;
+
     @NotBlank
-    private String name;
-    @NotBlank
-    String code;
+    private String airplaneClass;
+
     @NotNull
     @Positive
-    private Integer airplanePrice;
-    @NotNull
-    private UUID companyId;
+    private Integer airplaneClassPrice;
 }

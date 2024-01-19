@@ -11,4 +11,6 @@ public class CompanyEntityDTO {
     private UUID id;
     @NotBlank
     private String name;
+    @NotBlank
+    String url;
 }

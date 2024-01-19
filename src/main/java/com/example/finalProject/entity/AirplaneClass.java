@@ -4,27 +4,36 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import jakarta.validation.constraints.Positive;
+import lombok.*;
 import org.hibernate.annotations.Where;
 
-import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Data
-@Table(name = "companies")
+@Table(name = "airplane_classes")
 @Where(clause = "deleted_date is null")
-public class Company extends AbstractDate {
+public class AirplaneClass extends AbstractDate{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    UUID id;
+    private UUID id;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn
+    @NotNull
+    private Airplane airplane;
 
     @NotBlank
-    String name;
+    private String airplaneClass;
 
-    @NotBlank
-    String url;
+    @NotNull
+    @Positive
+    private Integer airplaneClassPrice;
 
-    @OneToMany(mappedBy = "company")
-    List<Airplane> airplane;
 }

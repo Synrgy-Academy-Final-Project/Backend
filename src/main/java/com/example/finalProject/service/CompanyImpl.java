@@ -55,8 +55,10 @@ public class CompanyImpl {
                 return response.dataNotFound("Company");
             }
 
+
             Company updatedCompany = checkData.get();
             updatedCompany.setName(company.getName());
+            updatedCompany.setUrl(company.getUrl());
             return response.suksesDTO(companyRepository.save(updatedCompany));
         }catch (Exception e){
             return response.errorDTO(500, e.getMessage());
