@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.Where;
 
 import jakarta.validation.constraints.NotNull;
@@ -19,16 +20,16 @@ public class Airport extends AbstractDate {
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @NotNull
+    @NotBlank
     String name;
 
-    @NotNull
+    @NotBlank
     String code;
 
-    @NotNull
+    @NotBlank
     String city;
 
-    @NotNull
+    @NotBlank
     String country;
 
     @JsonIgnore

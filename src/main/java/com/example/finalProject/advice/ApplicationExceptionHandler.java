@@ -1,6 +1,11 @@
 package com.example.finalProject.advice;
 
 import com.example.finalProject.exception.*;
+import com.example.finalProject.dto.ErrorDTO;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,17 +14,40 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(EntityNotFoundException.class)
+    public final ResponseEntity<Object> handleDBEntityNotFound(EntityNotFoundException ex, WebRequest webRequest) {
+        ErrorDTO error = new ErrorDTO();
+        error.setCode(HttpStatus.UNPROCESSABLE_ENTITY);
+        List<String> message = new ArrayList<>();
+        message.add(ex.getMessage());
+        error.setMessage(message);
+        return new ResponseEntity<>(error, error.getCode());
+    }
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            errorMap.put(error.getField(), error.getDefaultMessage());
-        });
-        errorMap.put("status", String.valueOf(HttpStatus.BAD_REQUEST.value()));
+    public ResponseEntity<Object> handleInvalidArgument(MethodArgumentNotValidException ex) {
+        ErrorDTO error = new ErrorDTO();
+        error.setCode(HttpStatus.BAD_REQUEST);
+        List<String> message = new ArrayList<>();
+        List<String> collect = ex.getBindingResult().getFieldErrors().stream().filter(Objects::nonNull)
+                .map(m -> (m.getField() + " " + m.getDefaultMessage())).toList();
+        message.addAll(collect);
+        error.setMessage(message);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public Map handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        Map errorMap = new HashMap<>();
+        errorMap.put("message",ex.getMessage());
+        errorMap.put("status", HttpStatus.BAD_REQUEST.value());
         return errorMap;
     }
 

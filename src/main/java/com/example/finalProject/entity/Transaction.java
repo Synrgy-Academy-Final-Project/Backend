@@ -4,6 +4,7 @@ import com.example.finalProject.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -25,9 +26,8 @@ public class Transaction extends AbstractDate {
     @JoinColumn
     User user;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn
+    @JsonIgnore
+    @OneToOne(mappedBy = "transaction")
     Payment payment;
 
     @NotNull
@@ -48,9 +48,11 @@ public class Transaction extends AbstractDate {
     List<Ticket> ticket;
 
     @NotNull
+    @Positive
     int totalSeat;
 
     @NotNull
+    @Positive
     int totalPrice;
 
 }

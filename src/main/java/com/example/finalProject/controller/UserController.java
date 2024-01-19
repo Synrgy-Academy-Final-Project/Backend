@@ -35,26 +35,31 @@ public class UserController {
             System.out.println("false");
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        return new ResponseEntity<>(usersService.searchAll(name, pageable), HttpStatus.OK);
+        ResponseDTO result = usersService.searchAll(name, pageable);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PostMapping("")
     public ResponseEntity<ResponseDTO> createUser(Principal principal, @RequestBody UserUpdateRequest request){
-        return new ResponseEntity<>(usersService.createUser(principal, request), HttpStatus.OK);
+        ResponseDTO result = usersService.createUser(principal, request);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO> findUser(@PathVariable UUID id){
-        return new ResponseEntity<>(usersService.findById(id), HttpStatus.OK);
+        ResponseDTO result = usersService.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO> updateUser(@PathVariable UUID id, @RequestBody UserUpdateRequest request){
-        return new ResponseEntity<>(usersService.updateUser(id, request), HttpStatus.OK);
+        ResponseDTO result = usersService.updateUser(id, request);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @DeleteMapping("")
     public ResponseEntity<ResponseDTO> deleteUser(Principal principal){
-        return new ResponseEntity<>(usersService.deleteUser(principal), HttpStatus.OK);
+        ResponseDTO result = usersService.deleteUser(principal);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 }

@@ -3,7 +3,10 @@ package com.example.finalProject.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 
@@ -32,9 +35,10 @@ public class Flight extends AbstractDate {
     Date arrivalDate;
 
     @NotNull
+    @PositiveOrZero
     int capacity;
 
-    @NotNull
+    @NotBlank
     String airplaneClass;
 
     @NotNull
@@ -48,6 +52,7 @@ public class Flight extends AbstractDate {
     Airport toAirport;
 
     @NotNull
+    @Positive
     int price;
 
     @JsonIgnore

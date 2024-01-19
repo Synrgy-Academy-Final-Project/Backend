@@ -6,7 +6,6 @@ import com.example.finalProject.entity.Airplane;
 import com.example.finalProject.entity.Company;
 import com.example.finalProject.repository.AirplaneRepository;
 import com.example.finalProject.repository.CompanyRepository;
-import com.example.finalProject.utils.Config;
 import com.example.finalProject.utils.GeneralFunction;
 import com.example.finalProject.utils.Response;
 import org.modelmapper.ModelMapper;
@@ -40,7 +39,7 @@ public class AirplaneImpl {
 
             Optional<Company> checkCompanyData = companyRepository.findById(airplane.getCompanyId());
             if(checkCompanyData.isEmpty()){
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Company");
             }
             convertToairplane.setCompany(checkCompanyData.get());
 
@@ -48,14 +47,14 @@ public class AirplaneImpl {
 
             return response.suksesDTO(result);
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
     public ResponseDTO findById(UUID id) {
         Optional<Airplane> checkData= airplaneRepository.findById(id);
         if (checkData.isEmpty()){
-            return response.errorDTO(404, Config.DATA_NOT_FOUND);
+            return response.dataNotFound("Airplane");
         }else{
             return response.suksesDTO(checkData.get());
         }
@@ -65,7 +64,7 @@ public class AirplaneImpl {
         try{
             Optional<Airplane> checkData = airplaneRepository.findById(id);
             if(checkData.isEmpty()){
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Airplane");
             }
 
             Airplane updatedAirplane = checkData.get();
@@ -79,14 +78,14 @@ public class AirplaneImpl {
             if(airplane.getCompanyId() != null){
                 Optional<Company> checkCompanyData = companyRepository.findById(airplane.getCompanyId());
                 if(checkCompanyData.isEmpty()){
-                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                    return response.dataNotFound("Company");
                 }
                 updatedAirplane.setCompany(checkCompanyData.get());
             }
 
             return response.suksesDTO(airplaneRepository.save(updatedAirplane));
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
@@ -94,14 +93,14 @@ public class AirplaneImpl {
         try{
             Optional<Airplane> checkData = airplaneRepository.findById(id);
             if(checkData.isEmpty()){
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Airplane");
             }
 
             Airplane deletedAirplane = checkData.get();
             deletedAirplane.setDeletedDate(new Date());
             return response.suksesDTO(airplaneRepository.save(deletedAirplane));
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 }

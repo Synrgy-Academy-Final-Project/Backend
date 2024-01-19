@@ -36,26 +36,31 @@ public class AirplaneController {
         }else{
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        return new ResponseEntity<>(airplaneImpl.searchAll(code, name, pageable), HttpStatus.OK);
+        ResponseDTO result = airplaneImpl.searchAll(code, name, pageable);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PostMapping({"", "/"})
     public ResponseEntity<ResponseDTO> addAirplane(@RequestBody @Validated AirplaneEntityDTO airplane){
-        return new ResponseEntity<>(airplaneImpl.save(airplane), HttpStatus.OK);
+        ResponseDTO result = airplaneImpl.save(airplane);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @GetMapping({"{id}", "{id}/"})
     public ResponseEntity<ResponseDTO> findAirplane(@PathVariable UUID id){
-        return new ResponseEntity<>(airplaneImpl.findById(id), HttpStatus.OK);
+        ResponseDTO result = airplaneImpl.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PutMapping({"{id}", "{id}/"})
     public ResponseEntity<ResponseDTO> updateAirplane(@PathVariable UUID id, @RequestBody  AirplaneEntityDTO airplane){
-        return new ResponseEntity<>(airplaneImpl.update(id, airplane), HttpStatus.OK);
+        ResponseDTO result = airplaneImpl.update(id, airplane);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @DeleteMapping({"{id}", "{id}/"})
     public ResponseEntity<ResponseDTO> deleteAirplane(@PathVariable UUID id){
-        return new ResponseEntity<>(airplaneImpl.delete(id), HttpStatus.OK);
+        ResponseDTO result = airplaneImpl.delete(id);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 }

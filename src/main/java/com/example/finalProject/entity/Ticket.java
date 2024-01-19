@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.Where;
 
 import jakarta.validation.constraints.NotNull;
@@ -18,14 +19,15 @@ public class Ticket extends AbstractDate {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotNull
+    @NotBlank
     @Column(name = "seat")
     private String seat;
 
-    @NotNull
+    @NotBlank
     @Column(name = "gate")
     private String gate;
 
+    @NotNull
     @ManyToOne
     @JoinColumn
     Transaction transaction;

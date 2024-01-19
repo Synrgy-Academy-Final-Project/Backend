@@ -66,7 +66,6 @@ public class AuthenticationServiceImpl implements AuhenticationService {
             }
             Role roles = addRole(ERole.valueOf(request.getRole()));
             var user = User.builder()
-                    .fullName(request.getFullName())
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .role(roles)
@@ -82,7 +81,6 @@ public class AuthenticationServiceImpl implements AuhenticationService {
             JwtResponseRegister jwtResponseRegister = new JwtResponseRegister();
             jwtResponseRegister.setMessage("User not verify");
             jwtResponseRegister.setType("Bearer");
-            jwtResponseRegister.setFullName(user.getFullName());
             jwtResponseRegister.setEmail(user.getEmail());
             jwtResponseRegister.setRoles(rolesList);
 
@@ -110,10 +108,19 @@ public class AuthenticationServiceImpl implements AuhenticationService {
 
             jwtResponseRegister.setMessage("Account has been verified");
             jwtResponseRegister.setType("Bearer");
-            jwtResponseRegister.setFullName(user.getFullName());
             jwtResponseRegister.setEmail(user.getEmail());
             jwtResponseRegister.setRoles(rolesList);
-            return response.sukses(jwtResponseRegister);
+
+            JwtResponseLogin jwtResponseLogin = new JwtResponseLogin();
+            var jwtToken = jwtService.generateToken(userDetails);
+            jwtResponseLogin.setToken(jwtToken);
+            jwtResponseLogin.setType("Bearer");
+            jwtResponseLogin.setEmail(user.getEmail());
+            jwtResponseLogin.setRoles(rolesList);
+
+//            return response.sukses(jwtResponseRegister);
+            return response.sukses(jwtResponseLogin);
+
         }
         throw new WrongOtpException();
     }
@@ -156,11 +163,9 @@ public class AuthenticationServiceImpl implements AuhenticationService {
                             .map(GrantedAuthority::getAuthority)
                             .toList();
                     JwtResponseLogin jwtResponseLogin = new JwtResponseLogin();
-
                     var jwtToken = jwtService.generateToken(user);
                     jwtResponseLogin.setToken(jwtToken);
                     jwtResponseLogin.setType("Bearer");
-                    jwtResponseLogin.setFullName(userId.getFullName());
                     jwtResponseLogin.setEmail(userId.getEmail());
                     jwtResponseLogin.setRoles(roles);
                     map = response.sukses(jwtResponseLogin);

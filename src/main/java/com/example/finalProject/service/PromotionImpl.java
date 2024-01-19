@@ -1,31 +1,24 @@
 package com.example.finalProject.service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-
+import com.example.finalProject.dto.PromotionEntityDTO;
 import com.example.finalProject.dto.ResponseDTO;
+import com.example.finalProject.entity.Promotion;
+import com.example.finalProject.repository.PromotionRepository;
+import com.example.finalProject.utils.GeneralFunction;
+import com.example.finalProject.utils.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.finalProject.dto.PromotionEntityDTO;
-import com.example.finalProject.entity.Promotion;
-import com.example.finalProject.repository.PromotionRepository;
-import com.example.finalProject.utils.Config;
-import com.example.finalProject.utils.GeneralFunction;
-import com.example.finalProject.utils.Response;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PromotionImpl {
     @Autowired
     Response response;
-    @Autowired
-    Config config;
     @Autowired
     GeneralFunction generalFunction;
     @Autowired
@@ -45,14 +38,14 @@ public class PromotionImpl {
 
             return response.suksesDTO(result);
         } catch (Exception e) {
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
     public ResponseDTO findById(UUID id) {
         Optional<Promotion> checkData = promotionRepository.findById(id);
         if (checkData.isEmpty()) {
-            return response.errorDTO(404, Config.DATA_NOT_FOUND);
+            return response.dataNotFound("Promotion");
         } else {
             return response.suksesDTO(checkData.get());
         }
@@ -62,7 +55,7 @@ public class PromotionImpl {
         try {
             Optional<Promotion> checkData = promotionRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Promotion");
             }
 
             Promotion updatedPromotion = checkData.get();
@@ -94,7 +87,7 @@ public class PromotionImpl {
 
             return response.suksesDTO(savedPromotion);
         } catch (Exception e) {
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
@@ -102,13 +95,13 @@ public class PromotionImpl {
         try {
             Optional<Promotion> checkData = promotionRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Promotion");
             }
             Promotion deletedPromotion = checkData.get();
             deletedPromotion.setDeletedDate(new Date());
             return response.suksesDTO(promotionRepository.save(deletedPromotion));
         } catch (Exception e) {
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 }

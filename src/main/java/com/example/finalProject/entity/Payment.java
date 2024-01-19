@@ -1,11 +1,13 @@
 package com.example.finalProject.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.Where;
 
 import jakarta.validation.constraints.NotNull;
@@ -20,16 +22,27 @@ public class Payment extends AbstractDate {
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @NotNull
-    String accountName;
+    LocalDateTime transaction_time;
 
-    @NotNull
-    String accountNumber;
+    String transaction_status;
 
-    @NotNull
-    String bankName;
+    String status_message;
+
+    int status_code;
+
+    String signature_key;
+
+    String payment_type;
+
+    String merchant_id;
+
+    double grossAmount;
+
+    String fraud_status;
+
+    String currency;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "payment")
-    List<Transaction> transaction;
+    @OneToOne
+    Transaction transaction;
 }

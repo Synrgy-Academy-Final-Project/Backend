@@ -1,31 +1,37 @@
 package com.example.finalProject.service;
 
+import com.example.finalProject.dto.MidtransRequestDTO;
 import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.dto.TransactionEntityDTO;
 import com.example.finalProject.entity.Flight;
 import com.example.finalProject.entity.Payment;
 import com.example.finalProject.entity.Transaction;
 import com.example.finalProject.model.user.User;
-import com.example.finalProject.repository.*;
+import com.example.finalProject.repository.FlightRepository;
+import com.example.finalProject.repository.PaymentRepository;
+import com.example.finalProject.repository.TransactionRepository;
 import com.example.finalProject.repository.user.UserRepository;
-import com.example.finalProject.utils.Config;
-import com.example.finalProject.utils.GeneralFunction;
 import com.example.finalProject.utils.Response;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.*;
 
 @Service
 public class TransactionImpl {
     @Autowired
     Response response;
-    @Autowired
-    Config config;
     @Autowired
     TransactionRepository transactionRepository;
     @Autowired
@@ -34,17 +40,55 @@ public class TransactionImpl {
     FlightRepository flightRepository;
     @Autowired
     PaymentRepository paymentRepository;
-    @Autowired
-    PromotionRepository promotionRepository;
-    @Autowired
-    AirplaneRepository airplaneRepository;
-    @Autowired
-    CompanyRepository companyRepository;
-    @Autowired
-    GeneralFunction generalFunction;
+    @Value("${midtrans.server.key}")
+    private String midtransServerKey;
 
     public ResponseDTO searchAll(Pageable pageable) {
         return response.suksesDTO(transactionRepository.findAll(pageable));
+    }
+
+    public ResponseDTO createMidtransRequest(TransactionEntityDTO transaction) throws IOException, InterruptedException {
+        ResponseDTO saveResponse = save(transaction);
+        if (saveResponse.getStatus() >= 400){
+            return saveResponse;
+        }
+
+        Transaction savedTransaction = (Transaction) save(transaction).getData();
+
+        Map<String, Object> transactionDetails = new HashMap<>();
+        transactionDetails.put("order_id", savedTransaction.getId());
+        transactionDetails.put("gross_amount", savedTransaction.getTotalPrice());
+
+        User customer = savedTransaction.getUser();
+        Map<String, Object> customerDetails = new HashMap<>();
+        customerDetails.put("first_name", customer.getUsersDetails().getFirstName());
+        customerDetails.put("last_name", customer.getUsersDetails().getLastName());
+        customerDetails.put("email", customer.getEmail());
+        customerDetails.put("phone", customer.getUsersDetails().getPhoneNumber());
+
+        MidtransRequestDTO midtransRequest = new MidtransRequestDTO();
+        midtransRequest.setTransaction_details(transactionDetails);
+        midtransRequest.setCustomer_details(customerDetails);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(midtransRequest);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://app.sandbox.midtrans.com/snap/v1/transactions"))
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Basic " +
+                        Base64.getEncoder().encodeToString((midtransServerKey).getBytes()))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        String midtransRedirectUrl = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
+        ObjectMapper mapper = new ObjectMapper();
+        Map result = mapper.readValue(midtransRedirectUrl, Map.class);
+
+        return response.suksesDTO(result);
     }
 
     @Transactional
@@ -61,26 +105,20 @@ public class TransactionImpl {
 
             Optional<User> checkUserData = userRepository.findById(transaction.getUserId());
             if (checkUserData.isEmpty()) {
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("User");
             }
             convertTotransaction.setUser(checkUserData.get());
 
-            Optional<Payment> checkPaymentData = paymentRepository.findById(transaction.getPaymentId());
-            if (checkPaymentData.isEmpty()) {
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
-            }
-            convertTotransaction.setPayment(checkPaymentData.get());
-
             Optional<Flight> checkFlight1Data = flightRepository.findById(transaction.getFlight1Id());
             if (checkFlight1Data.isEmpty()) {
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Flight1");
             }
             flight1Data = checkFlight1Data.get();
             convertTotransaction.setFlight1(flight1Data);
             capacity = flight1Data.getCapacity();
             totalSeat = transaction.getTotalSeat();
             if (capacity < totalSeat) {
-                return response.errorDTO(404, "Not Enough Seat");
+                return response.errorDTO(422, "Not Enough Seat");
             }
             flight1Data.setCapacity(capacity - totalSeat);
             totalPrice += flight1Data.getPrice() * totalSeat;
@@ -88,14 +126,14 @@ public class TransactionImpl {
             if (transaction.getFlight2Id() != null) {
                 Optional<Flight> checkFlight2Data = flightRepository.findById(transaction.getFlight2Id());
                 if (checkFlight2Data.isEmpty()) {
-                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                    return response.dataNotFound("Flight2");
                 }
                 flight2Data = checkFlight2Data.get();
                 convertTotransaction.setFlight2(flight2Data);
                 capacity = flight2Data.getCapacity();
                 totalSeat = transaction.getTotalSeat();
                 if (capacity < totalSeat) {
-                    return response.errorDTO(404, "Not Enough Seat");
+                    return response.errorDTO(422, "Not Enough Seat");
                 }
                 flight2Data.setCapacity(capacity - totalSeat);
                 totalPrice += flight2Data.getPrice() * totalSeat;
@@ -113,14 +151,14 @@ public class TransactionImpl {
 
             return response.suksesDTO(result);
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
     public ResponseDTO findById(UUID id) {
         Optional<Transaction> checkData= transactionRepository.findById(id);
         if (checkData.isEmpty()){
-            return response.errorDTO(404, Config.DATA_NOT_FOUND);
+            return response.dataNotFound("Transaction");
         }else{
             return response.suksesDTO(checkData.get());
         }
@@ -137,7 +175,7 @@ public class TransactionImpl {
         try {
             Optional<Transaction> checkData = transactionRepository.findById(id);
             if (checkData.isEmpty()) {
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Transaction");
             }
 
             Transaction updatedTransaction = checkData.get();
@@ -151,14 +189,14 @@ public class TransactionImpl {
             if (transaction.getUserId() != null) {
                 Optional<User> checkUserData = userRepository.findById(transaction.getUserId());
                 if (checkUserData.isEmpty()) {
-                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                    return response.dataNotFound("User");
                 }
                 updatedTransaction.setUser(checkUserData.get());
             }
             if (transaction.getPaymentId() != null) {
                 Optional<Payment> checkPaymentData = paymentRepository.findById(transaction.getPaymentId());
                 if (checkPaymentData.isEmpty()) {
-                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                    return response.dataNotFound("Payment");
                 }
                 updatedTransaction.setPayment(checkPaymentData.get());
             }
@@ -166,12 +204,12 @@ public class TransactionImpl {
             if (transaction.getFlight1Id() != null) {
                 Optional<Flight> checkFlight1Data = flightRepository.findById(transaction.getFlight1Id());
                 if (checkFlight1Data.isEmpty()) {
-                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                    return response.dataNotFound("Flight1");
                 }
                 flight1Data = checkFlight1Data.get();
                 capacity = flight1Data.getCapacity();
                 if (capacity < totalSeat) {
-                    return response.errorDTO(404, "Not Enough Seat");
+                    return response.errorDTO(422, "Not Enough Seat");
                 }
                 flight1Data.setCapacity(capacity - totalSeat);
                 totalPrice += flight1Data.getPrice() * totalSeat;
@@ -187,12 +225,12 @@ public class TransactionImpl {
             if (transaction.getFlight2Id() != null) {
                 Optional<Flight> checkFlight2Data = flightRepository.findById(transaction.getFlight2Id());
                 if (checkFlight2Data.isEmpty()) {
-                    return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                    return response.dataNotFound("Flight2");
                 }
                 flight2Data = checkFlight2Data.get();
                 capacity = flight2Data.getCapacity();
                 if (capacity < totalSeat) {
-                    return response.errorDTO(404, "Not Enough Seat");
+                    return response.errorDTO(422, "Not Enough Seat");
                 }
                 flight2Data.setCapacity(capacity - totalSeat);
                 totalPrice += flight2Data.getPrice() * totalSeat;
@@ -221,7 +259,7 @@ public class TransactionImpl {
 
             return response.suksesDTO(transactionRepository.save(updatedTransaction));
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 
@@ -232,7 +270,7 @@ public class TransactionImpl {
         try{
             Optional<Transaction> checkData = transactionRepository.findById(id);
             if(checkData.isEmpty()){
-                return response.errorDTO(404, Config.DATA_NOT_FOUND);
+                return response.dataNotFound("Transaction");
             }
 
             Transaction deletedTransaction = checkData.get();
@@ -250,7 +288,7 @@ public class TransactionImpl {
 
             return response.suksesDTO(transactionRepository.save(deletedTransaction));
         }catch (Exception e){
-            return response.errorDTO(404, e.getMessage());
+            return response.errorDTO(500, e.getMessage());
         }
     }
 }
