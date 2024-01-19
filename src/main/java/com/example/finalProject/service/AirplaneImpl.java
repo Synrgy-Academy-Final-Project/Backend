@@ -75,6 +75,9 @@ public class AirplaneImpl {
             if(airplane.getCode() != null){
                 updatedAirplane.setCode(airplane.getCode());
             }
+            if(airplane.getAirplanePrice() != null){
+                updatedAirplane.setAirplanePrice(airplane.getAirplanePrice());
+            }
             if(airplane.getCompanyId() != null){
                 Optional<Company> checkCompanyData = companyRepository.findById(airplane.getCompanyId());
                 if(checkCompanyData.isEmpty()){
