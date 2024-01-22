@@ -8,13 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -43,6 +45,14 @@ public class AirplaneController {
     @PostMapping({"", "/"})
     public ResponseEntity<ResponseDTO> addAirplane(@RequestBody @Validated AirplaneEntityDTO airplane){
         ResponseDTO result = airplaneImpl.save(airplane);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+    }
+
+    @GetMapping("minimum-price")
+    public Object minimumPrice(@ModelAttribute("fromAirportCode") String fromAirportCode,
+                               @ModelAttribute("toAirportCode") String toAirportCode,
+                               @ModelAttribute("departureDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date departureDate){
+        ResponseDTO result = airplaneImpl.minimumPrice(fromAirportCode, toAirportCode, departureDate);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 

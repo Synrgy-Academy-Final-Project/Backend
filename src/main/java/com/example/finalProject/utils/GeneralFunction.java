@@ -14,7 +14,7 @@ public class GeneralFunction {
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
     public String createLikeQuery(String raw){
-        if (raw.isEmpty()){
+        if (raw == null || raw.isEmpty()){
             return "%";
         }else{
             String result = raw.replace(' ', '%');

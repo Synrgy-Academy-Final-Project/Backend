@@ -25,6 +25,7 @@ public class TransactionEntityDTO {
 
     UUID promotionId;
 
+    @NotNull
     List<UserDetails> userDetails;
 
     @NotNull

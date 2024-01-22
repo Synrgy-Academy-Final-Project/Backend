@@ -1,10 +1,15 @@
 package com.example.finalProject.model.user;
 
+import com.example.finalProject.entity.Passenger;
+import com.example.finalProject.entity.Ticket;
+import com.example.finalProject.entity.Transaction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -35,11 +40,18 @@ public class UserDetails {
     private String passport;
     private String residentPermit;
     private String NIK;
+    @Column(columnDefinition = "date")
+    private Date dateOfBirth;
     private Timestamp createdDate;
     private Timestamp updatedDate;
     private Timestamp deletedDate;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToOne(mappedBy = "usersDetails")
     private User user;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userDetails")
+    List<Passenger> passenger;
 }

@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -105,5 +107,18 @@ public class AirplaneImpl {
         }catch (Exception e){
             return response.errorDTO(500, e.getMessage());
         }
+    }
+
+    public ResponseDTO minimumPrice(String fromAirportCode, String toAirportCode, Date departureDate) {
+        List<Map<String, Object>> sevenDays = new ArrayList<>();
+        LocalDate date = LocalDate.ofInstant(departureDate.toInstant(), ZoneId.systemDefault());
+        for (int i = 0; i < 7; i++){
+            Map<String, Object> data = new HashMap<>();
+            LocalDate theDate = date.plusDays(i);
+            data.put("date", theDate);
+            data.put("price", airplaneRepository.getMinimumPriceThatDay(fromAirportCode, toAirportCode, theDate));
+            sevenDays.add(data);
+        }
+        return response.suksesDTO(sevenDays);
     }
 }

@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.ToString;
 import org.hibernate.annotations.Where;
 
 import jakarta.validation.constraints.NotNull;
@@ -33,18 +34,22 @@ public class Airport extends AbstractDate {
     String country;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "fromAirport")
     List<Flight> startFlight;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "toAirport")
     List<Flight> endFlight;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "fromAirport")
     List<BasePriceAirport> startFlightAirport;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "toAirport")
     List<BasePriceAirport> endFlightAirport;
 }
