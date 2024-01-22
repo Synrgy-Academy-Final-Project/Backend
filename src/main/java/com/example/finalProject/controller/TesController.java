@@ -1,21 +1,30 @@
 package com.example.finalProject.controller;
 
+import com.example.finalProject.dto.ResponseDTO;
+import com.example.finalProject.repository.AirplaneRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Base64;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/tes")
 public class TesController {
+    @Autowired
+    AirplaneRepository airplaneRepository;
     @GetMapping
     public String tes(){
         return "Tes Running";
@@ -43,4 +52,21 @@ public class TesController {
 //        System.out.println(generatedPassword);
 //        return generatedPassword;
 //    }
+
+//    @GetMapping("minimum-price")
+//    public Object minimumPrice(@ModelAttribute("fromAirportCode") String fromAirportCode,
+//                            @ModelAttribute("toAirportCode") String toAirportCode,
+//                            @ModelAttribute("departureDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date departureDate){
+//        List<Map<String, Object>> sevenDays = new ArrayList<>();
+//        LocalDate date = LocalDate.ofInstant(departureDate.toInstant(), ZoneId.systemDefault());
+//        for (int i = 0; i < 7; i++){
+//            Map<String, Object> data = new HashMap<>();
+//            LocalDate theDate = date.plusDays(i);
+//            data.put("date", theDate);
+//            data.put("price", airplaneRepository.getMinimumPriceThatDay(fromAirportCode, toAirportCode, theDate));
+//            sevenDays.add(data);
+//        }
+//        return sevenDays;
+//    }
+
 }

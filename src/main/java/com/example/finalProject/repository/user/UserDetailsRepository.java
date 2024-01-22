@@ -23,7 +23,7 @@ public interface UserDetailsRepository extends JpaRepository<UserDetails, UUID> 
     @Query(value = "select * from users_details ud \n" +
             "where first_name ilike ?1 \n" +
             "\tand (last_name ilike ?2 or last_name is null)\n" +
-            "\tand date_of_birth = ?3",
+            "\tand date(date_of_birth) = ?3",
             nativeQuery = true)
     public UserDetails findByFirstNameAndLastNameAndDoB(String firstName, String lastName, Date DoB);
 }
