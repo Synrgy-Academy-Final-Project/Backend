@@ -25,7 +25,7 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
         try
         {
             String sql = "select c.\"name\" as \"companyName\", c.url as \"urlLogo\", " +
-                    "a.\"name\" as \"airplaneName\", a.code as \"airplaneCode\", ac.airplane_class as \"airplaneClass\", atf.flight_time, " +
+                    "a.\"name\" as \"airplaneName\", a.code as \"airplaneCode\", ac.airplane_class as \"airplaneClass\", ac.capacity as \"capacity\", atf.flight_time, " +
                     "upper(?) as \"departureCode\", upper(?) as \"arrivalCode\", " +
                     "concat(to_date(?, 'dd-mm-yyyy'),' ',atf.flight_time)::timestamp with time zone AT TIME ZONE 'Asia/Jakarta' as \"departureTime\", " +
                     "(select concat(to_date(?, 'dd-mm-yyyy'),' ',atf.flight_time)::timestamp with time zone AT TIME ZONE 'Asia/Jakarta' + (ba.duration || ' minutes')::interval from baseprice_airports ba " +
@@ -58,6 +58,9 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
 
 
             Long totalCount = jdbcTemplate.queryForObject(countQuery, Long.class, departureCode, arrivalCode, departureDateStr, departureDateStr, departureCode, arrivalCode, departureDateStr, departureCode, arrivalCode, airplaneClass);
+            if (resultList.isEmpty()){
+                return response.dataNotFound("Schedule Flight");
+            }
             if (resultList.get(0).getArrivalTime() == null || resultList.get(0).getTotalPrice() == null){
                 resultList.clear();
                 totalCount = 0L;
