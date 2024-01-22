@@ -32,7 +32,7 @@ public class AirplaneClass extends AbstractDate{
     @NotBlank
     private String airplaneClass;
 
-    @NotNull
+    @NotBlank
     @Positive
     private Integer capacity;
 
