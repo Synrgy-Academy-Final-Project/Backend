@@ -12,6 +12,7 @@ import jakarta.mail.util.ByteArrayDataSource;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,8 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 @Component
 public class EmailUtil {
+    @Value("${url.domain}")
+    private String domain;
 
     private final JavaMailSender javaMailSender;
 
@@ -46,7 +49,7 @@ public class EmailUtil {
         mimeMessageHelper.setSubject("Verify Email");
         StringBuilder htmlContent = new StringBuilder();
         htmlContent.append("<html><body>");
-        htmlContent.append("<div>").append("<a href=\"http://localhost:8080/api/v1/auth/forgotpassword-web?email=").append(email).append("&token=").append(token).append("\" target=\"_blank\">click link to change password</a>").append(" please use this link before 5 minutes to change your new password").append("</div>");
+        htmlContent.append("<div>").append("<a href=\"").append(domain).append("/api/v1/auth/forgotpassword-web?email=").append(email).append("&token=").append(token).append("\" target=\"_blank\">click link to change password</a>").append(" please use this link before 5 minutes to change your new password").append("</div>");
         mimeMessageHelper.setText(htmlContent.toString(), true);
         htmlContent.append("</body></html>");
 
