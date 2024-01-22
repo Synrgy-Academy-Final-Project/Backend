@@ -34,6 +34,10 @@ public class AirplaneClass extends AbstractDate{
 
     @NotNull
     @Positive
+    private Integer capacity;
+
+    @NotNull
+    @Positive
     private Integer airplaneClassPrice;
 
 }

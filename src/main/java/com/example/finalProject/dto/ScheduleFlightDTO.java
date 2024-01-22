@@ -27,6 +27,8 @@ public class ScheduleFlightDTO {
     @NotBlank
     private String airplaneClass;
     @NotNull
+    private Integer capacity;
+    @NotNull
     private Time flightTime;
     @NotBlank
     private String departureCode;

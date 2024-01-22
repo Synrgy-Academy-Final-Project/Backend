@@ -24,5 +24,9 @@ public class AirplaneClassDTO {
 
     @NotNull
     @Positive
+    private Integer capacity;
+
+    @NotNull
+    @Positive
     private Integer airplaneClassPrice;
 }
