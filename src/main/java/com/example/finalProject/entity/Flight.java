@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.Where;
 
 import java.util.Date;
@@ -56,10 +57,12 @@ public class Flight extends AbstractDate {
     int price;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "flight1")
     List<Transaction> transaction1;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "flight2")
     List<Transaction> transaction2;
 

@@ -1,11 +1,13 @@
 package com.example.finalProject.entity;
 
 import com.example.finalProject.model.user.User;
+import com.example.finalProject.model.user.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.Where;
 
 
@@ -27,6 +29,7 @@ public class Transaction extends AbstractDate {
     User user;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToOne(mappedBy = "transaction")
     Payment payment;
 
@@ -43,7 +46,11 @@ public class Transaction extends AbstractDate {
     @JoinColumn
     Promotion promotion;
 
+    @OneToMany(mappedBy = "transaction")
+    List<Passenger> passenger;
+
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "transaction")
     List<Ticket> ticket;
 

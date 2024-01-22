@@ -4,13 +4,18 @@ import com.example.finalProject.dto.MidtransRequestDTO;
 import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.dto.TransactionEntityDTO;
 import com.example.finalProject.entity.Flight;
+import com.example.finalProject.entity.Passenger;
 import com.example.finalProject.entity.Payment;
 import com.example.finalProject.entity.Transaction;
 import com.example.finalProject.model.user.User;
+import com.example.finalProject.model.user.UserDetails;
 import com.example.finalProject.repository.FlightRepository;
+import com.example.finalProject.repository.PassengerRepository;
 import com.example.finalProject.repository.PaymentRepository;
 import com.example.finalProject.repository.TransactionRepository;
 import com.example.finalProject.repository.user.UserRepository;
+import com.example.finalProject.security.service.UserDetailsImpl;
+import com.example.finalProject.service.user.UsersServiceImpl;
 import com.example.finalProject.utils.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,6 +45,11 @@ public class TransactionImpl {
     FlightRepository flightRepository;
     @Autowired
     PaymentRepository paymentRepository;
+    @Autowired
+    UsersServiceImpl usersServiceImpl;
+    @Autowired
+    PassengerRepository passengerRepository;
+
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
 
@@ -98,6 +108,7 @@ public class TransactionImpl {
         int totalSeat;
         Flight flight1Data = null;
         Flight flight2Data = null;
+        List<UserDetails> userDetails = transaction.getUserDetails();
 
         try {
             ModelMapper modelMapper = new ModelMapper();
@@ -149,7 +160,21 @@ public class TransactionImpl {
 
             Transaction result = transactionRepository.save(convertTotransaction);
 
+            if (userDetails.isEmpty()) {
+                return response.dataNotFound("Passenger");
+            }
+            for (UserDetails u : userDetails) {
+                ResponseDTO result1 = usersServiceImpl.createUserDetail(u);
+                if (result1.getStatus() == 200) {
+                    passengerRepository.save(new Passenger(transactionRepository.findById(result.getId()).get(), (UserDetails) result1.getData()));
+                } else {
+                    throw new IOException(result1.getMessage());
+                }
+            }
+
             return response.suksesDTO(result);
+        }catch (IOException e){
+            return response.errorDTO(400, e.getMessage());
         }catch (Exception e){
             return response.errorDTO(500, e.getMessage());
         }

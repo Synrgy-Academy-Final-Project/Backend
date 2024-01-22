@@ -1,46 +1,43 @@
 package com.example.finalProject.entity;
 
+import com.example.finalProject.model.user.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Where;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "airplanes")
+@NoArgsConstructor
+@Table(name = "passengers")
 @Where(clause = "deleted_date is null")
-public class Airplane extends AbstractDate {
+public class Passenger extends AbstractDate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @NotBlank
-    String name;
-
-    @NotBlank
-    String code;
-
     @NotNull
-    @Positive
-    private Integer airplanePrice;
-
-
-    @JsonIgnore
     @ManyToOne
     @JoinColumn
-    @NotNull
-    @ToString.Exclude
-    private Company company;
-
     @JsonIgnore
     @ToString.Exclude
-    @OneToMany(mappedBy = "airplane")
-    List<Flight> flight;
+    Transaction transaction;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn
+    @JsonIgnore
+    @ToString.Exclude
+    UserDetails userDetails;
+
+    public Passenger(Transaction transaction, UserDetails userDetails){
+        this.transaction = transaction;
+        this.userDetails = userDetails;
+    }
 }
