@@ -62,9 +62,6 @@ public class BasepriceDateServiceImpl implements BasepriceDateService{
             if (request.getDateFrom() != null){
                 updateBasePriceDate.setDateFrom(request.getDateFrom());
             }
-            if (request.getDateTo() != null){
-                updateBasePriceDate.setDateTo(request.getDateTo());
-            }
             if (request.getType() != null){
                 updateBasePriceDate.setType(request.getType());
             }

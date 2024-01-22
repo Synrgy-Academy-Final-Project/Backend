@@ -27,11 +27,11 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
             String sql = "select c.\"name\" as \"companyName\", c.url as \"urlLogo\", " +
                     "a.\"name\" as \"airplaneName\", a.code as \"airplaneCode\", ac.airplane_class as \"airplaneClass\", atf.flight_time, " +
                     "upper(?) as \"departureCode\", upper(?) as \"arrivalCode\", " +
-                    "concat(to_date(?, 'DD-MM-YYYY'),' ',atf.flight_time)::timestamp with time zone AT TIME ZONE 'Asia/Jakarta' as \"departureTime\", " +
-                    "(select concat(to_date(?, 'DD-MM-YYYY'),' ',atf.flight_time)::timestamp with time zone AT TIME ZONE 'Asia/Jakarta' + (ba.duration || ' minutes')::interval from baseprice_airports ba " +
+                    "concat(to_date(?, 'dd-mm-yyyy'),' ',atf.flight_time)::timestamp with time zone AT TIME ZONE 'Asia/Jakarta' as \"departureTime\", " +
+                    "(select concat(to_date(?, 'dd-mm-yyyy'),' ',atf.flight_time)::timestamp with time zone AT TIME ZONE 'Asia/Jakarta' + (ba.duration || ' minutes')::interval from baseprice_airports ba " +
                     "where upper(ba.departure_code) = upper(?) and upper(ba.arrival_code) = upper(?) and ba.deleted_date is null limit 1) as \"arrivalTime\", " +
                     "(a.airplane_price + " +
-                    "coalesce ((select bd.date_price from baseprice_dates bd where to_date(?, 'DD-MM-YYYY')::timestamp between date_from and date_to and deleted_date is null limit 1), 0)   + " +
+                    "coalesce ((select bd.date_price from baseprice_dates bd where to_date(?, 'dd-mm-yyyy') = to_date(to_char(bd.date_from, 'dd-mm-yyyy'), 'dd-mm-yyyy') and deleted_date is null limit 1), 0)   + " +
                     "(select airport_price from baseprice_airports ba where upper(departure_code) = upper(?) and upper(arrival_code) = upper(?) and deleted_date is null limit 1) + " +
                     "ac.airplane_class_price + " +
                     "atf.airplane_flight_time_price) as totalPrice " +

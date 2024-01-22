@@ -11,8 +11,6 @@ import java.util.Date;
 public class BasepriceDateDTO {
     @NotNull
     private Date dateFrom;
-    @NotNull
-    private Date dateTo;
     @NotBlank
     private String type;
     @NotNull
