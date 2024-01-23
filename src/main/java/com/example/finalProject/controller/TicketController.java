@@ -19,7 +19,7 @@ import com.example.finalProject.service.TicketImpl;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/tickets")
 @Slf4j
 public class TicketController {

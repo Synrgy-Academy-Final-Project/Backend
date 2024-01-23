@@ -19,7 +19,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/airplane")
 @Slf4j
 public class AirplaneController {

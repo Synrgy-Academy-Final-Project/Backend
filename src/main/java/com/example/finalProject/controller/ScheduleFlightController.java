@@ -17,7 +17,7 @@ import java.util.Date;
 
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/scheduleflight")
 @Slf4j
 public class ScheduleFlightController {

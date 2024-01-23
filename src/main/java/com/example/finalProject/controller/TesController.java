@@ -20,7 +20,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/tes")
 public class TesController {
     @Autowired
