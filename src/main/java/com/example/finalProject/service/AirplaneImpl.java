@@ -56,14 +56,13 @@ public class AirplaneImpl {
         int datePrice = 0;
         BasePriceAirport airportData = basepriceAirportRepository.getAirportPrice(airplaneList.getFromAirport(), airplaneList.getToAirport());
         BasePriceDate dateData = basepriceDateRepository.getDatePrice(airplaneList.getDepartureDate());
+        System.out.println(dateData);
         if (airportData != null){
             airportPrice = airportData.getAirportPrice();
         }
         if(dateData != null){
             datePrice = dateData.getDatePrice();
         }
-        System.out.println(airportData);
-        System.out.println(dateData);
 
         try {
             for (Airplane airplane : data) {

@@ -47,7 +47,7 @@ public class AirplaneController {
     public ResponseEntity<ResponseDTO> airplaneList(@RequestParam(defaultValue = "0") int pageNumber,
                                                     @RequestParam(defaultValue = "100") int pageSize,
                                                     @RequestParam(defaultValue = "") String sortBy,
-                                                    @ModelAttribute AirplaneListRequestDTO airplaneList){
+                                                    @ModelAttribute @Validated  AirplaneListRequestDTO airplaneList){
         Pageable pageable;
         if (sortBy.isEmpty()){
             pageable = PageRequest.of(pageNumber, pageSize);

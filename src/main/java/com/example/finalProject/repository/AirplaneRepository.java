@@ -31,7 +31,7 @@ public interface AirplaneRepository extends JpaRepository<Airplane, UUID> {
     @Query(value = "select \n" +
             "\tmin(airplane_price + airplane_class_price + airplane_flight_time_price) \n" +
             "\t+ coalesce((select date_price from baseprice_dates bd \n" +
-            "\twhere bd.date_from <= ?3 and bd.date_to >= ?3),0)\n" +
+            "\twhere bd.date_time = ?3),0)\n" +
             "\t+ coalesce((select airport_price from baseprice_airports ba\n" +
             "\twhere departure_code ilike ?1 and ba.arrival_code ilike ?2),0)\n" +
             "from airplanes\n" +
