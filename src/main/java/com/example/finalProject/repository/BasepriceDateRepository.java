@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.UUID;
 
 public interface BasepriceDateRepository extends JpaRepository<BasePriceDate, UUID> {
@@ -21,7 +22,10 @@ public interface BasepriceDateRepository extends JpaRepository<BasePriceDate, UU
 //            nativeQuery = true)
 //    Page<BasePriceDate> searchAll(String dateFrom1, String dateFrom2, String dateTo1, String dateTo2, String priceDown, String priceUp, String type, Pageable pageable);
 
-
+    @Query(value = "select * from baseprice_dates bd \n" +
+            "\twhere bd.date_from <= ?1 and bd.date_to >= ?1"
+            , nativeQuery = true)
+    BasePriceDate getDatePrice(Date date);
 
 
 }

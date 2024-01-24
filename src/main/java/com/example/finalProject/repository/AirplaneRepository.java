@@ -15,6 +15,12 @@ public interface AirplaneRepository extends JpaRepository<Airplane, UUID> {
             nativeQuery = true)
     public Page<Airplane> searchAll(String code, String name, Pageable pageable);
 
+    @Query(value = "select airplanes.* from airplanes \n" +
+            "join airplane_classes ac on airplanes.id = ac.airplane_id\n" +
+            "where ac.airplane_class = ?1 and ac.capacity > ?2",
+            nativeQuery = true)
+    public Page<Airplane> airplaneList(String airplaneClass, int capacity, Pageable pageable);
+
     @Query(value = "select min(airplane_price + airplane_class_price + airplane_flight_time_price) as minimum_price from airplanes\n" +
             "join airplane_classes ac on airplanes.id = ac.airplane_id\n" +
             "join airplane_flight_times aft on airplanes.id = aft.airplane_id",

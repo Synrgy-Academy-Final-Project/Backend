@@ -1,15 +1,20 @@
 package com.example.finalProject.service;
 
 import com.example.finalProject.dto.AirplaneEntityDTO;
+import com.example.finalProject.dto.AirplaneListDTO;
+import com.example.finalProject.dto.AirplaneListRequestDTO;
 import com.example.finalProject.dto.ResponseDTO;
-import com.example.finalProject.entity.Airplane;
-import com.example.finalProject.entity.Company;
+import com.example.finalProject.entity.*;
 import com.example.finalProject.repository.AirplaneRepository;
+import com.example.finalProject.repository.BasepriceAirportRepository;
+import com.example.finalProject.repository.BasepriceDateRepository;
 import com.example.finalProject.repository.CompanyRepository;
 import com.example.finalProject.utils.GeneralFunction;
 import com.example.finalProject.utils.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +29,62 @@ public class AirplaneImpl {
     @Autowired
     AirplaneRepository airplaneRepository;
     @Autowired
+    BasepriceAirportRepository basepriceAirportRepository;
+    @Autowired
+    BasepriceDateRepository basepriceDateRepository;
+    @Autowired
     CompanyRepository companyRepository;
     @Autowired
     GeneralFunction generalFunction;
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
+
+    private ModelMapper modelMapper = new ModelMapper();
 
     public ResponseDTO searchAll(String code, String name, Pageable pageable) {
         String updatedCode = generalFunction.createLikeQuery(code);
         String updatedName = generalFunction.createLikeQuery(name);
         return response.suksesDTO(airplaneRepository.searchAll(updatedCode, updatedName, pageable));
+    }
+
+    public ResponseDTO airplaneList(AirplaneListRequestDTO airplaneList, Pageable pageable) {
+        Page<Airplane> data = airplaneRepository.airplaneList(airplaneList.getAirplaneClass(), airplaneList.getCapacity(), pageable);
+        List<AirplaneListDTO> result = new ArrayList<>();
+        BasePriceAirport airportData = basepriceAirportRepository.getAirportPrice(airplaneList.getFromAirport(), airplaneList.getToAirport());
+        BasePriceDate dateData = basepriceDateRepository.getDatePrice(airplaneList.getDepartureDate());
+        System.out.println(airportData);
+        System.out.println(dateData);
+
+        try {
+            for (Airplane airplane : data) {
+                for (AirplaneClass airplaneClass : airplane.getAirplaneClass()) {
+                    for (AirplaneFlightTime airplaneTime : airplane.getAirplaneFlightTimes()) {
+                        AirplaneListDTO airplaneDTO = modelMapper.map(airplane, AirplaneListDTO.class);
+                        airplaneDTO.setTotalPrice(airplane.getAirplanePrice() + airplaneTime.getAirplaneFlightTimePrice() + airplaneClass.getAirplaneClassPrice() + airportData.getAirportPrice() + dateData.getDatePrice());
+                        airplaneDTO.setAirplaneClass(airplaneClass);
+                        airplaneDTO.setAirplaneFlightTimes(airplaneTime);
+                        result.add(airplaneDTO);
+                    }
+                }
+            }
+
+            result.sort(Comparator.comparing(AirplaneListDTO::getTotalPrice));
+//        result.sort(Comparator.comparing(AirplaneListDTO::getTotalPrice).reversed());
+
+            result = result.stream().filter(airplane -> airplane.getTotalPrice() > airplaneList.getFromPrice()
+                            && airplane.getTotalPrice() < airplaneList.getToPrice()
+                            && airplane.getCompany().getName().equals(airplaneList.getMaskapai())
+                            && airplane.getAirplaneFlightTimes().getFlightTime().after(airplaneList.getFromTime())
+                            && airplane.getAirplaneFlightTimes().getFlightTime().before(airplaneList.getToTime())
+                            && airplane.getAirplaneClass().getAirplaneClass().equals(airplaneList.getAirplaneClass()))
+                    .toList();
+            System.out.println(airplaneList);
+            return response.suksesDTO(result);
+        }catch(Exception e){
+            return response.errorDTO(500, e.getMessage());
+        }
     }
 
     public ResponseDTO save(AirplaneEntityDTO airplane) {

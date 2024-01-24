@@ -26,6 +26,8 @@ public class Company extends AbstractDate {
     @NotBlank
     String url;
 
+    @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "company")
     List<Airplane> airplane;
 }

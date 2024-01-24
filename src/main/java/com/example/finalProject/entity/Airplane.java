@@ -43,4 +43,10 @@ public class Airplane extends AbstractDate {
     @ToString.Exclude
     @OneToMany(mappedBy = "airplane")
     List<Flight> flight;
+
+    @OneToMany(mappedBy = "airplane")
+    List<AirplaneClass> airplaneClass;
+
+    @OneToMany(mappedBy = "airplane")
+    List<AirplaneFlightTime> airplaneFlightTimes;
 }

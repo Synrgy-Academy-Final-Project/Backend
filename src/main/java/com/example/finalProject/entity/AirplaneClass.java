@@ -26,6 +26,7 @@ public class AirplaneClass extends AbstractDate{
     @JsonIgnore
     @ManyToOne
     @JoinColumn
+    @ToString.Exclude
     @NotNull
     private Airplane airplane;
 
