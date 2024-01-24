@@ -52,8 +52,16 @@ public class AirplaneImpl {
     public ResponseDTO airplaneList(AirplaneListRequestDTO airplaneList, Pageable pageable) {
         Page<Airplane> data = airplaneRepository.airplaneList(airplaneList.getAirplaneClass(), airplaneList.getCapacity(), generalFunction.createLikeQuery(airplaneList.getMaskapai()), pageable);
         List<AirplaneListDTO> result = new ArrayList<>();
+        int airportPrice = 0;
+        int datePrice = 0;
         BasePriceAirport airportData = basepriceAirportRepository.getAirportPrice(airplaneList.getFromAirport(), airplaneList.getToAirport());
         BasePriceDate dateData = basepriceDateRepository.getDatePrice(airplaneList.getDepartureDate());
+        if (airportData != null){
+            airportPrice = airportData.getAirportPrice();
+        }
+        if(dateData != null){
+            datePrice = dateData.getDatePrice();
+        }
         System.out.println(airportData);
         System.out.println(dateData);
 
@@ -62,7 +70,7 @@ public class AirplaneImpl {
                 for (AirplaneClass airplaneClass : airplane.getAirplaneClass()) {
                     for (AirplaneFlightTime airplaneTime : airplane.getAirplaneFlightTimes()) {
                         AirplaneListDTO airplaneDTO = modelMapper.map(airplane, AirplaneListDTO.class);
-                        airplaneDTO.setTotalPrice(airplane.getAirplanePrice() + airplaneTime.getAirplaneFlightTimePrice() + airplaneClass.getAirplaneClassPrice() + airportData.getAirportPrice() + dateData.getDatePrice());
+                        airplaneDTO.setTotalPrice(airplane.getAirplanePrice() + airplaneTime.getAirplaneFlightTimePrice() + airplaneClass.getAirplaneClassPrice() + airportPrice + datePrice);
                         airplaneDTO.setAirplaneClass(airplaneClass);
                         airplaneDTO.setAirplaneFlightTimes(airplaneTime);
                         result.add(airplaneDTO);
