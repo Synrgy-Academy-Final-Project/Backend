@@ -1,5 +1,6 @@
 package com.example.finalProject.entity;
 
+import com.example.finalProject.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -40,5 +41,8 @@ public class AirplaneClass extends AbstractDate{
     @NotNull
     @Positive
     private Integer airplaneClassPrice;
+
+    @OneToOne(mappedBy = "airplaneClass")
+    private AirplaneService airplaneService;
 
 }

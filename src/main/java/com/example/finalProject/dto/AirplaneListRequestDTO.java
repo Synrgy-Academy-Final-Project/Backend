@@ -3,6 +3,7 @@ package com.example.finalProject.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -37,4 +38,18 @@ public class AirplaneListRequestDTO {
     Date departureDate;
 
     String maskapai;
+
+    Boolean meals = false;
+
+    Boolean travelInsurance = false;
+
+    Boolean inflightEntertainment = false;
+
+    Boolean electricSocket = false;
+
+    Boolean wifi = false;
+
+    Boolean reschedule = false;
+
+    Boolean refund = false;
 }

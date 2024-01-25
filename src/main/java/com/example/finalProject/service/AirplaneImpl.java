@@ -84,7 +84,14 @@ public class AirplaneImpl {
                             && airplane.getTotalPrice() < airplaneList.getToPrice()
                             && airplane.getAirplaneFlightTimes().getFlightTime().after(airplaneList.getFromTime())
                             && airplane.getAirplaneFlightTimes().getFlightTime().before(airplaneList.getToTime())
-                            && airplane.getAirplaneClass().getAirplaneClass().equals(airplaneList.getAirplaneClass()))
+                            && airplane.getAirplaneClass().getAirplaneClass().equals(airplaneList.getAirplaneClass())
+                            && (airplane.getAirplaneClass().getAirplaneService().isMeals() || !airplaneList.getMeals())
+                            && (airplane.getAirplaneClass().getAirplaneService().isTravelInsurance() || !airplaneList.getTravelInsurance())
+                            && (airplane.getAirplaneClass().getAirplaneService().isInflightEntertainment() || ! airplaneList.getInflightEntertainment())
+                            && (airplane.getAirplaneClass().getAirplaneService().isElectricSocket() || !airplaneList.getElectricSocket())
+                            && (airplane.getAirplaneClass().getAirplaneService().isWifi() || !airplaneList.getWifi())
+                            && (airplane.getAirplaneClass().getAirplaneService().isReschedule() || !airplaneList.getReschedule())
+                            && (airplane.getAirplaneClass().getAirplaneService().getRefund() >= (airplaneList.getRefund() ? 1 : 0)))
                     .toList();
             System.out.println(airplaneList);
             return response.suksesDTO(result);
