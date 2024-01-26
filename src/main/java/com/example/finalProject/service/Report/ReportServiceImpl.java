@@ -26,10 +26,11 @@ public class ReportServiceImpl implements ReportService{
     private final TransactionRepository transactionRepository;
     @Override
     public byte[] exportETicket(String uname, String reportFormat) throws UserNotFoundException, JRException, FileNotFoundException {
-        User idUser = authenticationService.getIdUser(uname);
-        List<ETicketDTO> allUserTransaction = transactionRepository.getAllUserTransaction(idUser.getId());
-
-        return generateReportUser(allUserTransaction, reportFormat);
+//        User idUser = authenticationService.getIdUser(uname);
+//        List<ETicketDTO> allUserTransaction = transactionRepository.getAllUserTransaction(idUser.getId());
+//
+//        return generateReportUser(allUserTransaction, reportFormat);
+        return new byte[0];
     }
 
     @Override

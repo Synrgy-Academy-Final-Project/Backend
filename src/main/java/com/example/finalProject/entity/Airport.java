@@ -33,15 +33,15 @@ public class Airport extends AbstractDate {
     @NotBlank
     String country;
 
-    @JsonIgnore
-    @ToString.Exclude
-    @OneToMany(mappedBy = "fromAirport")
-    List<Flight> startFlight;
-
-    @JsonIgnore
-    @ToString.Exclude
-    @OneToMany(mappedBy = "toAirport")
-    List<Flight> endFlight;
+//    @JsonIgnore
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "fromAirport")
+//    List<Flight> startFlight;
+//
+//    @JsonIgnore
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "toAirport")
+//    List<Flight> endFlight;
 
     @JsonIgnore
     @ToString.Exclude

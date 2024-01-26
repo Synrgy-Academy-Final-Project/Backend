@@ -39,10 +39,10 @@ public class Airplane extends AbstractDate {
     @ToString.Exclude
     private Company company;
 
-    @JsonIgnore
-    @ToString.Exclude
-    @OneToMany(mappedBy = "airplane")
-    List<Flight> flight;
+//    @JsonIgnore
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "airplane")
+//    List<Flight> flight;
 
     @OneToMany(mappedBy = "airplane")
     List<AirplaneClass> airplaneClass;

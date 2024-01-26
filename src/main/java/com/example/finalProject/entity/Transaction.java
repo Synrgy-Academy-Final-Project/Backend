@@ -4,6 +4,7 @@ import com.example.finalProject.model.user.User;
 import com.example.finalProject.model.user.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
@@ -11,6 +12,8 @@ import lombok.ToString;
 import org.hibernate.annotations.Where;
 
 
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,38 +31,70 @@ public class Transaction extends AbstractDate {
     @JoinColumn
     User user;
 
-    @JsonIgnore
-    @ToString.Exclude
-    @OneToOne(mappedBy = "transaction")
-    Payment payment;
+    //    @NotNull
+//    @ManyToOne
+//    @JoinColumn
+//    Airplane airplane;
+    UUID airplaneId;
+
+    @NotBlank
+    String airplaneName;
+
+    @NotBlank
+    String airplaneCode;
+
+    //    @NotNull
+//    @ManyToOne
+//    @JoinColumn
+//    AirplaneClass airplaneClasss;
+    UUID airplaneClassId;
+
+    @NotBlank
+    String airplaneClass;
+
+    //    @NotNull
+//    @ManyToOne
+//    @JoinColumn
+//    AirplaneFlightTime airplaneTimeFLight;
+    UUID airplaneTimeFlightId;
+
+    @NotBlank
+    String departureCode;
+
+    Date departureDate;
+
+    Time departureTime;
+
+    @NotBlank
+    String arrivalCode;
+
+    Date arrivalDate;
+
+    Time arrivalTime;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn
-    Flight flight1;
+    @Positive
+    Integer totalSeat;
 
-    @ManyToOne
-    @JoinColumn
-    Flight flight2;
+    @NotNull
+    @Positive
+    Integer totalPrice;
+
 
     @ManyToOne
     @JoinColumn
     Promotion promotion;
 
+    @JsonIgnore
+    @ToString.Exclude
+    @OneToOne(mappedBy = "transaction")
+    Payment payment;
+
     @OneToMany(mappedBy = "transaction")
     List<Passenger> passenger;
 
     @JsonIgnore
-    @ToString.Exclude
     @OneToMany(mappedBy = "transaction")
     List<Ticket> ticket;
-
-    @NotNull
-    @Positive
-    int totalSeat;
-
-    @NotNull
-    @Positive
-    int totalPrice;
 
 }

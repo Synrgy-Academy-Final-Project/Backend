@@ -41,7 +41,7 @@ public class TransactionController {
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<ResponseDTO> addTransaction(@RequestBody @Validated TransactionEntityDTO transaction){
+    public ResponseEntity<ResponseDTO> addTransaction(@RequestBody @Validated TransactionEntityDTO transaction) throws IOException {
         ResponseDTO result = transactionImpl.save(transaction);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
@@ -52,21 +52,21 @@ public class TransactionController {
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
-    @GetMapping({"{id}", "{id}/"})
-    public ResponseEntity<ResponseDTO> findTransaction(@PathVariable UUID id){
-        ResponseDTO result = transactionImpl.findById(id);
-        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
-    }
-
-    @PutMapping({"{id}", "{id}/"})
-    public ResponseEntity<ResponseDTO> updateTransaction(@PathVariable UUID id, @RequestBody  TransactionEntityDTO transaction){
-        ResponseDTO result = transactionImpl.update(id, transaction);
-        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
-    }
-
-    @DeleteMapping({"{id}", "{id}/"})
-    public ResponseEntity<ResponseDTO> deleteTransaction(@PathVariable UUID id){
-        ResponseDTO result = transactionImpl.delete(id);
-        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
-    }
+//    @GetMapping({"{id}", "{id}/"})
+//    public ResponseEntity<ResponseDTO> findTransaction(@PathVariable UUID id){
+//        ResponseDTO result = transactionImpl.findById(id);
+//        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+//    }
+//
+//    @PutMapping({"{id}", "{id}/"})
+//    public ResponseEntity<ResponseDTO> updateTransaction(@PathVariable UUID id, @RequestBody  TransactionEntityDTO transaction){
+//        ResponseDTO result = transactionImpl.update(id, transaction);
+//        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+//    }
+//
+//    @DeleteMapping({"{id}", "{id}/"})
+//    public ResponseEntity<ResponseDTO> deleteTransaction(@PathVariable UUID id){
+//        ResponseDTO result = transactionImpl.delete(id);
+//        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+//    }
 }
