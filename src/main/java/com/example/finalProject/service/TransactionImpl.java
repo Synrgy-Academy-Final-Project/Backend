@@ -142,7 +142,7 @@ public class TransactionImpl {
 //                AirplaneFlightTime airplaneFlightTime = checkAirplaneFlightTime.get();
 
                 List<Object[]> checkAirplaneConfirmDTO = transactionRepository.getAirplaneConfirmDTOById(request.getAirplaneId(), request.getAirplaneClassId(), request.getAirplaneTimeFLightId());
-                List<CheckRow> checkRows = transactionRepository.checkRow();
+                CheckRow checkRows = transactionRepository.checkRow();
                 System.out.println(checkAirplaneConfirmDTO);
                 List<Object[]> checkTotalSeatTransactionAirplane = transactionRepository.getTotalSeatTransactionAirplane(request.getAirplaneId(), request.getAirplaneClassId(), request.getAirplaneTimeFLightId());
                 Optional<User> checkUserData = userRepository.findById(request.getUserId());
@@ -178,7 +178,7 @@ public class TransactionImpl {
                 )).toList();
                 System.out.println(totalSeatData);
 
-                if (checkRows.get(0).getRow() == 0 || totalSeatData.get(0).getTotalSeatTransaction() < airplaneData.get(0).getCapacity() &&
+                if (checkRows.getRow() == 0 || totalSeatData.get(0).getTotalSeatTransaction() < airplaneData.get(0).getCapacity() &&
                         (userDetails.size() + totalSeatData.get(0).getTotalSeatTransaction()) <= airplaneData.get(0).getCapacity()) {
                     System.out.println("masuk");
                     transaction.setUser(checkUserData.get());

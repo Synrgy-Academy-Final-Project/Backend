@@ -53,5 +53,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
 
 
     @Query("select new com.example.finalProject.dto.CheckRow(count (*)) from Transaction ac ")
-    List<CheckRow> checkRow();
+    CheckRow checkRow();
 }
