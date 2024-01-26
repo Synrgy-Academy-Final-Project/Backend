@@ -176,10 +176,12 @@ public class TransactionImpl {
                         (UUID) array[2],
                         (UUID) array[3]
                 )).toList();
-                System.out.println(totalSeatData);
-
-                if (checkRows.getRow() == 0 || totalSeatData.get(0).getTotalSeatTransaction() < airplaneData.get(0).getCapacity() &&
-                        (userDetails.size() + totalSeatData.get(0).getTotalSeatTransaction()) <= airplaneData.get(0).getCapacity()) {
+                Long totalSeat = 0L;
+                if (!totalSeatData.isEmpty()){
+                    totalSeat = totalSeatData.get(0).getTotalSeatTransaction();
+                }
+                if (checkRows.getRow() == 0 || totalSeat < airplaneData.get(0).getCapacity() &&
+                        (mature + totalSeat) <= airplaneData.get(0).getCapacity()) {
                     System.out.println("masuk");
                     transaction.setUser(checkUserData.get());
                     if (!request.getCompanyName().isEmpty() && !request.getUrl().isEmpty() &&
