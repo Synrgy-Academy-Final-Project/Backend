@@ -26,6 +26,7 @@ public class Transaction extends AbstractDate {
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
+    @JsonIgnore
     @NotNull
     @ManyToOne
     @JoinColumn
