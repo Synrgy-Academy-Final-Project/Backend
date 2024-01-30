@@ -25,5 +25,4 @@ public class UserUpdateRequest {
     private String residentPermit;
     @NotNull
     private String nik;
-
 }

@@ -13,6 +13,7 @@ import org.hibernate.annotations.Where;
 
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -62,14 +63,14 @@ public class Transaction extends AbstractDate {
     @NotBlank
     String departureCode;
 
-    Date departureDate;
+    LocalDate departureDate;
 
     Time departureTime;
 
     @NotBlank
     String arrivalCode;
 
-    Date arrivalDate;
+    LocalDate arrivalDate;
 
     Time arrivalTime;
 
