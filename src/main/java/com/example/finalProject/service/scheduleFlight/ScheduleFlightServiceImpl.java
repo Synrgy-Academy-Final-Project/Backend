@@ -1,7 +1,9 @@
 package com.example.finalProject.service.scheduleFlight;
 
+import com.example.finalProject.dto.AirplaneServiceDTO;
 import com.example.finalProject.dto.ScheduleFlightDTO;
 import com.example.finalProject.dto.ResponseDTO;
+import com.example.finalProject.dto.ScheduleFlightResponseDTO;
 import com.example.finalProject.utils.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -11,8 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -34,16 +36,30 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                     "coalesce ((select bd.date_price from baseprice_dates bd where to_date(?, 'dd-mm-yyyy') = to_date(to_char(bd.date_time, 'dd-mm-yyyy'), 'dd-mm-yyyy') and deleted_date is null limit 1), 0)   + " +
                     "(select airport_price from baseprice_airports ba where upper(departure_code) = upper(?) and upper(arrival_code) = upper(?) and deleted_date is null limit 1) + " +
                     "ac.airplane_class_price + " +
-                    "atf.airplane_flight_time_price) as totalPrice " +
+                    "atf.airplane_flight_time_price) as totalPrice, " +
+                    "a.id as \"airplaneId\",\n" +
+                    "ac.id as \"airplaneClassId\",\n" +
+                    "atf.id as \"airplaneFlightTimeId\"," +
+                    "as2.baggage as \"baggage\",\n" +
+                    "as2.cabin_baggage as \"cabinBaggage\",\n" +
+                    "as2.refund as \"refund\",\n" +
+                    "as2.electric_socket as \"electricSocket\",\n" +
+                    "as2.inflight_entertainment as \"inflightEntertainment\",\n" +
+                    "as2.meals as \"meals\",\n" +
+                    "as2.reschedule as \"reschedule\",\n" +
+                    "as2.travel_insurance as \"travelInsurance\",\n" +
+                    "as2.wifi as \"wifi\" " +
                     "from airplanes a " +
                     "join companies c on a.company_id = c.id " +
                     "join airplane_classes ac on a.id = ac.airplane_id " +
                     "join airplane_flight_times atf on a.id = atf.airplane_id " +
+                    "join airplane_service as2 on ac.id = as2.airplane_class_id " +
                     "where initcap(ac.airplane_class) = initcap(?) " +
                     "and a.deleted_date is null " +
                     "and c.deleted_date is null " +
                     "and ac.deleted_date is null " +
-                    "and atf.deleted_date is null";
+                    "and atf.deleted_date is null " +
+                    "and as2.deleted_date is null";
 
             String pattern = "dd-MM-yyyy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -55,11 +71,29 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                     new Object[]{departureCode, arrivalCode, departureDateStr, departureDateStr, departureCode, arrivalCode, departureDateStr, departureCode, arrivalCode, airplaneClass, pageable.getPageSize(), pageable.getOffset()},
                     new BeanPropertyRowMapper<>(ScheduleFlightDTO.class));
 
+            List<ScheduleFlightResponseDTO> scheduleFlightResponseDTOS = new ArrayList<>();
 
+            for (int i=0; i<resultList.size(); i++){
+                scheduleFlightResponseDTOS.add(
+                        new ScheduleFlightResponseDTO(resultList.get(i).getCompanyName(), resultList.get(i).getUrlLogo(), resultList.get(i).getAirplaneId(),
+                                resultList.get(i).getAirplaneName(), resultList.get(i).getAirplaneCode(), resultList.get(i).getAirplaneClassId(),
+                                resultList.get(i).getAirplaneClass(), resultList.get(i).getCapacity(), new AirplaneServiceDTO(
+                                resultList.get(i).getBaggage(), resultList.get(i).getCabinBaggage(), resultList.get(i).getMeals(),
+                                resultList.get(i).getTravelInsurance(), resultList.get(i).getInflightEntertainment(),
+                                resultList.get(i).getElectricSocket(), resultList.get(i).getWifi(), resultList.get(i).getReschedule(),
+                                resultList.get(i).getRefund()),
+                                resultList.get(i).getAirplaneFlightTimeId(), resultList.get(i).getFlightTime(), resultList.get(i).getDepartureCode(),
+                                resultList.get(i).getArrivalCode(), resultList.get(i).getDepartureTime(), resultList.get(i).getArrivalTime(),
+                                resultList.get(i).getTotalPrice()
+                        ));
+            }
 
             Long totalCount = jdbcTemplate.queryForObject(countQuery, Long.class, departureCode, arrivalCode, departureDateStr, departureDateStr, departureCode, arrivalCode, departureDateStr, departureCode, arrivalCode, airplaneClass);
             if (resultList.isEmpty()){
-                return response.dataNotFound("Schedule Flight");
+                resultList.clear();
+                totalCount = 0L;
+                PageImpl<ScheduleFlightDTO> flightDTOS = new PageImpl<>(resultList, pageable, totalCount);
+                return response.suksesDTO(flightDTOS);
             }
             if (resultList.get(0).getArrivalTime() == null || resultList.get(0).getTotalPrice() == null){
                 resultList.clear();
@@ -67,19 +101,8 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                 PageImpl<ScheduleFlightDTO> flightDTOS = new PageImpl<>(resultList, pageable, totalCount);
                 return response.suksesDTO(flightDTOS);
             }
-//            String originalDateString = String.valueOf(resultList.get(0).getDepartureTime());
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-//            Date originalDate = dateFormat.parse(originalDateString);
-//            // Convert to Instant and then to ZonedDateTime in the target time zone (Asia/Jakarta)
-//            Instant instant = originalDate.toInstant();
-//            ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("Asia/Jakarta"));
-//
-//            // Convert back to Date if necessary
-//            Date indonesiaDate = Date.from(zonedDateTime.toInstant());
-//            System.out.println(indonesiaDate);
 
-//            resultList.get().set
-            PageImpl<ScheduleFlightDTO> flightDTOS = new PageImpl<>(resultList, pageable, totalCount);
+            PageImpl<ScheduleFlightResponseDTO> flightDTOS = new PageImpl<>(scheduleFlightResponseDTOS, pageable, totalCount);
             return response.suksesDTO(flightDTOS);
         }catch (Exception e){
             return response.errorDTO(500, e.getMessage());

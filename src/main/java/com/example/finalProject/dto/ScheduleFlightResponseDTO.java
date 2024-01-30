@@ -11,13 +11,15 @@ import lombok.Setter;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class ScheduleFlightDTO {
+public class ScheduleFlightResponseDTO {
     @NotBlank
     private String companyName;
     @NotBlank
@@ -34,6 +36,7 @@ public class ScheduleFlightDTO {
     private String airplaneClass;
     @NotNull
     private Integer capacity;
+    private AirplaneServiceDTO airplaneServices;
     @NotNull
     private String airplaneFlightTimeId;
     @NotNull
@@ -49,34 +52,5 @@ public class ScheduleFlightDTO {
     @NotNull
     @Positive
     private Integer totalPrice;
-    @PositiveOrZero
-    @NotNull
-    Integer baggage;
-
-    @PositiveOrZero
-    @NotNull
-    Integer cabinBaggage;
-
-    @NotNull
-    Boolean meals;
-
-    @NotNull
-    Boolean travelInsurance;
-
-    @NotNull
-    Boolean inflightEntertainment;
-
-    @NotNull
-    Boolean electricSocket;
-
-    @NotNull
-    Boolean wifi;
-
-    @NotNull
-    Boolean reschedule;
-
-    @NotNull
-    @PositiveOrZero
-    Integer refund;
 
 }
