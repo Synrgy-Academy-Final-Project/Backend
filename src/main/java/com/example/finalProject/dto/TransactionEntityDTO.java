@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -45,14 +46,14 @@ public class TransactionEntityDTO {
     @NotBlank
     String departureCode;
 
-    Date departureDate;
+    LocalDate departureDate;
 
     Time departureTime;
 
     @NotBlank
     String arrivalCode;
 
-    Date arrivalDate;
+    LocalDate arrivalDate;
 
     Time arrivalTime;
 
