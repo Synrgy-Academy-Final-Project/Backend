@@ -19,7 +19,7 @@ public interface AirportRepository extends JpaRepository<Airport, UUID> {
         @Query("select new com.example.finalProject.dto.AirportSearchDTO(" +
                 "concat(a.city, ' ', '(',upper(a.code),')'), " +
                 "concat(initcap(a.city),', ',initcap(a.country)), " +
-                "concat(initcap(a.code),' - ',initcap(a.name)), " +
+                "concat(upper(a.code),' - ',initcap(a.name)), " +
                 "a.code) " +
                 "from Airport a " +
                 "where concat(a.city, ' ', '(',upper(a.code),')') ilike concat('%',:query,'%')" +
