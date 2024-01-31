@@ -29,7 +29,7 @@ public class AirportController {
     public ResponseEntity<ResponseDTO> searchAirport(@RequestParam(defaultValue = "0") int pageNumber,
                                                      @RequestParam(defaultValue = "100") int pageSize,
                                                      @RequestParam(defaultValue = "") String sortBy,
-                                                     @ModelAttribute("cityorcode") String cityOrCode
+                                                     @ModelAttribute("query") String query
     ) {
         Pageable pageable;
         if (sortBy.isEmpty()) {
@@ -37,7 +37,7 @@ public class AirportController {
         } else {
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        ResponseDTO result = airportImpl.searchAll(cityOrCode, pageable);
+        ResponseDTO result = airportImpl.searchAll(query, pageable);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 

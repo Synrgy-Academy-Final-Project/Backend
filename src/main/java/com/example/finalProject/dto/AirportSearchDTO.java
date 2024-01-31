@@ -12,4 +12,5 @@ public class AirportSearchDTO {
     private String airportCityCode;
     private String airportCityCountry;
     private String airportCode;
+    private String airportCodeName;
 }

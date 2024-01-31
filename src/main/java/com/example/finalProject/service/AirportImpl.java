@@ -25,11 +25,11 @@ public class AirportImpl {
     @Autowired
     AirportRepository airportsRepository;
 
-    public ResponseDTO searchAll(String cityOrCode, Pageable pageable) {
+    public ResponseDTO searchAll(String query, Pageable pageable) {
 //        String updatedCode = generalFunction.createLikeQuery(code);
 //        String updatedName = generalFunction.createLikeQuery(name);
-        String updatedCityCode = generalFunction.createLikeQuery(cityOrCode);
-        return response.suksesDTO(airportsRepository.searchAll(updatedCityCode, pageable));
+        String updatedQuery = generalFunction.createLikeQuery(query);
+        return response.suksesDTO(airportsRepository.searchAll(updatedQuery, pageable));
     }
 
     public ResponseDTO save(AirportEntityDTO airport) {
