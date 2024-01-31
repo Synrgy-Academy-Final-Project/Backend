@@ -18,7 +18,8 @@ public interface AirportRepository extends JpaRepository<Airport, UUID> {
 
         @Query("select new com.example.finalProject.dto.AirportSearchDTO(" +
                 "concat(a.city, ' ', '(',upper(a.code),')'), " +
-                "concat(initcap(a.city),', ',initcap(a.country)) ) " +
+                "concat(initcap(a.city),', ',initcap(a.country)), " +
+                "a.code) " +
                 "from Airport a " +
                 "where concat(a.city, ' ', '(',upper(a.code),')') ilike concat('%',:cityOrCode,'%')" +
                 "and a.deletedDate is null ")
