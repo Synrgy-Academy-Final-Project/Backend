@@ -3,6 +3,7 @@ package com.example.finalProject.controller;
 import com.example.finalProject.dto.AirportEntityDTO;
 import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.service.AirportImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -16,27 +17,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/airports")
 @Slf4j
 public class AirportController {
-    @Autowired
-    AirportImpl airportImpl;
+    private final AirportImpl airportImpl;
 
     @GetMapping({ "", "/" })
     public ResponseEntity<ResponseDTO> searchAirport(@RequestParam(defaultValue = "0") int pageNumber,
                                                      @RequestParam(defaultValue = "100") int pageSize,
                                                      @RequestParam(defaultValue = "") String sortBy,
-                                                     @ModelAttribute("name") String name,
-                                                     @ModelAttribute("code") String code) {
+                                                     @ModelAttribute("cityorcode") String cityOrCode
+    ) {
         Pageable pageable;
         if (sortBy.isEmpty()) {
             pageable = PageRequest.of(pageNumber, pageSize);
         } else {
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        ResponseDTO result = airportImpl.searchAll(code, name, pageable);
+        ResponseDTO result = airportImpl.searchAll(cityOrCode, pageable);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
