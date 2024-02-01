@@ -1,7 +1,9 @@
 package com.example.finalProject.controller;
 
 import com.example.finalProject.dto.ResponseDTO;
+import com.example.finalProject.model.user.User;
 import com.example.finalProject.repository.AirplaneRepository;
+import com.example.finalProject.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -23,8 +26,6 @@ import java.util.*;
 @CrossOrigin(origins = "*")
 @RequestMapping("/tes")
 public class TesController {
-    @Autowired
-    AirplaneRepository airplaneRepository;
     @GetMapping
     public String tes(){
         return "Tes Running";
@@ -32,6 +33,19 @@ public class TesController {
 
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
+
+//    @GetMapping("/detail")
+//    public Object findUser(Principal principal){
+//        if (principal == null){
+//            return "principal is null";
+//        }else{
+//            Optional<User> user = userRepository.findUserByEmail(principal.getName());
+//            if (user.isEmpty()){
+//                return "user not found";
+//            }
+//            return user.get().getUsersDetails();
+//        }
+//    }
 
 //    @GetMapping("hash")
 //    public String hashing() throws NoSuchAlgorithmException {

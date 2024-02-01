@@ -50,7 +50,7 @@ public class AirplaneImpl {
     }
 
     public ResponseDTO airplaneList(AirplaneListRequestDTO airplaneList, Pageable pageable) {
-        Page<Airplane> data = airplaneRepository.airplaneList(airplaneList.getAirplaneClass(), airplaneList.getCapacity(), generalFunction.createLikeQuery(airplaneList.getMaskapai()), pageable);
+        List<Airplane> data = airplaneRepository.airplaneList(airplaneList.getAirplaneClass(), airplaneList.getCapacity(), generalFunction.createLikeQuery(airplaneList.getMaskapai()));
         List<AirplaneListDTO> result = new ArrayList<>();
         int airportPrice = 0;
         int datePrice = 0;

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public interface AirplaneRepository extends JpaRepository<Airplane, UUID> {
@@ -20,7 +21,7 @@ public interface AirplaneRepository extends JpaRepository<Airplane, UUID> {
             "join companies c on c.id = airplanes.company_id\n" +
             "where ac.airplane_class = ?1 and ac.capacity > ?2  and c.name ilike ?3",
             nativeQuery = true)
-    public Page<Airplane> airplaneList(String airplaneClass, int capacity, String maskapai, Pageable pageable);
+    public List<Airplane> airplaneList(String airplaneClass, int capacity, String maskapai);
 
     @Query(value = "select min(airplane_price + airplane_class_price + airplane_flight_time_price) as minimum_price from airplanes\n" +
             "join airplane_classes ac on airplanes.id = ac.airplane_id\n" +

@@ -1,8 +1,12 @@
 package com.example.finalProject.dto.request.user;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.Accessors;
+
+import java.util.Date;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -11,18 +15,32 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class UserUpdateRequest {
+    private UUID id;
+
+    private String firstName;
+
+    private String lastName;
+
+    private Date dateOfBirth;
+
     @NotNull
     private String address;
+
     @NotNull
     private String gender;
+
     @NotNull
     private String phoneNumber;
+
     @NotNull
     private String visa;
+
     @NotNull
     private String passport;
+
     @NotNull
     private String residentPermit;
+
     @NotNull
     private String nik;
 }

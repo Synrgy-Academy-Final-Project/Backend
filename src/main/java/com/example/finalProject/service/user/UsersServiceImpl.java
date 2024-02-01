@@ -119,10 +119,8 @@ public class UsersServiceImpl implements UsersService{
             UserDetails getUserDetails = userDetailsRepository.findByFirstNameAndLastNameAndDoB(generalFunction.createLikeQuery(firstName), generalFunction.createLikeQuery(lastName), dob);
             System.out.println(getUserDetails);
             if (getUserDetails != null){
-                System.out.println("here1");
                 return response.suksesDTO(getUserDetails);
             }else{
-                System.out.println("here2");
                 return response.suksesDTO(userDetailsRepository.save(userDetails));
             }
 
