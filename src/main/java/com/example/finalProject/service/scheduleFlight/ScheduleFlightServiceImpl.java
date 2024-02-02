@@ -75,16 +75,8 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
 
             for (int i=0; i<resultList.size(); i++){
                 LocalDate date = resultList.get(i).getDepartureTime().toLocalDateTime().toLocalDate();
-                System.out.println(date);
-                System.out.println(resultList.get(i).getAirplaneId());
-                System.out.println(resultList.get(i).getAirplaneClassId());
-                System.out.println(resultList.get(i).getAirplaneFlightTimeId());
                 List<Object[]> totalSeat = transactionRepository.getTotalSeatTransactionAirplane(resultList.get(i).getAirplaneId(), resultList.get(i).getAirplaneClassId(), resultList.get(i).getAirplaneFlightTimeId(), date);
-//                UUID airplaneId = UUID.fromString("f54740ad-a260-404c-be33-0b0ab7f7072c");
-//                UUID airplaneClassId = UUID.fromString("2d60c23f-28b0-4bf7-beec-c5459fb00939");
-//                UUID airplaneTimeId = UUID.fromString("7ca5a5cc-bb95-4c46-bbeb-08ab54584426");
-//                List<Object[]> totalSeat = transactionRepository.getTotalSeatTransactionAirplane2(airplaneId, airplaneClassId, airplaneTimeId, date);
-                System.out.println(totalSeat);
+
                 Integer seat = 0;
                 if (!totalSeat.isEmpty()){
                     List<TotalSeatDTO> totalSeatData = totalSeat.stream().map(array -> new TotalSeatDTO(
@@ -114,6 +106,7 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                                 resultList.get(i).getTotalPrice()
                         ));
             }
+
 
             Long totalCount = jdbcTemplate.queryForObject(countQuery, Long.class, departureCode, arrivalCode, departureDateStr, departureDateStr, departureCode, arrivalCode, departureDateStr, departureCode, arrivalCode, airplaneClass);
             if (resultList.isEmpty()){
