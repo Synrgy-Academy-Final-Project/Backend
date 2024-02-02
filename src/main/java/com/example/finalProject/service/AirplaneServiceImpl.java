@@ -1,39 +1,29 @@
 package com.example.finalProject.service;
 
-import com.example.finalProject.dto.*;
-import com.example.finalProject.entity.*;
-import com.example.finalProject.repository.*;
-import com.example.finalProject.utils.GeneralFunction;
+import com.example.finalProject.dto.AirplaneServiceEntityDTO;
+import com.example.finalProject.dto.ResponseDTO;
+import com.example.finalProject.entity.AirplaneClass;
+import com.example.finalProject.entity.AirplaneService;
+import com.example.finalProject.repository.AirplaneClassRepository;
+import com.example.finalProject.repository.AirplaneServiceRepository;
 import com.example.finalProject.utils.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.*;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AirplaneServiceImpl {
     @Autowired
     Response response;
     @Autowired
-    AirplaneRepository airplaneRepository;
-    @Autowired
-    BasepriceAirportRepository basepriceAirportRepository;
-    @Autowired
-    BasepriceDateRepository basepriceDateRepository;
-    @Autowired
     AirplaneServiceRepository airplaneServiceRepository;
     @Autowired
     AirplaneClassRepository airplaneClassRepository;
-    @Autowired
-    CompanyRepository companyRepository;
-    @Autowired
-    GeneralFunction generalFunction;
 
     public ResponseDTO searchAll(Pageable pageable) {
         return response.suksesDTO(airplaneServiceRepository.findAll(pageable));
@@ -123,18 +113,5 @@ public class AirplaneServiceImpl {
         }catch (Exception e){
             return response.errorDTO(500, e.getMessage());
         }
-    }
-
-    public ResponseDTO minimumPrice(String fromAirportCode, String toAirportCode, Date departureDate) {
-        List<Map<String, Object>> sevenDays = new ArrayList<>();
-        LocalDate date = LocalDate.ofInstant(departureDate.toInstant(), ZoneId.systemDefault());
-        for (int i = 0; i < 7; i++){
-            Map<String, Object> data = new HashMap<>();
-            LocalDate theDate = date.plusDays(i);
-            data.put("date", theDate);
-            data.put("price", airplaneRepository.getMinimumPriceThatDay(fromAirportCode, toAirportCode, theDate));
-            sevenDays.add(data);
-        }
-        return response.suksesDTO(sevenDays);
     }
 }
