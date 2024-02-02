@@ -74,24 +74,34 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
             List<ScheduleFlightResponseDTO> scheduleFlightResponseDTOS = new ArrayList<>();
 
             for (int i=0; i<resultList.size(); i++){
-//                LocalDate date = resultList.get(i).getDepartureTime().toLocalDateTime().toLocalDate();
-//                List<Object[]> totalSeat = transactionRepository.getTotalSeatTransactionAirplane(resultList.get(i).getAirplaneId(), resultList.get(i).getAirplaneClassId(), resultList.get(i).getAirplaneFlightTimeId(), date);
-//
-//                Integer seat = 0;
-//                if (!totalSeat.isEmpty()){
-//                    List<TotalSeatDTO> totalSeatData = totalSeat.stream().map(array -> new TotalSeatDTO(
-//                            (Long) array[0],
-//                            (Date) array[1],
-//                            (Time) array[2],
-//                            (Date) array[3],
-//                            (Time) array[4],
-//                            (UUID) array[5],
-//                            (UUID) array[6],
-//                            (UUID) array[7]
-//                    )).toList();
-//                    seat = Math.toIntExact(totalSeatData.get(i).getTotalSeatTransaction());
-//                }
-//                System.out.println(seat);
+
+                LocalDate date = resultList.get(i).getDepartureTime().toLocalDateTime().toLocalDate();
+                List<Object[]> totalSeat = transactionRepository.getTotalSeatTransactionAirplane(resultList.get(i).getAirplaneId(), resultList.get(i).getAirplaneClassId(), resultList.get(i).getAirplaneFlightTimeId(), date);
+                // System.out.println(resultList.get(i).getAirplaneId());
+                // System.out.println(resultList.get(i).getAirplaneClassId());
+                // System.out.println(resultList.get(i).getAirplaneFlightTimeId());
+                // System.out.println(date);
+//                System.out.println(totalSeat);
+                Integer seat = 0;
+
+                if (!totalSeat.isEmpty()){
+                    List<TotalSeatDTO> totalSeatData = totalSeat.stream().map(array -> new TotalSeatDTO(
+                            (Long) array[0],
+                            (Date) array[1],
+                            (Time) array[2],
+                            (Date) array[3],
+                            (Time) array[4],
+                            (UUID) array[5],
+                            (UUID) array[6],
+                            (UUID) array[7]
+                    )).toList();
+                    // System.out.println("masuk");
+                    // System.out.println(Math.toIntExact(totalSeatData.get(0).getTotalSeatTransaction()));
+                    seat = Math.toIntExact(totalSeatData.get(0).getTotalSeatTransaction());
+                }
+                // System.out.println("iter " + i);
+                // System.out.println(seat);
+
                 scheduleFlightResponseDTOS.add(
                         new ScheduleFlightResponseDTO(resultList.get(i).getCompanyName(), resultList.get(i).getUrlLogo(), resultList.get(i).getAirplaneId(),
                                 resultList.get(i).getAirplaneName(), resultList.get(i).getAirplaneCode(), resultList.get(i).getAirplaneClassId(),

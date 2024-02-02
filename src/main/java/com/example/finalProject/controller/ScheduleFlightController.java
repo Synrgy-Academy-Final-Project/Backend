@@ -25,7 +25,7 @@ public class ScheduleFlightController {
 
     @GetMapping({"", "/"})
     public ResponseEntity<ResponseDTO> getFlight(@RequestParam(defaultValue = "0") int pageNumber,
-                                                 @RequestParam(defaultValue = "5") int pageSize,
+                                                 @RequestParam(defaultValue = "100") int pageSize,
                                                  @RequestParam(defaultValue = "") String sortBy,
                                                  @ModelAttribute("departureCode") String fromAirportCode,
                                                  @ModelAttribute("arrivalCode") String toAirportCode,
