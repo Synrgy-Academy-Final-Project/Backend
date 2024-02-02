@@ -1,7 +1,10 @@
 package com.example.finalProject.controller;
 
 import com.example.finalProject.dto.ResponseDTO;
+import com.example.finalProject.entity.Airplane;
+import com.example.finalProject.entity.AirplaneAdditionalService;
 import com.example.finalProject.model.user.User;
+import com.example.finalProject.repository.AirplaneAdditionalServiceRepository;
 import com.example.finalProject.repository.AirplaneRepository;
 import com.example.finalProject.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,11 @@ import java.util.*;
 @CrossOrigin(origins = "*")
 @RequestMapping("/tes")
 public class TesController {
+    @Autowired
+    AirplaneAdditionalServiceRepository airplaneAdditionalServiceRepository;
+    @Autowired
+    AirplaneRepository airplaneRepository;
+
     @GetMapping
     public String tes(){
         return "Tes Running";
@@ -33,6 +41,18 @@ public class TesController {
 
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
+
+    @GetMapping("/dummy")
+    public Object insertDummy(){
+        List<AirplaneAdditionalService> result = new ArrayList<>();
+        List<Airplane> airplanes = airplaneRepository.findAll();
+        airplanes.forEach(airplane -> {
+            for(int i=1; i <= 4; i++){
+                result.add(airplaneAdditionalServiceRepository.save(new AirplaneAdditionalService(airplane, "baggage", i*5, 100000+((i-1)*50000))));
+            }
+        });
+        return result;
+    }
 
 //    @GetMapping("/detail")
 //    public Object findUser(Principal principal){

@@ -49,4 +49,7 @@ public class Airplane extends AbstractDate {
 
     @OneToMany(mappedBy = "airplane")
     List<AirplaneFlightTime> airplaneFlightTimes;
+
+    @OneToMany(mappedBy = "airplane")
+    List<AirplaneAdditionalService> airplaneAdditionalService;
 }
