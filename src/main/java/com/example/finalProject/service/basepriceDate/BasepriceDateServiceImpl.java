@@ -59,8 +59,8 @@ public class BasepriceDateServiceImpl implements BasepriceDateService{
 
             BasePriceDate updateBasePriceDate = checkData.get();
 
-            if (request.getDateFrom() != null){
-                updateBasePriceDate.setDateFrom(request.getDateFrom());
+            if (request.getDateTime() != null){
+                updateBasePriceDate.setDateTime(request.getDateTime());
             }
             if (request.getType() != null){
                 updateBasePriceDate.setType(request.getType());
@@ -97,7 +97,7 @@ public class BasepriceDateServiceImpl implements BasepriceDateService{
 
     @Override
     public ResponseDTO searchAll(String dateFrom1, String dateFrom2, String dateTo1, String dateTo2, String priceDown, String priceUp, String type, Pageable pageable) {
-        Page<BasePriceDate> result = basepriceDateRepository.searchAll(dateFrom1, dateFrom2, dateTo1, dateTo2, priceDown, priceUp, type, pageable);
-        return response.suksesDTO(result);
+//        Page<BasePriceDate> result = basepriceDateRepository.searchAll(dateFrom1, dateFrom2, dateTo1, dateTo2, priceDown, priceUp, type, pageable);
+        return response.suksesDTO("maintance");
     }
 }

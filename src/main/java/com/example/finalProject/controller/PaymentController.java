@@ -18,7 +18,7 @@ import com.example.finalProject.service.PaymentImpl;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/payments")
 @Slf4j
 public class PaymentController {

@@ -1,5 +1,6 @@
 package com.example.finalProject.entity;
 
+import com.example.finalProject.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -26,18 +27,22 @@ public class AirplaneClass extends AbstractDate{
     @JsonIgnore
     @ManyToOne
     @JoinColumn
+    @ToString.Exclude
     @NotNull
     private Airplane airplane;
 
     @NotBlank
     private String airplaneClass;
 
-    @NotNull
+    @NotBlank
     @Positive
     private Integer capacity;
 
     @NotNull
     @Positive
     private Integer airplaneClassPrice;
+
+    @OneToOne(mappedBy = "airplaneClass")
+    private AirplaneService airplaneService;
 
 }

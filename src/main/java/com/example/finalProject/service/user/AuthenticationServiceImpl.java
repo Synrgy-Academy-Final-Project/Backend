@@ -211,7 +211,7 @@ public class AuthenticationServiceImpl implements AuhenticationService {
             throw new NullRequestException();
         }
         if (passwordEncoder.matches(request.getToken(), user.getOtp()) && Duration.between(user.getOtpGeneratedTime().toLocalDateTime(),
-                LocalDateTime.now()).getSeconds() < (60)) {
+                LocalDateTime.now()).getSeconds() < (300)) {
             if (user.isUserActive()){
                 // check if the two new passwords are the same
                 if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
@@ -272,7 +272,7 @@ public class AuthenticationServiceImpl implements AuhenticationService {
             throw new NullRequestException();
         }
         if (passwordEncoder.matches(otp, user.getOtp()) && Duration.between(user.getOtpGeneratedTime().toLocalDateTime(),
-                LocalDateTime.now()).getSeconds() < (60)) {
+                LocalDateTime.now()).getSeconds() < (300)) {
             user.setOtp(passwordEncoder.encode(token));
             user.setOtpGeneratedTime(Timestamp.valueOf(LocalDateTime.now()));
             userRepository.save(user);

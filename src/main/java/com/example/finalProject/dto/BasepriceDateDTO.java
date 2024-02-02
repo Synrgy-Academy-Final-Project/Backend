@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 public class BasepriceDateDTO {
     @NotNull
-    private Date dateFrom;
+    private Date dateTime;
     @NotBlank
     private String type;
     @NotNull

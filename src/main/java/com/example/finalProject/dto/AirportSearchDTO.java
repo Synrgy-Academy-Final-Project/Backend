@@ -11,6 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AirportSearchDTO {
     private String airportCityCode;
     private String airportCityCountry;
-    private String airportCode;
     private String airportCodeName;
+    private String airportCode;
 }

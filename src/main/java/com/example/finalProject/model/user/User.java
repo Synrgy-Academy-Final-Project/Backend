@@ -44,6 +44,7 @@ public class User {
     private UserDetails usersDetails;
   
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "user")
     List<Transaction> transaction;
 

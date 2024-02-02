@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.Where;
 
 import java.util.List;
@@ -25,6 +26,8 @@ public class Company extends AbstractDate {
     @NotBlank
     String url;
 
+    @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "company")
     List<Airplane> airplane;
 }

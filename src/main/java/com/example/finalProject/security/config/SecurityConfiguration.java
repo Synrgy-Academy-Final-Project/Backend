@@ -32,6 +32,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests( auth ->
                                 auth
                                         .requestMatchers("/api/v1/auth/**").permitAll()
+                                        .requestMatchers("/user-detail/logged-in-user").authenticated()
                                         .anyRequest().permitAll()
                 );
         http.authenticationProvider(applicationConfig.authenticationProvider());

@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/airports")
 @Slf4j
 public class AirportController {

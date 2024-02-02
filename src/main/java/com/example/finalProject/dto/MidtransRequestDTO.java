@@ -8,5 +8,5 @@ import java.util.Map;
 public class MidtransRequestDTO {
     Map<String, Object> transaction_details;
     List<Map<String, Object>> item_details;
-    Map<String, Object>  customer_details;
+    Map<String, Object> customer_details;
 }

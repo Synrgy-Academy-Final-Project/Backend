@@ -26,8 +26,8 @@ public class BasePriceDate extends AbstractDate{
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "Asia/Jakarta")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date_from", nullable = false)
-    private Date dateFrom;
+    @Column(name = "date_time", nullable = false)
+    private Date dateTime;
 
     @NotBlank
     private String type;

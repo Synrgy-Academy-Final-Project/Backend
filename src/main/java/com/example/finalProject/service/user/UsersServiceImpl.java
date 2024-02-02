@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -94,6 +91,37 @@ public class UsersServiceImpl implements UsersService{
                 return response.suksesDTO(userUpdateResponse);
             }else {
                 return response.errorDTO(400, "User has profile");
+            }
+
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            return response.errorDTO(404, e.getMessage());
+        }
+    }
+
+    @Transactional
+    public ResponseDTO createUserDetail(UserDetails userDetails) {
+        try {
+            String firstName = userDetails.getFirstName();
+            String lastName = userDetails.getLastName();
+            Date dob = userDetails.getDateOfBirth();
+
+            if (firstName.isEmpty()){
+                return response.dataNotFound("firstName");
+            }
+//            if (lastName.isEmpty()){
+//                return response.dataNotFound("lastName");
+//            }
+            if (dob == null){
+                return response.dataNotFound("dateOfBirth");
+            }
+
+            UserDetails getUserDetails = userDetailsRepository.findByFirstNameAndLastNameAndDoB(generalFunction.createLikeQuery(firstName), generalFunction.createLikeQuery(lastName), dob);
+            System.out.println(getUserDetails);
+            if (getUserDetails != null){
+                return response.suksesDTO(getUserDetails);
+            }else{
+                return response.suksesDTO(userDetailsRepository.save(userDetails));
             }
 
         }catch (Exception e){

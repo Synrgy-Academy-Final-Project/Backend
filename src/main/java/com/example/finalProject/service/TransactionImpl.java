@@ -1,45 +1,56 @@
 package com.example.finalProject.service;
 
-import com.example.finalProject.dto.MidtransRequestDTO;
-import com.example.finalProject.dto.ResponseDTO;
-import com.example.finalProject.dto.TransactionEntityDTO;
-import com.example.finalProject.entity.Flight;
-import com.example.finalProject.entity.Payment;
-import com.example.finalProject.entity.Transaction;
+import com.example.finalProject.dto.*;
+//import com.example.finalProject.entity.Flight;
+import com.example.finalProject.entity.*;
 import com.example.finalProject.model.user.User;
-import com.example.finalProject.repository.FlightRepository;
+import com.example.finalProject.model.user.UserDetails;
+//import com.example.finalProject.repository.FlightRepository;
+import com.example.finalProject.repository.AirplaneClassRepository;
+import com.example.finalProject.repository.PassengerRepository;
 import com.example.finalProject.repository.PaymentRepository;
 import com.example.finalProject.repository.TransactionRepository;
 import com.example.finalProject.repository.user.UserRepository;
+import com.example.finalProject.security.service.UserDetailsImpl;
+import com.example.finalProject.service.user.UsersServiceImpl;
 import com.example.finalProject.utils.Response;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.json.JSONParser;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.DataInput;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@RequiredArgsConstructor
 @Service
 public class TransactionImpl {
-    @Autowired
-    Response response;
-    @Autowired
-    TransactionRepository transactionRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    FlightRepository flightRepository;
-    @Autowired
-    PaymentRepository paymentRepository;
+
+    private final Response response;
+    private final TransactionRepository transactionRepository;
+    private final UserRepository userRepository;
+    private final PaymentRepository paymentRepository;
+    private final UsersServiceImpl usersServiceImpl;
+    private final PassengerRepository passengerRepository;
+    private final AirplaneClassRepository airplaneClassRepository;
+
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
 
@@ -53,8 +64,7 @@ public class TransactionImpl {
             return saveResponse;
         }
 
-        Transaction savedTransaction = (Transaction) save(transaction).getData();
-
+        Transaction savedTransaction = (Transaction) saveResponse.getData();
         Map<String, Object> transactionDetails = new HashMap<>();
         transactionDetails.put("order_id", savedTransaction.getId());
         transactionDetails.put("gross_amount", savedTransaction.getTotalPrice());
@@ -91,204 +101,374 @@ public class TransactionImpl {
         return response.suksesDTO(result);
     }
 
-    @Transactional
-    public ResponseDTO save(TransactionEntityDTO transaction) {
-        int totalPrice = 0;
-        int capacity;
-        int totalSeat;
-        Flight flight1Data = null;
-        Flight flight2Data = null;
-
+    public ResponseDTO save(TransactionEntityDTO request) throws IOException {
         try {
+            List<UserDetails> userDetails = request.getUserDetails();
+            System.out.println(userDetails.size());
+            userDetails.stream().forEach(additionalUserDTO -> System.out.println(additionalUserDTO.getDateOfBirth()));
+            Integer child = 0;
+            Integer mature = 0;
+            for (int i = 0; i<userDetails.size(); i++){
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                LocalDate dateOfBirth = LocalDate.parse(dateFormat.format(userDetails.get(i).getDateOfBirth()), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                Period age = Period.between(dateOfBirth, LocalDate.now());
+                if (age.getYears()>2){
+                    mature++;
+                }
+                else{
+                    child++;
+                }
+            }
+            System.out.println(mature +" "+ child);
             ModelMapper modelMapper = new ModelMapper();
-            Transaction convertTotransaction = modelMapper.map(transaction, Transaction.class);
+            Transaction transaction = modelMapper.map(request, Transaction.class);
+//        Transaction transaction = new Transaction();
 
-            Optional<User> checkUserData = userRepository.findById(transaction.getUserId());
-            if (checkUserData.isEmpty()) {
-                return response.dataNotFound("User");
-            }
-            convertTotransaction.setUser(checkUserData.get());
+            if (!request.getAirplaneId().equals(null) && !request.getAirplaneClassId().equals(null) && !request.getAirplaneTimeFLightId().equals(null)) {
+                System.out.println("tes");
+//                Optional<Airplane> checkAirplane = airplaneRepository.findById(request.getAirplaneId());
+//                Optional<AirplaneClass> checkAirplaneClass = airplaneClassRepository.findById(request.getAirplaneClassId());
+//                Optional<AirplaneFlightTime> checkAirplaneFlightTime = airplaneFlightTimeRepository.findById(request.getAirplaneTimeFLightId());
+//                System.out.println(checkAirplane);
+//                if (checkAirplane.isEmpty() && checkAirplaneClass.isEmpty() && checkAirplaneFlightTime.isEmpty()) {
+//                    return response.dataNotFound("Data Airplane");
+//                }
+//                Airplane airplane = checkAirplane.get();
+//                System.out.println(airplane);
+//                AirplaneClass airplaneClass = checkAirplaneClass.get();
+//                AirplaneFlightTime airplaneFlightTime = checkAirplaneFlightTime.get();
 
-            Optional<Flight> checkFlight1Data = flightRepository.findById(transaction.getFlight1Id());
-            if (checkFlight1Data.isEmpty()) {
-                return response.dataNotFound("Flight1");
-            }
-            flight1Data = checkFlight1Data.get();
-            convertTotransaction.setFlight1(flight1Data);
-            capacity = flight1Data.getCapacity();
-            totalSeat = transaction.getTotalSeat();
-            if (capacity < totalSeat) {
-                return response.errorDTO(422, "Not Enough Seat");
-            }
-            flight1Data.setCapacity(capacity - totalSeat);
-            totalPrice += flight1Data.getPrice() * totalSeat;
-
-            if (transaction.getFlight2Id() != null) {
-                Optional<Flight> checkFlight2Data = flightRepository.findById(transaction.getFlight2Id());
-                if (checkFlight2Data.isEmpty()) {
-                    return response.dataNotFound("Flight2");
-                }
-                flight2Data = checkFlight2Data.get();
-                convertTotransaction.setFlight2(flight2Data);
-                capacity = flight2Data.getCapacity();
-                totalSeat = transaction.getTotalSeat();
-                if (capacity < totalSeat) {
-                    return response.errorDTO(422, "Not Enough Seat");
-                }
-                flight2Data.setCapacity(capacity - totalSeat);
-                totalPrice += flight2Data.getPrice() * totalSeat;
-            }
-            convertTotransaction.setTotalPrice(totalPrice);
-
-//            updating data
-            flightRepository.save(flight1Data);
-
-            if(flight2Data != null){
-                flightRepository.save(flight2Data);
-            }
-
-            Transaction result = transactionRepository.save(convertTotransaction);
-
-            return response.suksesDTO(result);
-        }catch (Exception e){
-            return response.errorDTO(500, e.getMessage());
-        }
-    }
-
-    public ResponseDTO findById(UUID id) {
-        Optional<Transaction> checkData= transactionRepository.findById(id);
-        if (checkData.isEmpty()){
-            return response.dataNotFound("Transaction");
-        }else{
-            return response.suksesDTO(checkData.get());
-        }
-    }
-    @Transactional
-    public ResponseDTO update(UUID id, TransactionEntityDTO transaction) {
-        int capacity;
-        int totalPrice = 0;
-        int totalSeat;
-        Flight formerFlight1 = null;
-        Flight formerFlight2 = null;
-        Flight flight1Data = null;
-        Flight flight2Data = null;
-        try {
-            Optional<Transaction> checkData = transactionRepository.findById(id);
-            if (checkData.isEmpty()) {
-                return response.dataNotFound("Transaction");
-            }
-
-            Transaction updatedTransaction = checkData.get();
-
-            if (transaction.getTotalSeat() != null) {
-                totalSeat = transaction.getTotalSeat();
-            } else {
-                totalSeat = updatedTransaction.getTotalSeat();
-            }
-
-            if (transaction.getUserId() != null) {
-                Optional<User> checkUserData = userRepository.findById(transaction.getUserId());
+                List<Object[]> checkAirplaneConfirmDTO = transactionRepository.getAirplaneConfirmDTOById(request.getAirplaneId(), request.getAirplaneClassId(), request.getAirplaneTimeFLightId());
+                CheckRow checkRows = transactionRepository.checkRow();
+                System.out.println(checkAirplaneConfirmDTO);
+                List<Object[]> checkTotalSeatTransactionAirplane = transactionRepository.getTotalSeatTransactionAirplane(request.getAirplaneId(), request.getAirplaneClassId(), request.getAirplaneTimeFLightId(), request.getDepartureDate());
+                Optional<User> checkUserData = userRepository.findById(request.getUserId());
                 if (checkUserData.isEmpty()) {
                     return response.dataNotFound("User");
                 }
-                updatedTransaction.setUser(checkUserData.get());
-            }
-            if (transaction.getPaymentId() != null) {
-                Optional<Payment> checkPaymentData = paymentRepository.findById(transaction.getPaymentId());
-                if (checkPaymentData.isEmpty()) {
-                    return response.dataNotFound("Payment");
+//            if (checkAirplaneConfirmDTO.isEmpty()) {
+//                return response.dataNotFound("Data Airplane");
+//            }
+//            if (checkTotalSeatTransactionAirplane.isEmpty()){
+//                return response.dataNotFound("Transaction");
+//            }
+
+                List<AirplaneConfirmDTO> airplaneData = checkAirplaneConfirmDTO.stream().map(array -> new AirplaneConfirmDTO(
+                        (UUID) array[0],
+                        (String) array[1],
+                        (String) array[2],
+                        (UUID) array[3],
+                        (String) array[4],
+                        (String) array[5],
+                        (UUID) array[6],
+                        (String) array[7],
+                        (Integer) array[8],
+                        (UUID) array[9],
+                        (Time) array[10]
+                )).toList();
+
+                List<TotalSeatDTO> totalSeatData = checkTotalSeatTransactionAirplane.stream().map(array -> new TotalSeatDTO(
+                        (Long) array[0],
+                        (Date) array[1],
+                        (Time) array[2],
+                        (Date) array[3],
+                        (Time) array[4],
+                        (UUID) array[5],
+                        (UUID) array[6],
+                        (UUID) array[7]
+                )).toList();
+                Long totalSeat = 0L;
+                if (!totalSeatData.isEmpty()){
+                    totalSeat = totalSeatData.get(0).getTotalSeatTransaction();
                 }
-                updatedTransaction.setPayment(checkPaymentData.get());
-            }
+                if (checkRows.getRow() == 0 || totalSeat <= airplaneData.get(0).getCapacity() &&
+                        (mature + totalSeat) <= airplaneData.get(0).getCapacity()) {
+                    System.out.println("masuk");
+                    transaction.setUser(checkUserData.get());
+                    if (!request.getCompanyName().isEmpty() && !request.getUrl().isEmpty() &&
+                            !request.getAirplaneName().isEmpty() && !request.getAirplaneCode().isEmpty() &&
+                            !request.getAirplaneClassId().equals(null) && !request.getAirplaneClass().isEmpty()) {
+                        System.out.println("masuk2");
+                        if (request.getAirplaneId().equals(airplaneData.get(0).getAirplaneId())) {
+//                        Optional<Airplane> byId = airplaneRepository.findById(airplaneData.get(0).getAirplaneId());
+                            transaction.setAirplaneId(airplaneData.get(0).getAirplaneId());
+                        }
+                        System.out.println(transaction);
+                        if (request.getAirplaneName().equals(airplaneData.get(0).getAirplaneName())) {
+                            transaction.setAirplaneName(airplaneData.get(0).getAirplaneName());
+                        }
+                        if (request.getAirplaneCode().equals(airplaneData.get(0).getAirplaneCode())) {
+                            transaction.setAirplaneCode(airplaneData.get(0).getAirplaneCode());
+                        }
+                        if (request.getAirplaneClassId().equals(airplaneData.get(0).getAirplaneClassId())) {
+//                        Optional<AirplaneClass> byId = airplaneClassRepository.findById(airplaneData.get(0).getAirplaneClassId());
+                            transaction.setAirplaneClassId(airplaneData.get(0).getAirplaneClassId());
+                        }
+                        if (request.getAirplaneClass().equals(airplaneData.get(0).getAirplaneClass())) {
+                            transaction.setAirplaneClass(airplaneData.get(0).getAirplaneClass());
+                        }
+                        if (request.getAirplaneTimeFLightId().equals(airplaneData.get(0).getAirplaneFlightTimeId())) {
+//                            Optional<AirplaneFlightTime> byId = airplaneFlightTimeRepository.findById(airplaneData.get(0).getAirplaneFlightTimeId());
+                            transaction.setAirplaneTimeFlightId(airplaneData.get(0).getAirplaneFlightTimeId());
+                        }
+                    }
+                    if (!request.getDepartureCode().isEmpty() && !request.getDepartureDate().equals(null)
+                            && !request.getDepartureTime().equals(null) && request.getArrivalCode().isEmpty() &&
+                            !request.getArrivalDate().equals(null) && !request.getArrivalTime().equals(null)) {
+                        transaction.setDepartureCode(request.getDepartureCode());
+                        transaction.setDepartureDate(request.getDepartureDate());
+                        transaction.setDepartureTime(request.getDepartureTime());
+                        transaction.setArrivalCode(request.getArrivalCode());
+                        transaction.setArrivalDate(request.getArrivalDate());
+                        transaction.setArrivalTime(request.getArrivalTime());
+                    }
+                    if (!request.getUserDetails().isEmpty()) {
+                        transaction.setTotalSeat(mature);
+                    }
+                    Integer total = (mature * request.getPriceFlight()) + (child * (request.getPriceFlight()-(request.getPriceFlight() * 20/100)));
+                    transaction.setTotalPrice(total);
 
-            if (transaction.getFlight1Id() != null) {
-                Optional<Flight> checkFlight1Data = flightRepository.findById(transaction.getFlight1Id());
-                if (checkFlight1Data.isEmpty()) {
-                    return response.dataNotFound("Flight1");
+
+                    Transaction result = transactionRepository.save(transaction);
+
+
+                    if (userDetails.isEmpty()) {
+                        return response.dataNotFound("Passenger");
+                    }
+                    for (UserDetails u : userDetails) {
+                        ResponseDTO result1 = usersServiceImpl.createUserDetail(u);
+                        if (result1.getStatus() == 200) {
+                            passengerRepository.save(new Passenger(transactionRepository.findById(result.getId()).get(), (UserDetails) result1.getData()));
+                        } else {
+                            throw new IOException(result1.getMessage());
+                        }
+                    }
+                    return response.suksesDTO(result);
+                } else {
+                    return response.errorDTO(503,"Capacity from this airplane has been full");
                 }
-                flight1Data = checkFlight1Data.get();
-                capacity = flight1Data.getCapacity();
-                if (capacity < totalSeat) {
-                    return response.errorDTO(422, "Not Enough Seat");
-                }
-                flight1Data.setCapacity(capacity - totalSeat);
-                totalPrice += flight1Data.getPrice() * totalSeat;
-
-                flightRepository.save(flight1Data);
-//                reversing
-                formerFlight1 = updatedTransaction.getFlight1();
-                formerFlight1.setCapacity(formerFlight1.getCapacity() + updatedTransaction.getTotalSeat());
-
-                updatedTransaction.setFlight1(flight1Data);
             }
-
-            if (transaction.getFlight2Id() != null) {
-                Optional<Flight> checkFlight2Data = flightRepository.findById(transaction.getFlight2Id());
-                if (checkFlight2Data.isEmpty()) {
-                    return response.dataNotFound("Flight2");
-                }
-                flight2Data = checkFlight2Data.get();
-                capacity = flight2Data.getCapacity();
-                if (capacity < totalSeat) {
-                    return response.errorDTO(422, "Not Enough Seat");
-                }
-                flight2Data.setCapacity(capacity - totalSeat);
-                totalPrice += flight2Data.getPrice() * totalSeat;
-
-                flightRepository.save(flight2Data);
-
-//                reversing
-                if (updatedTransaction.getFlight2() != null) {
-                    formerFlight2 = updatedTransaction.getFlight2();
-                    formerFlight2.setCapacity(formerFlight2.getCapacity() + updatedTransaction.getTotalSeat());
-                }
-
-                updatedTransaction.setFlight2(flight2Data);
-            }
-
-            updatedTransaction.setTotalSeat(totalSeat);
-            updatedTransaction.setTotalPrice(totalPrice);
-
-            if (formerFlight1 != null){
-                flightRepository.save(formerFlight1);
-            }
-
-            if (formerFlight2 != null){
-                flightRepository.save(formerFlight2);
-            }
-
-            return response.suksesDTO(transactionRepository.save(updatedTransaction));
+        }catch (IOException e){
+            return response.errorDTO(400, e.getMessage());
         }catch (Exception e){
             return response.errorDTO(500, e.getMessage());
         }
+        return null;
     }
 
-    public ResponseDTO delete(UUID id) {
-        Flight flight1Data = null;
-        Flight flight2Data = null;
-
-        try{
-            Optional<Transaction> checkData = transactionRepository.findById(id);
-            if(checkData.isEmpty()){
-                return response.dataNotFound("Transaction");
-            }
-
-            Transaction deletedTransaction = checkData.get();
-            deletedTransaction.setDeletedDate(new Date());
-
-            flight1Data = deletedTransaction.getFlight1();
-            flight1Data.setCapacity(flight1Data.getCapacity() + deletedTransaction.getTotalSeat());
-            flightRepository.save(flight1Data);
-
-            if(deletedTransaction.getFlight2() != null){
-                flight2Data = deletedTransaction.getFlight2();
-                flight2Data.setCapacity(flight2Data.getCapacity() + deletedTransaction.getTotalSeat());
-                flightRepository.save(flight2Data);
-            }
-
-            return response.suksesDTO(transactionRepository.save(deletedTransaction));
-        }catch (Exception e){
-            return response.errorDTO(500, e.getMessage());
-        }
-    }
+//    @Transactional
+//    public ResponseDTO save(TransactionEntityDTO transaction) {
+//        int totalPrice = 0;
+//        int capacity;
+//        int totalSeat;
+//        Flight flight1Data = null;
+//        Flight flight2Data = null;
+//        List<UserDetails> userDetails = transaction.getUserDetails();
+//
+//        try {
+//            ModelMapper modelMapper = new ModelMapper();
+//            Transaction convertTotransaction = modelMapper.map(transaction, Transaction.class);
+//
+//            Optional<User> checkUserData = userRepository.findById(transaction.getUserId());
+//            if (checkUserData.isEmpty()) {
+//                return response.dataNotFound("User");
+//            }
+//            convertTotransaction.setUser(checkUserData.get());
+//
+//            Optional<Flight> checkFlight1Data = flightRepository.findById(transaction.getFlight1Id());
+//            if (checkFlight1Data.isEmpty()) {
+//                return response.dataNotFound("Flight1");
+//            }
+//            flight1Data = checkFlight1Data.get();
+//            convertTotransaction.setFlight1(flight1Data);
+//            capacity = flight1Data.getCapacity();
+//            totalSeat = transaction.getTotalSeat();
+//            if (capacity < totalSeat) {
+//                return response.errorDTO(422, "Not Enough Seat");
+//            }
+//            flight1Data.setCapacity(capacity - totalSeat);
+//            totalPrice += flight1Data.getPrice() * totalSeat;
+//
+//            if (transaction.getFlight2Id() != null) {
+//                Optional<Flight> checkFlight2Data = flightRepository.findById(transaction.getFlight2Id());
+//                if (checkFlight2Data.isEmpty()) {
+//                    return response.dataNotFound("Flight2");
+//                }
+//                flight2Data = checkFlight2Data.get();
+//                convertTotransaction.setFlight2(flight2Data);
+//                capacity = flight2Data.getCapacity();
+//                totalSeat = transaction.getTotalSeat();
+//                if (capacity < totalSeat) {
+//                    return response.errorDTO(422, "Not Enough Seat");
+//                }
+//                flight2Data.setCapacity(capacity - totalSeat);
+//                totalPrice += flight2Data.getPrice() * totalSeat;
+//            }
+//            convertTotransaction.setTotalPrice(totalPrice);
+//
+////            updating data
+//            flightRepository.save(flight1Data);
+//
+//            if(flight2Data != null){
+//                flightRepository.save(flight2Data);
+//            }
+//
+//            Transaction result = transactionRepository.save(convertTotransaction);
+//
+//            if (userDetails.isEmpty()) {
+//                return response.dataNotFound("Passenger");
+//            }
+//            for (UserDetails u : userDetails) {
+//                ResponseDTO result1 = usersServiceImpl.createUserDetail(u);
+//                if (result1.getStatus() == 200) {
+//                    passengerRepository.save(new Passenger(transactionRepository.findById(result.getId()).get(), (UserDetails) result1.getData()));
+//                } else {
+//                    throw new IOException(result1.getMessage());
+//                }
+//            }
+//
+//            return response.suksesDTO(result);
+//        }catch (IOException e){
+//            return response.errorDTO(400, e.getMessage());
+//        }catch (Exception e){
+//            return response.errorDTO(500, e.getMessage());
+//        }
+//    }
+//
+//    public ResponseDTO findById(UUID id) {
+//        Optional<Transaction> checkData= transactionRepository.findById(id);
+//        if (checkData.isEmpty()){
+//            return response.dataNotFound("Transaction");
+//        }else{
+//            return response.suksesDTO(checkData.get());
+//        }
+//    }
+//    @Transactional
+//    public ResponseDTO update(UUID id, TransactionEntityDTO transaction) {
+//        int capacity;
+//        int totalPrice = 0;
+//        int totalSeat;
+//        Flight formerFlight1 = null;
+//        Flight formerFlight2 = null;
+//        Flight flight1Data = null;
+//        Flight flight2Data = null;
+//        try {
+//            Optional<Transaction> checkData = transactionRepository.findById(id);
+//            if (checkData.isEmpty()) {
+//                return response.dataNotFound("Transaction");
+//            }
+//
+//            Transaction updatedTransaction = checkData.get();
+//
+//            if (transaction.getTotalSeat() != null) {
+//                totalSeat = transaction.getTotalSeat();
+//            } else {
+//                totalSeat = updatedTransaction.getTotalSeat();
+//            }
+//
+//            if (transaction.getUserId() != null) {
+//                Optional<User> checkUserData = userRepository.findById(transaction.getUserId());
+//                if (checkUserData.isEmpty()) {
+//                    return response.dataNotFound("User");
+//                }
+//                updatedTransaction.setUser(checkUserData.get());
+//            }
+//            if (transaction.getPaymentId() != null) {
+//                Optional<Payment> checkPaymentData = paymentRepository.findById(transaction.getPaymentId());
+//                if (checkPaymentData.isEmpty()) {
+//                    return response.dataNotFound("Payment");
+//                }
+//                updatedTransaction.setPayment(checkPaymentData.get());
+//            }
+//
+//            if (transaction.getFlight1Id() != null) {
+//                Optional<Flight> checkFlight1Data = flightRepository.findById(transaction.getFlight1Id());
+//                if (checkFlight1Data.isEmpty()) {
+//                    return response.dataNotFound("Flight1");
+//                }
+//                flight1Data = checkFlight1Data.get();
+//                capacity = flight1Data.getCapacity();
+//                if (capacity < totalSeat) {
+//                    return response.errorDTO(422, "Not Enough Seat");
+//                }
+//                flight1Data.setCapacity(capacity - totalSeat);
+//                totalPrice += flight1Data.getPrice() * totalSeat;
+//
+//                flightRepository.save(flight1Data);
+////                reversing
+//                formerFlight1 = updatedTransaction.getFlight1();
+//                formerFlight1.setCapacity(formerFlight1.getCapacity() + updatedTransaction.getTotalSeat());
+//
+//                updatedTransaction.setFlight1(flight1Data);
+//            }
+//
+//            if (transaction.getFlight2Id() != null) {
+//                Optional<Flight> checkFlight2Data = flightRepository.findById(transaction.getFlight2Id());
+//                if (checkFlight2Data.isEmpty()) {
+//                    return response.dataNotFound("Flight2");
+//                }
+//                flight2Data = checkFlight2Data.get();
+//                capacity = flight2Data.getCapacity();
+//                if (capacity < totalSeat) {
+//                    return response.errorDTO(422, "Not Enough Seat");
+//                }
+//                flight2Data.setCapacity(capacity - totalSeat);
+//                totalPrice += flight2Data.getPrice() * totalSeat;
+//
+//                flightRepository.save(flight2Data);
+//
+////                reversing
+//                if (updatedTransaction.getFlight2() != null) {
+//                    formerFlight2 = updatedTransaction.getFlight2();
+//                    formerFlight2.setCapacity(formerFlight2.getCapacity() + updatedTransaction.getTotalSeat());
+//                }
+//
+//                updatedTransaction.setFlight2(flight2Data);
+//            }
+//
+//            updatedTransaction.setTotalSeat(totalSeat);
+//            updatedTransaction.setTotalPrice(totalPrice);
+//
+//            if (formerFlight1 != null){
+//                flightRepository.save(formerFlight1);
+//            }
+//
+//            if (formerFlight2 != null){
+//                flightRepository.save(formerFlight2);
+//            }
+//
+//            return response.suksesDTO(transactionRepository.save(updatedTransaction));
+//        }catch (Exception e){
+//            return response.errorDTO(500, e.getMessage());
+//        }
+//    }
+//
+//    public ResponseDTO delete(UUID id) {
+//        Flight flight1Data = null;
+//        Flight flight2Data = null;
+//
+//        try{
+//            Optional<Transaction> checkData = transactionRepository.findById(id);
+//            if(checkData.isEmpty()){
+//                return response.dataNotFound("Transaction");
+//            }
+//
+//            Transaction deletedTransaction = checkData.get();
+//            deletedTransaction.setDeletedDate(new Date());
+//
+//            flight1Data = deletedTransaction.getFlight1();
+//            flight1Data.setCapacity(flight1Data.getCapacity() + deletedTransaction.getTotalSeat());
+//            flightRepository.save(flight1Data);
+//
+//            if(deletedTransaction.getFlight2() != null){
+//                flight2Data = deletedTransaction.getFlight2();
+//                flight2Data.setCapacity(flight2Data.getCapacity() + deletedTransaction.getTotalSeat());
+//                flightRepository.save(flight2Data);
+//            }
+//
+//            return response.suksesDTO(transactionRepository.save(deletedTransaction));
+//        }catch (Exception e){
+//            return response.errorDTO(500, e.getMessage());
+//        }
+//    }
 }

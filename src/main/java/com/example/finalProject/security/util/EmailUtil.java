@@ -35,7 +35,7 @@ public class EmailUtil {
         mimeMessageHelper.setSubject("Verify OTP");
         StringBuilder htmlContent = new StringBuilder();
         htmlContent.append("<html><body>");
-        htmlContent.append("<h2>").append(otp).append(" is your email verification code. Please use thise code before 1 minutes or you must regenerate the code again").append("</h2>");
+        htmlContent.append("<h2>").append(otp).append(" is your email verification code. Please use this code before 5 minutes or you must regenerate the code again").append("</h2>");
         mimeMessageHelper.setText(htmlContent.toString(), true);
         htmlContent.append("</body></html>");
 

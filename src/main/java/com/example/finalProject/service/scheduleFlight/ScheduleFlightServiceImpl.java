@@ -1,7 +1,7 @@
 package com.example.finalProject.service.scheduleFlight;
 
-import com.example.finalProject.dto.ScheduleFlightDTO;
-import com.example.finalProject.dto.ResponseDTO;
+import com.example.finalProject.dto.*;
+import com.example.finalProject.repository.TransactionRepository;
 import com.example.finalProject.utils.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -10,15 +10,17 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
 public class ScheduleFlightServiceImpl implements ScheduleFlightService{
     private final Response response;
     private final JdbcTemplate jdbcTemplate;
+    private final TransactionRepository transactionRepository;
 
     @Override
     public ResponseDTO getScheduleFlight(String departureCode, String arrivalCode, Date departureDate, String airplaneClass, Pageable pageable) {
@@ -31,19 +33,33 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                     "(select concat(to_date(?, 'dd-mm-yyyy'),' ',atf.flight_time)::timestamp with time zone AT TIME ZONE 'Asia/Jakarta' + (ba.duration || ' minutes')::interval from baseprice_airports ba " +
                     "where upper(ba.departure_code) = upper(?) and upper(ba.arrival_code) = upper(?) and ba.deleted_date is null limit 1) as \"arrivalTime\", " +
                     "(a.airplane_price + " +
-                    "coalesce ((select bd.date_price from baseprice_dates bd where to_date(?, 'dd-mm-yyyy') = to_date(to_char(bd.date_from, 'dd-mm-yyyy'), 'dd-mm-yyyy') and deleted_date is null limit 1), 0)   + " +
+                    "coalesce ((select bd.date_price from baseprice_dates bd where to_date(?, 'dd-mm-yyyy') = to_date(to_char(bd.date_time, 'dd-mm-yyyy'), 'dd-mm-yyyy') and deleted_date is null limit 1), 0)   + " +
                     "(select airport_price from baseprice_airports ba where upper(departure_code) = upper(?) and upper(arrival_code) = upper(?) and deleted_date is null limit 1) + " +
                     "ac.airplane_class_price + " +
-                    "atf.airplane_flight_time_price) as totalPrice " +
+                    "atf.airplane_flight_time_price) as totalPrice, " +
+                    "a.id as \"airplaneId\",\n" +
+                    "ac.id as \"airplaneClassId\",\n" +
+                    "atf.id as \"airplaneFlightTimeId\"," +
+                    "as2.baggage as \"baggage\",\n" +
+                    "as2.cabin_baggage as \"cabinBaggage\",\n" +
+                    "as2.refund as \"refund\",\n" +
+                    "as2.electric_socket as \"electricSocket\",\n" +
+                    "as2.inflight_entertainment as \"inflightEntertainment\",\n" +
+                    "as2.meals as \"meals\",\n" +
+                    "as2.reschedule as \"reschedule\",\n" +
+                    "as2.travel_insurance as \"travelInsurance\",\n" +
+                    "as2.wifi as \"wifi\" " +
                     "from airplanes a " +
                     "join companies c on a.company_id = c.id " +
                     "join airplane_classes ac on a.id = ac.airplane_id " +
                     "join airplane_flight_times atf on a.id = atf.airplane_id " +
+                    "join airplane_service as2 on ac.id = as2.airplane_class_id " +
                     "where initcap(ac.airplane_class) = initcap(?) " +
                     "and a.deleted_date is null " +
                     "and c.deleted_date is null " +
                     "and ac.deleted_date is null " +
-                    "and atf.deleted_date is null";
+                    "and atf.deleted_date is null " +
+                    "and as2.deleted_date is null";
 
             String pattern = "dd-MM-yyyy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -55,12 +71,12 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                     new Object[]{departureCode, arrivalCode, departureDateStr, departureDateStr, departureCode, arrivalCode, departureDateStr, departureCode, arrivalCode, airplaneClass, pageable.getPageSize(), pageable.getOffset()},
                     new BeanPropertyRowMapper<>(ScheduleFlightDTO.class));
 
+            List<ScheduleFlightResponseDTO> scheduleFlightResponseDTOS = new ArrayList<>();
 
-<<<<<<< Updated upstream
-=======
             for (int i=0; i<resultList.size(); i++){
                 LocalDate date = resultList.get(i).getDepartureTime().toLocalDateTime().toLocalDate();
                 List<Object[]> totalSeat = transactionRepository.getTotalSeatTransactionAirplane(resultList.get(i).getAirplaneId(), resultList.get(i).getAirplaneClassId(), resultList.get(i).getAirplaneFlightTimeId(), date);
+
                 Integer seat = 0;
                 if (!totalSeat.isEmpty()){
                     List<TotalSeatDTO> totalSeatData = totalSeat.stream().map(array -> new TotalSeatDTO(
@@ -90,11 +106,14 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                                 resultList.get(i).getTotalPrice()
                         ));
             }
->>>>>>> Stashed changes
+
 
             Long totalCount = jdbcTemplate.queryForObject(countQuery, Long.class, departureCode, arrivalCode, departureDateStr, departureDateStr, departureCode, arrivalCode, departureDateStr, departureCode, arrivalCode, airplaneClass);
             if (resultList.isEmpty()){
-                return response.dataNotFound("Schedule Flight");
+                resultList.clear();
+                totalCount = 0L;
+                PageImpl<ScheduleFlightDTO> flightDTOS = new PageImpl<>(resultList, pageable, totalCount);
+                return response.suksesDTO(flightDTOS);
             }
             if (resultList.get(0).getArrivalTime() == null || resultList.get(0).getTotalPrice() == null){
                 resultList.clear();
@@ -102,19 +121,8 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                 PageImpl<ScheduleFlightDTO> flightDTOS = new PageImpl<>(resultList, pageable, totalCount);
                 return response.suksesDTO(flightDTOS);
             }
-//            String originalDateString = String.valueOf(resultList.get(0).getDepartureTime());
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-//            Date originalDate = dateFormat.parse(originalDateString);
-//            // Convert to Instant and then to ZonedDateTime in the target time zone (Asia/Jakarta)
-//            Instant instant = originalDate.toInstant();
-//            ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("Asia/Jakarta"));
-//
-//            // Convert back to Date if necessary
-//            Date indonesiaDate = Date.from(zonedDateTime.toInstant());
-//            System.out.println(indonesiaDate);
 
-//            resultList.get().set
-            PageImpl<ScheduleFlightDTO> flightDTOS = new PageImpl<>(resultList, pageable, totalCount);
+            PageImpl<ScheduleFlightResponseDTO> flightDTOS = new PageImpl<>(scheduleFlightResponseDTOS, pageable, totalCount);
             return response.suksesDTO(flightDTOS);
         }catch (Exception e){
             return response.errorDTO(500, e.getMessage());

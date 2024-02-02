@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.Where;
 
 import java.util.List;
@@ -35,9 +36,20 @@ public class Airplane extends AbstractDate {
     @ManyToOne
     @JoinColumn
     @NotNull
+    @ToString.Exclude
     private Company company;
 
-    @JsonIgnore
+//    @JsonIgnore
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "airplane")
+//    List<Flight> flight;
+
     @OneToMany(mappedBy = "airplane")
-    List<Flight> flight;
+    List<AirplaneClass> airplaneClass;
+
+    @OneToMany(mappedBy = "airplane")
+    List<AirplaneFlightTime> airplaneFlightTimes;
+
+    @OneToMany(mappedBy = "airplane")
+    List<AirplaneAdditionalService> airplaneAdditionalService;
 }
