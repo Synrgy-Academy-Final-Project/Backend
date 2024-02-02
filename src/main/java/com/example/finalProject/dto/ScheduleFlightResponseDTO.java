@@ -31,14 +31,14 @@ public class ScheduleFlightResponseDTO {
     @NotBlank
     private String airplaneCode;
     @NotNull
-    private String airplaneClassId;
+    private UUID airplaneClassId;
     @NotBlank
     private String airplaneClass;
     @NotNull
     private Integer capacity;
     private AirplaneServiceDTO airplaneServices;
     @NotNull
-    private String airplaneFlightTimeId;
+    private UUID airplaneFlightTimeId;
     @NotNull
     private Time flightTime;
     @NotBlank

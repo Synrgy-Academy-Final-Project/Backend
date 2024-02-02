@@ -2,12 +2,11 @@ package com.example.finalProject.service;
 
 import com.example.finalProject.dto.*;
 //import com.example.finalProject.entity.Flight;
-import com.example.finalProject.entity.Passenger;
-import com.example.finalProject.entity.Payment;
-import com.example.finalProject.entity.Transaction;
+import com.example.finalProject.entity.*;
 import com.example.finalProject.model.user.User;
 import com.example.finalProject.model.user.UserDetails;
 //import com.example.finalProject.repository.FlightRepository;
+import com.example.finalProject.repository.AirplaneClassRepository;
 import com.example.finalProject.repository.PassengerRepository;
 import com.example.finalProject.repository.PaymentRepository;
 import com.example.finalProject.repository.TransactionRepository;
@@ -15,15 +14,19 @@ import com.example.finalProject.repository.user.UserRepository;
 import com.example.finalProject.security.service.UserDetailsImpl;
 import com.example.finalProject.service.user.UsersServiceImpl;
 import com.example.finalProject.utils.Response;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.json.JSONParser;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.DataInput;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -36,22 +39,17 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@RequiredArgsConstructor
 @Service
 public class TransactionImpl {
-    @Autowired
-    Response response;
-    @Autowired
-    TransactionRepository transactionRepository;
-    @Autowired
-    UserRepository userRepository;
-//    @Autowired
-//    FlightRepository flightRepository;
-    @Autowired
-    PaymentRepository paymentRepository;
-    @Autowired
-    UsersServiceImpl usersServiceImpl;
-    @Autowired
-    PassengerRepository passengerRepository;
+
+    private final Response response;
+    private final TransactionRepository transactionRepository;
+    private final UserRepository userRepository;
+    private final PaymentRepository paymentRepository;
+    private final UsersServiceImpl usersServiceImpl;
+    private final PassengerRepository passengerRepository;
+    private final AirplaneClassRepository airplaneClassRepository;
 
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
@@ -66,8 +64,7 @@ public class TransactionImpl {
             return saveResponse;
         }
 
-        Transaction savedTransaction = (Transaction) save(transaction).getData();
-
+        Transaction savedTransaction = (Transaction) saveResponse.getData();
         Map<String, Object> transactionDetails = new HashMap<>();
         transactionDetails.put("order_id", savedTransaction.getId());
         transactionDetails.put("gross_amount", savedTransaction.getTotalPrice());
@@ -144,7 +141,7 @@ public class TransactionImpl {
                 List<Object[]> checkAirplaneConfirmDTO = transactionRepository.getAirplaneConfirmDTOById(request.getAirplaneId(), request.getAirplaneClassId(), request.getAirplaneTimeFLightId());
                 CheckRow checkRows = transactionRepository.checkRow();
                 System.out.println(checkAirplaneConfirmDTO);
-                List<Object[]> checkTotalSeatTransactionAirplane = transactionRepository.getTotalSeatTransactionAirplane(request.getAirplaneId(), request.getAirplaneClassId(), request.getAirplaneTimeFLightId());
+                List<Object[]> checkTotalSeatTransactionAirplane = transactionRepository.getTotalSeatTransactionAirplane(request.getAirplaneId(), request.getAirplaneClassId(), request.getAirplaneTimeFLightId(), request.getDepartureDate());
                 Optional<User> checkUserData = userRepository.findById(request.getUserId());
                 if (checkUserData.isEmpty()) {
                     return response.dataNotFound("User");
@@ -172,15 +169,19 @@ public class TransactionImpl {
 
                 List<TotalSeatDTO> totalSeatData = checkTotalSeatTransactionAirplane.stream().map(array -> new TotalSeatDTO(
                         (Long) array[0],
-                        (UUID) array[1],
-                        (UUID) array[2],
-                        (UUID) array[3]
+                        (Date) array[1],
+                        (Time) array[2],
+                        (Date) array[3],
+                        (Time) array[4],
+                        (UUID) array[5],
+                        (UUID) array[6],
+                        (UUID) array[7]
                 )).toList();
                 Long totalSeat = 0L;
                 if (!totalSeatData.isEmpty()){
                     totalSeat = totalSeatData.get(0).getTotalSeatTransaction();
                 }
-                if (checkRows.getRow() == 0 || totalSeat < airplaneData.get(0).getCapacity() &&
+                if (checkRows.getRow() == 0 || totalSeat <= airplaneData.get(0).getCapacity() &&
                         (mature + totalSeat) <= airplaneData.get(0).getCapacity()) {
                     System.out.println("masuk");
                     transaction.setUser(checkUserData.get());
@@ -226,9 +227,10 @@ public class TransactionImpl {
                     }
                     Integer total = (mature * request.getPriceFlight()) + (child * (request.getPriceFlight()-(request.getPriceFlight() * 20/100)));
                     transaction.setTotalPrice(total);
-                    System.out.println("check transaction");
-                    System.out.println(transaction);
+
+
                     Transaction result = transactionRepository.save(transaction);
+
 
                     if (userDetails.isEmpty()) {
                         return response.dataNotFound("Passenger");
@@ -243,7 +245,7 @@ public class TransactionImpl {
                     }
                     return response.suksesDTO(result);
                 } else {
-                    return response.suksesDTO("Capacity from this airplane has been full");
+                    return response.errorDTO(503,"Capacity from this airplane has been full");
                 }
             }
         }catch (IOException e){
