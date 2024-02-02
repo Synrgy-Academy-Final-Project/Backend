@@ -42,17 +42,17 @@ public class TesController {
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
 
-    @GetMapping("/dummy")
-    public Object insertDummy(){
-        List<AirplaneAdditionalService> result = new ArrayList<>();
-        List<Airplane> airplanes = airplaneRepository.findAll();
-        airplanes.forEach(airplane -> {
-            for(int i=1; i <= 4; i++){
-                result.add(airplaneAdditionalServiceRepository.save(new AirplaneAdditionalService(airplane, "baggage", i*5, 100000+((i-1)*50000))));
-            }
-        });
-        return result;
-    }
+//    @GetMapping("/dummy")
+//    public Object insertDummy(){
+//        List<AirplaneAdditionalService> result = new ArrayList<>();
+//        List<Airplane> airplanes = airplaneRepository.findAll();
+//        airplanes.forEach(airplane -> {
+//            for(int i=1; i <= 4; i++){
+//                result.add(airplaneAdditionalServiceRepository.save(new AirplaneAdditionalService(airplane, "baggage", i*5, 100000+((i-1)*50000))));
+//            }
+//        });
+//        return result;
+//    }
 
 //    @GetMapping("/detail")
 //    public Object findUser(Principal principal){

@@ -16,15 +16,21 @@ public interface AirportRepository extends JpaRepository<Airport, UUID> {
 //            "and deleted_date is null", nativeQuery = true)
 //    public Page<Airport> searchAll(String code, Pageable pageable);
 
-        @Query("select new com.example.finalProject.dto.AirportSearchDTO(" +
-                "concat(a.city, ' ', '(',upper(a.code),')'), " +
-                "concat(initcap(a.city),', ',initcap(a.country)), " +
-                "concat(upper(a.code),' - ',initcap(a.name)), " +
-                "a.code) " +
-                "from Airport a " +
-                "where concat(a.city, ' ', '(',upper(a.code),')') ilike concat('%',:query,'%')" +
-                "or concat(initcap(a.city),', ',initcap(a.country)) ilike concat('%',:query,'%')" +
-                "or concat(initcap(a.code),' - ',initcap(a.name)) ilike concat('%',:query,'%')" +
-                "and a.deletedDate is null ")
+    @Query("select new com.example.finalProject.dto.AirportSearchDTO(" +
+            "concat(a.city, ' ', '(',upper(a.code),')'), " +
+            "concat(initcap(a.city),', ',initcap(a.country)), " +
+            "concat(upper(a.code),' - ',initcap(a.name)), " +
+            "a.code) " +
+            "from Airport a " +
+            "where concat(a.city, ' ', '(',upper(a.code),')') ilike concat('%',:query,'%')" +
+            "or concat(initcap(a.city),', ',initcap(a.country)) ilike concat('%',:query,'%')" +
+            "or concat(initcap(a.code),' - ',initcap(a.name)) ilike concat('%',:query,'%')" +
+            "and a.deletedDate is null ")
     Page<AirportSearchDTO> searchAll(@Param("query")String query, Pageable pageable);
+
+    @Query(value = "select * from airports a\n" +
+            "where code ilike concat ('%', ?1,'%')",
+            nativeQuery = true)
+    Airport findByNameIlike(String code);
+
 }

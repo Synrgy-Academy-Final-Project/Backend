@@ -5,10 +5,7 @@ import com.example.finalProject.dto.AirplaneListDTO;
 import com.example.finalProject.dto.AirplaneListRequestDTO;
 import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.entity.*;
-import com.example.finalProject.repository.AirplaneRepository;
-import com.example.finalProject.repository.BasepriceAirportRepository;
-import com.example.finalProject.repository.BasepriceDateRepository;
-import com.example.finalProject.repository.CompanyRepository;
+import com.example.finalProject.repository.*;
 import com.example.finalProject.utils.GeneralFunction;
 import com.example.finalProject.utils.Response;
 import org.modelmapper.ModelMapper;
@@ -18,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -28,6 +26,8 @@ public class AirplaneImpl {
     Response response;
     @Autowired
     AirplaneRepository airplaneRepository;
+    @Autowired
+    AirportRepository airportRepository;
     @Autowired
     BasepriceAirportRepository basepriceAirportRepository;
     @Autowired
@@ -56,7 +56,8 @@ public class AirplaneImpl {
         int datePrice = 0;
         BasePriceAirport airportData = basepriceAirportRepository.getAirportPrice(airplaneList.getFromAirport(), airplaneList.getToAirport());
         BasePriceDate dateData = basepriceDateRepository.getDatePrice(airplaneList.getDepartureDate());
-        System.out.println(dateData);
+        Airport fromAirport = airportRepository.findByNameIlike(airplaneList.getFromAirport());
+        Airport toAirport = airportRepository.findByNameIlike(airplaneList.getToAirport());
         if (airportData != null){
             airportPrice = airportData.getAirportPrice();
         }
@@ -181,7 +182,7 @@ public class AirplaneImpl {
         for (int i = 0; i < 7; i++){
             Map<String, Object> data = new HashMap<>();
             LocalDate theDate = date.plusDays(i);
-            data.put("date", theDate);
+            data.put("date", theDate.getDayOfMonth()+"-"+theDate.getMonthValue()+"-"+theDate.getYear());
             data.put("price", airplaneRepository.getMinimumPriceThatDay(fromAirportCode, toAirportCode, theDate));
             sevenDays.add(data);
         }
