@@ -1,9 +1,7 @@
 package com.example.finalProject.service.scheduleFlight;
 
-import com.example.finalProject.dto.AirplaneServiceDTO;
-import com.example.finalProject.dto.ScheduleFlightDTO;
-import com.example.finalProject.dto.ResponseDTO;
-import com.example.finalProject.dto.ScheduleFlightResponseDTO;
+import com.example.finalProject.dto.*;
+import com.example.finalProject.repository.TransactionRepository;
 import com.example.finalProject.utils.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -12,15 +10,17 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class ScheduleFlightServiceImpl implements ScheduleFlightService{
     private final Response response;
     private final JdbcTemplate jdbcTemplate;
+    private final TransactionRepository transactionRepository;
 
     @Override
     public ResponseDTO getScheduleFlight(String departureCode, String arrivalCode, Date departureDate, String airplaneClass, Pageable pageable) {
@@ -74,10 +74,38 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
             List<ScheduleFlightResponseDTO> scheduleFlightResponseDTOS = new ArrayList<>();
 
             for (int i=0; i<resultList.size(); i++){
+
+                LocalDate date = resultList.get(i).getDepartureTime().toLocalDateTime().toLocalDate();
+                List<Object[]> totalSeat = transactionRepository.getTotalSeatTransactionAirplane(resultList.get(i).getAirplaneId(), resultList.get(i).getAirplaneClassId(), resultList.get(i).getAirplaneFlightTimeId(), date);
+                // System.out.println(resultList.get(i).getAirplaneId());
+                // System.out.println(resultList.get(i).getAirplaneClassId());
+                // System.out.println(resultList.get(i).getAirplaneFlightTimeId());
+                // System.out.println(date);
+//                System.out.println(totalSeat);
+                Integer seat = 0;
+
+                if (!totalSeat.isEmpty()){
+                    List<TotalSeatDTO> totalSeatData = totalSeat.stream().map(array -> new TotalSeatDTO(
+                            (Long) array[0],
+                            (Date) array[1],
+                            (Time) array[2],
+                            (Date) array[3],
+                            (Time) array[4],
+                            (UUID) array[5],
+                            (UUID) array[6],
+                            (UUID) array[7]
+                    )).toList();
+                    // System.out.println("masuk");
+                    // System.out.println(Math.toIntExact(totalSeatData.get(0).getTotalSeatTransaction()));
+                    seat = Math.toIntExact(totalSeatData.get(0).getTotalSeatTransaction());
+                }
+                // System.out.println("iter " + i);
+                // System.out.println(seat);
+
                 scheduleFlightResponseDTOS.add(
                         new ScheduleFlightResponseDTO(resultList.get(i).getCompanyName(), resultList.get(i).getUrlLogo(), resultList.get(i).getAirplaneId(),
                                 resultList.get(i).getAirplaneName(), resultList.get(i).getAirplaneCode(), resultList.get(i).getAirplaneClassId(),
-                                resultList.get(i).getAirplaneClass(), resultList.get(i).getCapacity(), new AirplaneServiceDTO(
+                                resultList.get(i).getAirplaneClass(), (resultList.get(i).getCapacity()-seat), new AirplaneServiceDTO(
                                 resultList.get(i).getBaggage(), resultList.get(i).getCabinBaggage(), resultList.get(i).getMeals(),
                                 resultList.get(i).getTravelInsurance(), resultList.get(i).getInflightEntertainment(),
                                 resultList.get(i).getElectricSocket(), resultList.get(i).getWifi(), resultList.get(i).getReschedule(),
@@ -87,6 +115,7 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                                 resultList.get(i).getTotalPrice()
                         ));
             }
+
 
             Long totalCount = jdbcTemplate.queryForObject(countQuery, Long.class, departureCode, arrivalCode, departureDateStr, departureDateStr, departureCode, arrivalCode, departureDateStr, departureCode, arrivalCode, airplaneClass);
             if (resultList.isEmpty()){

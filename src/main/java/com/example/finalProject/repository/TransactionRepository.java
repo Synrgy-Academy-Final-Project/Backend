@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,14 +43,24 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             "and atf.id = ?3", nativeQuery = true)
     List<Object[]> getAirplaneConfirmDTOById(UUID airplaneId, UUID airplaneClassId, UUID airplaneTimeFlightId);
 
-    @Query(value = "select sum(t.total_seat), t.airplane_id ,t.airplane_class_id , t.airplane_time_flight_id \n" +
+//    @Query(value = "select sum(t.total_seat), t.airplane_id ,t.airplane_class_id , t.airplane_time_flight_id \n" +
+//            "from transactions t \n" +
+//            "where t.deleted_date is null \n" +
+//            "and t.airplane_id = ?1\n" +
+//            "and t.airplane_class_id  = ?2\n" +
+//            "and t.airplane_time_flight_id  = ?3\n" +
+//            "group by t.airplane_id, t.airplane_class_id , t.airplane_time_flight_id ", nativeQuery = true)
+//    List<Object[]> getTotalSeatTransactionAirplane(UUID airplaneId, UUID airplaneClassId, UUID airplaneTimeFlightId);
+
+    @Query(value = "select sum(t.total_seat), t.departure_date, t.departure_time, t.arrival_date, t.arrival_time, t.airplane_id ,t.airplane_class_id , t.airplane_time_flight_id \n" +
             "from transactions t \n" +
             "where t.deleted_date is null \n" +
-            "and t.airplane_id = ?1\n" +
+            "and t.airplane_id  = ?1\n" +
             "and t.airplane_class_id  = ?2\n" +
             "and t.airplane_time_flight_id  = ?3\n" +
-            "group by t.airplane_id, t.airplane_class_id , t.airplane_time_flight_id ", nativeQuery = true)
-    List<Object[]> getTotalSeatTransactionAirplane(UUID airplaneId, UUID airplaneClassId, UUID airplaneTimeFlightId);
+            "and t.departure_date = ?4\n" +
+            "group by t.departure_date, t.departure_time, t.arrival_date, t.arrival_time, t.airplane_id ,t.airplane_class_id , t.airplane_time_flight_id", nativeQuery = true)
+    List<Object[]> getTotalSeatTransactionAirplane(UUID airplaneId, UUID airplaneClassId, UUID airplaneTimeFlightId, LocalDate date);
 
 
     @Query("select new com.example.finalProject.dto.CheckRow(count (*)) from Transaction ac ")
