@@ -182,7 +182,7 @@ public class AirplaneImpl {
         for (int i = 0; i < 7; i++){
             Map<String, Object> data = new HashMap<>();
             LocalDate theDate = date.plusDays(i);
-            data.put("date", theDate.getDayOfMonth()+"-"+theDate.getMonthValue()+"-"+theDate.getYear());
+            data.put("date", String.format("%02d", theDate.getDayOfMonth())+"-"+String.format("%02d", theDate.getMonthValue())+"-"+theDate.getYear());
             data.put("price", airplaneRepository.getMinimumPriceThatDay(fromAirportCode, toAirportCode, theDate));
             sevenDays.add(data);
         }
