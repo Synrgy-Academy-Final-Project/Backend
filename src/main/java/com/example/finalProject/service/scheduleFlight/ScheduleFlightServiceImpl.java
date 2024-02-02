@@ -105,7 +105,7 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                 scheduleFlightResponseDTOS.add(
                         new ScheduleFlightResponseDTO(resultList.get(i).getCompanyName(), resultList.get(i).getUrlLogo(), resultList.get(i).getAirplaneId(),
                                 resultList.get(i).getAirplaneName(), resultList.get(i).getAirplaneCode(), resultList.get(i).getAirplaneClassId(),
-                                resultList.get(i).getAirplaneClass(), (resultList.get(i).getCapacity()), new AirplaneServiceDTO(
+                                resultList.get(i).getAirplaneClass(), (resultList.get(i).getCapacity()-seat), new AirplaneServiceDTO(
                                 resultList.get(i).getBaggage(), resultList.get(i).getCabinBaggage(), resultList.get(i).getMeals(),
                                 resultList.get(i).getTravelInsurance(), resultList.get(i).getInflightEntertainment(),
                                 resultList.get(i).getElectricSocket(), resultList.get(i).getWifi(), resultList.get(i).getReschedule(),
