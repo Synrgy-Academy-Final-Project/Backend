@@ -44,7 +44,11 @@ public class ScheduleFlightResponseDTO {
     @NotBlank
     private String departureCode;
     @NotBlank
+    private String departureCityCode;
+    @NotBlank
     private String arrivalCode;
+    @NotBlank
+    private String arrivalCityCode;
     @NotNull
     private Timestamp departureTime;
     @NotNull
