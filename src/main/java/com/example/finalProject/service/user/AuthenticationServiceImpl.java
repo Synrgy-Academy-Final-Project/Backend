@@ -7,6 +7,7 @@ import com.example.finalProject.model.user.ERole;
 import com.example.finalProject.model.user.Role;
 import com.example.finalProject.model.user.User;
 import com.example.finalProject.repository.user.RoleRepository;
+import com.example.finalProject.repository.user.UserDetailsRepository;
 import com.example.finalProject.repository.user.UserRepository;
 import com.example.finalProject.security.service.JwtService;
 import com.example.finalProject.security.service.UserDetailsImpl;
@@ -29,18 +30,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuhenticationService {
     private final UserRepository userRepository;
+    private final UserDetailsRepository userDetailsRepository;
     private final RoleRepository roleRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -64,7 +64,17 @@ public class AuthenticationServiceImpl implements AuhenticationService {
             } catch (MessagingException e) {
                 throw new RuntimeException("Unable to send otp please try again");
             }
+
             Role roles = addRole(ERole.valueOf(request.getRole()));
+
+            List<String> fullName = Arrays.stream(request.getFullName().split(" ")).toList();
+
+            com.example.finalProject.model.user.UserDetails userDetailData = new com.example.finalProject.model.user.UserDetails();
+            userDetailData.setFirstName(fullName.get(0));
+            if (fullName.size() > 1){
+                userDetailData.setLastName(String.join(" ", fullName.subList(1, fullName.size())));
+            }
+
             var user = User.builder()
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
@@ -74,8 +84,10 @@ public class AuthenticationServiceImpl implements AuhenticationService {
                     .otp(passwordEncoder.encode(otp))
                     .otpGeneratedTime(Timestamp.valueOf(LocalDateTime.now()))
                     .userActive(false)
+                    .usersDetails(userDetailsRepository.save(userDetailData))
                     .build();
             userRepository.save(user);
+
             UserDetails userDetails = userService.loadUserByUsername(request.getEmail());
             List<String> rolesList = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
             JwtResponseRegister jwtResponseRegister = new JwtResponseRegister();
