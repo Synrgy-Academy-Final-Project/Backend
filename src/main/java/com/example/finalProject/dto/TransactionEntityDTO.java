@@ -1,6 +1,7 @@
 package com.example.finalProject.dto;
 
 import com.example.finalProject.model.user.UserDetails;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -46,6 +47,8 @@ public class TransactionEntityDTO {
     @NotBlank
     String departureCode;
 
+    @NotNull
+    @JsonFormat(pattern="dd-MM-yyyy")
     LocalDate departureDate;
 
     Time departureTime;

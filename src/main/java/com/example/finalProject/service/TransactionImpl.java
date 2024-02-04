@@ -6,10 +6,7 @@ import com.example.finalProject.entity.*;
 import com.example.finalProject.model.user.User;
 import com.example.finalProject.model.user.UserDetails;
 //import com.example.finalProject.repository.FlightRepository;
-import com.example.finalProject.repository.AirplaneClassRepository;
-import com.example.finalProject.repository.PassengerRepository;
-import com.example.finalProject.repository.PaymentRepository;
-import com.example.finalProject.repository.TransactionRepository;
+import com.example.finalProject.repository.*;
 import com.example.finalProject.repository.user.UserRepository;
 import com.example.finalProject.security.service.UserDetailsImpl;
 import com.example.finalProject.service.user.UsersServiceImpl;
@@ -17,11 +14,8 @@ import com.example.finalProject.utils.Response;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.json.JSONParser;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,6 +44,7 @@ public class TransactionImpl {
     private final UsersServiceImpl usersServiceImpl;
     private final PassengerRepository passengerRepository;
     private final AirplaneClassRepository airplaneClassRepository;
+    private final SavedPassengerRepository savedPassengerRepository;
 
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
@@ -239,6 +234,15 @@ public class TransactionImpl {
                         ResponseDTO result1 = usersServiceImpl.createUserDetail(u);
                         if (result1.getStatus() == 200) {
                             passengerRepository.save(new Passenger(transactionRepository.findById(result.getId()).get(), (UserDetails) result1.getData()));
+
+                            SavedPassenger savedPassengerData = savedPassengerRepository.findByUserAndUserDetail(request.getUserId(), ((UserDetails) result1.getData()).getId());
+                            if (savedPassengerData == null){
+                                savedPassengerData = new SavedPassenger();
+                            }
+                            savedPassengerData.setUser(result.getUser());
+                            savedPassengerData.setUserDetails((UserDetails) result1.getData());
+                            savedPassengerRepository.save(savedPassengerData);
+
                         } else {
                             throw new IOException(result1.getMessage());
                         }

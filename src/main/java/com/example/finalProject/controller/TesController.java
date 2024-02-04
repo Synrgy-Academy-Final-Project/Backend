@@ -3,9 +3,13 @@ package com.example.finalProject.controller;
 import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.entity.Airplane;
 import com.example.finalProject.entity.AirplaneAdditionalService;
+import com.example.finalProject.entity.SavedPassenger;
 import com.example.finalProject.model.user.User;
+import com.example.finalProject.model.user.UserDetails;
 import com.example.finalProject.repository.AirplaneAdditionalServiceRepository;
 import com.example.finalProject.repository.AirplaneRepository;
+import com.example.finalProject.repository.SavedPassengerRepository;
+import com.example.finalProject.repository.user.UserDetailsRepository;
 import com.example.finalProject.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,9 +34,11 @@ import java.util.*;
 @RequestMapping("/tes")
 public class TesController {
     @Autowired
-    AirplaneAdditionalServiceRepository airplaneAdditionalServiceRepository;
+    SavedPassengerRepository savedPassengerRepository;
     @Autowired
-    AirplaneRepository airplaneRepository;
+    UserRepository userRepository;
+    @Autowired
+    UserDetailsRepository userDetailsRepository;
 
     @GetMapping
     public String tes(){
@@ -53,6 +59,17 @@ public class TesController {
 //        });
 //        return result;
 //    }
+
+    @GetMapping("/dummy")
+    public Object insertDummy(){
+        List<SavedPassenger> result = new ArrayList<>();
+        List<User> users = userRepository.findAll();
+        List<UserDetails> userDetails = userDetailsRepository.findAll();
+        for(int i=0; i <= 5; i++){
+            result.add(savedPassengerRepository.save(new SavedPassenger(users.get(i), userDetails.get(i))));
+        }
+        return result;
+    }
 
 //    @GetMapping("/detail")
 //    public Object findUser(Principal principal){

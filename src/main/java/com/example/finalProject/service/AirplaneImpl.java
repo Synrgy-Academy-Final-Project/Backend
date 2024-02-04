@@ -73,6 +73,8 @@ public class AirplaneImpl {
                         airplaneDTO.setTotalPrice(airplane.getAirplanePrice() + airplaneTime.getAirplaneFlightTimePrice() + airplaneClass.getAirplaneClassPrice() + airportPrice + datePrice);
                         airplaneDTO.setAirplaneClass(airplaneClass);
                         airplaneDTO.setAirplaneFlightTimes(airplaneTime);
+                        airplaneDTO.setFromAirport(fromAirport);
+                        airplaneDTO.setToAirport(toAirport);
                         result.add(airplaneDTO);
                     }
                 }
