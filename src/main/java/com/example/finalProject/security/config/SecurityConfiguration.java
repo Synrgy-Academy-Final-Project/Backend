@@ -5,6 +5,7 @@ import com.example.finalProject.security.jwt.JWTAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,6 +34,7 @@ public class SecurityConfiguration {
                                 auth
                                         .requestMatchers("/api/v1/auth/**").permitAll()
                                         .requestMatchers("/user-detail/logged-in-user").authenticated()
+                                        .requestMatchers(HttpMethod.PUT, "/user-detail/**").authenticated()
                                         .anyRequest().permitAll()
                 );
         http.authenticationProvider(applicationConfig.authenticationProvider());

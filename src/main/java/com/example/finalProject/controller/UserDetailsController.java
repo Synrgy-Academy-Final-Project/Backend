@@ -4,6 +4,7 @@ import com.example.finalProject.dto.AirportEntityDTO;
 import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.dto.request.user.UserUpdateRequest;
 import com.example.finalProject.model.user.User;
+import com.example.finalProject.model.user.UserDetails;
 import com.example.finalProject.service.AirportImpl;
 import com.example.finalProject.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,14 @@ public class UserDetailsController {
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
+    @PutMapping({ "", "/" })
+    public ResponseEntity<ResponseDTO> updateUserDetails(@RequestBody UserUpdateRequest userDetails,
+                                                         Principal principal) {
+        UserDetails data = (UserDetails)userDetailsImpl.findByEmail(principal.getName()).getData();
+        ResponseDTO result = userDetailsImpl.update(data.getId(), userDetails);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+    }
+
     @GetMapping("/logged-in-user")
     public ResponseEntity<ResponseDTO> findUser(Principal principal){
         ResponseDTO result = userDetailsImpl.findByEmail(principal.getName());
@@ -58,13 +67,6 @@ public class UserDetailsController {
     @GetMapping({ "{id}", "{id}/" })
     public ResponseEntity<ResponseDTO> findUserDetails(@PathVariable UUID id) {
         ResponseDTO result = userDetailsImpl.findById(id);
-        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
-    }
-
-    @PutMapping({ "{id}", "{id}/" })
-    public ResponseEntity<ResponseDTO> updateUserDetails(@PathVariable UUID id,
-                                                         @RequestBody UserUpdateRequest userDetails) {
-        ResponseDTO result = userDetailsImpl.update(id, userDetails);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
