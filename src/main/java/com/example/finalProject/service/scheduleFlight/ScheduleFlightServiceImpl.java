@@ -28,38 +28,41 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                                          String hasUSB, String hasWIFI, String hasRefund, String hasReschedule, Pageable pageable) {
         try
         {
-            Map<String, String> varInput = new HashMap<>();
-            varInput.put("departureTimeFilter", departureTimeFilter);
-            varInput.put("companyName", companyName);
-            varInput.put("hasBaggage", hasBaggage);
-            varInput.put("hasInflightEntertainment", hasInflightEntertainment);
-            varInput.put("hasMeals", hasMeals);
-            varInput.put("hasUSB", hasUSB);
-            varInput.put("hasWIFI", hasWIFI);
-            varInput.put("hasRefund", hasRefund);
-            varInput.put("hasReschedule", hasReschedule);
+//            Map<String, String> varInput = new HashMap<>();
+//            varInput.put("departureTimeFilter", departureTimeFilter);
+//            varInput.put("companyName", companyName);
+//            varInput.put("hasBaggage", hasBaggage);
+//            varInput.put("hasInflightEntertainment", hasInflightEntertainment);
+//            varInput.put("hasMeals", hasMeals);
+//            varInput.put("hasUSB", hasUSB);
+//            varInput.put("hasWIFI", hasWIFI);
+//            varInput.put("hasRefund", hasRefund);
+//            varInput.put("hasReschedule", hasReschedule);
+//
+//            List<String> listFilter = new ArrayList<>();
+//            for (Map.Entry<String, String> entry : varInput.entrySet()) {
+//                if (!entry.getValue().isEmpty()){
+//                    String filter = "lower(sf.\""+entry.getKey()+"\") = lower('"+entry.getValue()+"')";
+//                    listFilter.add(filter);
+//                }
+//            }
+//            String filter;
+//            if (listFilter.size()>1){
+//                String tempFilter = "";
+//                for (int i = 0; i<listFilter.size();i++){
+//                    if (i == 0){
+//                        tempFilter = listFilter.get(0) + "\n";
+//                    }else {
+//                        tempFilter = tempFilter + "and " + listFilter.get(i) + "\n";
+//                    }
+//                }
+//                filter = "where \n" + tempFilter;
+//            }else {
+//                filter = "where " + listFilter.get(0);
+//            }
+//            System.out.println(listFilter);
 
-            List<String> listFilter = new ArrayList<>();
-            for (Map.Entry<String, String> entry : varInput.entrySet()) {
-                if (!entry.getValue().isEmpty()){
-                    String filter = "lower(sf.\""+entry.getKey()+"\") = lower('"+entry.getValue()+"')";
-                    listFilter.add(filter);
-                }
-            }
-            String filter;
-            if (listFilter.size()>1){
-                String tempFilter = "";
-                for (int i = 0; i<listFilter.size();i++){
-                    if (i == 0){
-                        tempFilter = listFilter.get(0) + "\n";
-                    }else {
-                        tempFilter = tempFilter + "and " + listFilter.get(i) + "\n";
-                    }
-                }
-                filter = "where \n" + tempFilter;
-            }else {
-                filter = "where " + listFilter.get(0);
-            }
+            String filter = "";
 
             String sql = "select * from (" +
                     "select c.\"name\" as \"companyName\", c.url as \"urlLogo\", " +
