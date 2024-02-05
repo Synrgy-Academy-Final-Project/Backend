@@ -23,10 +23,46 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
     private final TransactionRepository transactionRepository;
 
     @Override
-    public ResponseDTO getScheduleFlight(String departureCode, String arrivalCode, Date departureDate, String airplaneClass, Pageable pageable) {
+    public ResponseDTO getScheduleFlight(String departureCode, String arrivalCode, Date departureDate, String airplaneClass,
+                                         String departureTimeFilter, String companyName, String hasBaggage, String hasInflightEntertainment, String hasMeals,
+                                         String hasUSB, String hasWIFI, String hasRefund, String hasReschedule, Pageable pageable) {
         try
         {
-            String sql = "select c.\"name\" as \"companyName\", c.url as \"urlLogo\", " +
+            Map<String, String> varInput = new HashMap<>();
+            varInput.put("departureTimeFilter", departureTimeFilter);
+            varInput.put("companyName", companyName);
+            varInput.put("hasBaggage", hasBaggage);
+            varInput.put("hasInflightEntertainment", hasInflightEntertainment);
+            varInput.put("hasMeals", hasMeals);
+            varInput.put("hasUSB", hasUSB);
+            varInput.put("hasWIFI", hasWIFI);
+            varInput.put("hasRefund", hasRefund);
+            varInput.put("hasReschedule", hasReschedule);
+
+            List<String> listFilter = new ArrayList<>();
+            for (Map.Entry<String, String> entry : varInput.entrySet()) {
+                if (!entry.getValue().isEmpty()){
+                    String filter = "lower(sf.\""+entry.getKey()+"\") = lower('"+entry.getValue()+"')";
+                    listFilter.add(filter);
+                }
+            }
+            String filter;
+            if (listFilter.size()>1){
+                String tempFilter = "";
+                for (int i = 0; i<listFilter.size();i++){
+                    if (i == 0){
+                        tempFilter = listFilter.get(0) + "\n";
+                    }else {
+                        tempFilter = tempFilter + "and " + listFilter.get(i) + "\n";
+                    }
+                }
+                filter = "where \n" + tempFilter;
+            }else {
+                filter = "where " + listFilter.get(0);
+            }
+
+            String sql = "select * from (" +
+                    "select c.\"name\" as \"companyName\", c.url as \"urlLogo\", " +
                     "a.\"name\" as \"airplaneName\", a.code as \"airplaneCode\", ac.airplane_class as \"airplaneClass\", ac.capacity as \"capacity\", atf.flight_time, " +
                     "upper(?) as \"departureCode\", upper(?) as \"arrivalCode\", " +
                     "(select concat(ap.city, ' (',upper(ap.code) ,')') from airports ap where ap.code = upper(?) limit 1) as \"departureCityCode\" ,\n" +
@@ -50,7 +86,42 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                     "as2.meals as \"meals\",\n" +
                     "as2.reschedule as \"reschedule\",\n" +
                     "as2.travel_insurance as \"travelInsurance\",\n" +
-                    "as2.wifi as \"wifi\" " +
+                    "as2.wifi as \"wifi\", \n" +
+                    "CASE\n" +
+                    "    WHEN as2.baggage IS NOT NULL AND as2.cabin_baggage IS NOT null and as2.baggage  != 0 and as2.cabin_baggage != 0 THEN initcap('Baggage')\n" +
+                    "    ELSE NULL\n" +
+                    "end as \"hasBaggage\",\n" +
+                    "CASE\n" +
+                    "    WHEN as2.inflight_entertainment IS true and as2.inflight_entertainment IS NOT NULL THEN initcap('Entertainment') \n" +
+                    "    ELSE NULL\n" +
+                    "end as \"hasInflightEntertainment\",\n" +
+                    "CASE\n" +
+                    "    WHEN as2.meals IS true and as2.meals IS NOT NULL THEN initcap('Meals') \n" +
+                    "    ELSE NULL \n" +
+                    "end as \"hasMeals\",\n" +
+                    "CASE\n" +
+                    "    WHEN as2.electric_socket IS true and as2.electric_socket IS NOT NULL THEN upper('USB') \n" +
+                    "    ELSE NULL \n" +
+                    "end as \"hasUSB\",\n" +
+                    "case \n" +
+                    "    WHEN as2.wifi IS true and as2.wifi IS NOT NULL THEN upper('WIFI') \n" +
+                    "    ELSE NULL \n" +
+                    "end as \"hasWIFI\",\n" +
+                    "CASE\n" +
+                    "    WHEN as2.refund != 0 and as2.refund IS NOT NULL THEN initcap('Refund') \n" +
+                    "    ELSE NULL \n" +
+                    "end as \"hasRefund\",\n" +
+                    "CASE\n" +
+                    "    WHEN as2.reschedule is true and as2.reschedule  IS NOT NULL THEN initcap('Reschedule') \n" +
+                    "    ELSE NULL \n" +
+                    "end as \"hasReschedule\",\n" +
+                    "CASE\n" +
+                    "    WHEN atf.flight_time between time '00:00:00' and time '12:00:00' and atf.flight_time IS NOT NULL THEN initcap('Pagi')\n" +
+                    "    WHEN atf.flight_time between time '12:00:00' and time '15:00:00' and atf.flight_time IS NOT NULL THEN initcap('Siang')\n" +
+                    "    WHEN atf.flight_time between time '15:00:00' and time '18:00:00' and atf.flight_time IS NOT NULL THEN initcap('Sore')\n" +
+                    "    WHEN atf.flight_time between time '18:00:00' and time '24:00:00' and atf.flight_time IS NOT NULL THEN initcap('Malam')\n" +
+                    "    ELSE NULL \n" +
+                    "end as \"departureTimeFilter\"" +
                     "from airplanes a " +
                     "join companies c on a.company_id = c.id " +
                     "join airplane_classes ac on a.id = ac.airplane_id " +
@@ -61,8 +132,8 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                     "and c.deleted_date is null " +
                     "and ac.deleted_date is null " +
                     "and atf.deleted_date is null " +
-                    "and as2.deleted_date is null";
-
+                    "and as2.deleted_date is null) sf " + filter;
+//            System.out.println(sql);
             String pattern = "dd-MM-yyyy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             String departureDateStr = simpleDateFormat.format(departureDate);
