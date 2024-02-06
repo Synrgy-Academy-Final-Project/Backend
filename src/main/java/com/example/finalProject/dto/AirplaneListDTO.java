@@ -2,6 +2,7 @@ package com.example.finalProject.dto;
 
 import com.example.finalProject.entity.AirplaneClass;
 import com.example.finalProject.entity.AirplaneFlightTime;
+import com.example.finalProject.entity.Airport;
 import com.example.finalProject.entity.Company;
 //import com.example.finalProject.entity.Flight;
 import lombok.Data;
@@ -25,4 +26,8 @@ public class AirplaneListDTO {
     AirplaneClass airplaneClass;
 
     AirplaneFlightTime airplaneFlightTimes;
+
+    Airport fromAirport;
+
+    Airport toAirport;
 }

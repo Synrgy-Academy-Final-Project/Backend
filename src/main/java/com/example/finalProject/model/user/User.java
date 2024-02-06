@@ -1,5 +1,6 @@
 package com.example.finalProject.model.user;
 
+import com.example.finalProject.entity.SavedPassenger;
 import com.example.finalProject.entity.Transaction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -47,5 +48,8 @@ public class User {
     @ToString.Exclude
     @OneToMany(mappedBy = "user")
     List<Transaction> transaction;
+
+    @OneToMany(mappedBy = "user")
+    List<SavedPassenger> savedPassenger;
 
 }

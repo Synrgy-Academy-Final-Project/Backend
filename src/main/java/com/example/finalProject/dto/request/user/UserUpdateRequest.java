@@ -1,5 +1,6 @@
 package com.example.finalProject.dto.request.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -21,6 +22,7 @@ public class UserUpdateRequest {
 
     private String lastName;
 
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date dateOfBirth;
 
     @NotNull

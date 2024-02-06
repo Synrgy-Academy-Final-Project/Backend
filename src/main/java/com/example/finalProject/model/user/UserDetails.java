@@ -1,8 +1,8 @@
 package com.example.finalProject.model.user;
 
 import com.example.finalProject.entity.Passenger;
-import com.example.finalProject.entity.Ticket;
-import com.example.finalProject.entity.Transaction;
+import com.example.finalProject.entity.SavedPassenger;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,6 +41,7 @@ public class UserDetails {
     private String residentPermit;
     private String NIK;
     @Column(columnDefinition = "date")
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date dateOfBirth;
     private Timestamp createdDate;
     private Timestamp updatedDate;
@@ -54,4 +55,8 @@ public class UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "userDetails")
     List<Passenger> passenger;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userDetails")
+    List<SavedPassenger> savedPassenger;
 }

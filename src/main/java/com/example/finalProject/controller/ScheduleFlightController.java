@@ -30,14 +30,25 @@ public class ScheduleFlightController {
                                                  @ModelAttribute("departureCode") String fromAirportCode,
                                                  @ModelAttribute("arrivalCode") String toAirportCode,
                                                  @ModelAttribute("departureDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date departureDate,
-                                                 @ModelAttribute("airplaneClass") String airplaneClass) throws ParseException {
+                                                 @ModelAttribute("airplaneClass") String airplaneClass,
+                                                 @ModelAttribute("departureTime") String departureTimeFilter,
+                                                 @ModelAttribute("companyName") String companyName,
+                                                 @ModelAttribute("baggage") String hasBaggage,
+                                                 @ModelAttribute("entertainment") String hasInflightEntertainment,
+                                                 @ModelAttribute("meals") String hasMeals,
+                                                 @ModelAttribute("usb") String hasUSB,
+                                                 @ModelAttribute("wifi") String hasWIFI,
+                                                 @ModelAttribute("refund") String hasRefund,
+                                                 @ModelAttribute("reschedule") String hasReschedule)
+    {
         Pageable pageable;
         if (sortBy.isEmpty()){
             pageable = PageRequest.of(pageNumber, pageSize);
         }else{
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
-        ResponseDTO result = scheduleFlightService.getScheduleFlight(fromAirportCode, toAirportCode, departureDate, airplaneClass, pageable);
+        ResponseDTO result = scheduleFlightService.getScheduleFlight(fromAirportCode, toAirportCode, departureDate, airplaneClass,
+                departureTimeFilter, companyName, hasBaggage, hasInflightEntertainment, hasMeals, hasUSB, hasWIFI, hasRefund, hasReschedule, pageable);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 }
