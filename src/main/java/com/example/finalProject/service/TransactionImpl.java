@@ -179,6 +179,9 @@ public class TransactionImpl {
                 if (checkRows.getRow() == 0 || totalSeat <= airplaneData.get(0).getCapacity() &&
                         (mature + totalSeat) <= airplaneData.get(0).getCapacity()) {
                     System.out.println("masuk");
+                    if (checkUserData.get().getUsersDetails().equals(null)){
+                        response.errorDTO(500, "Update your profile");
+                    }
                     transaction.setUser(checkUserData.get());
                     if (!request.getCompanyName().isEmpty() && !request.getUrl().isEmpty() &&
                             !request.getAirplaneName().isEmpty() && !request.getAirplaneCode().isEmpty() &&
