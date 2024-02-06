@@ -41,7 +41,6 @@ public class UserDetails {
     private String residentPermit;
     private String NIK;
     @Column(columnDefinition = "date")
-    @JsonFormat(pattern="dd-MM-yyyy")
     private Date dateOfBirth;
     private Timestamp createdDate;
     private Timestamp updatedDate;
