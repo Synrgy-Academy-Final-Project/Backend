@@ -61,13 +61,11 @@ public class TransactionEntityDTO {
 
     Time arrivalTime;
 
-    //    @NotNull
-//    @Positive
-//    Integer totalSeat;
-//
     @NotNull
     @Positive
     Integer priceFlight;
+
+    String codePromo;
 
     List<UserDetails> userDetails;
 }

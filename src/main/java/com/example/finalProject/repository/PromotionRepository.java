@@ -2,6 +2,7 @@ package com.example.finalProject.repository;
 
 import com.example.finalProject.entity.Promotion;
 
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +15,5 @@ public interface PromotionRepository extends JpaRepository<Promotion, UUID> {
             "and deleted_date is null", nativeQuery = true)
     public Page<Promotion> searchAll(String code, String title, Pageable pageable);
 
+    Optional<Promotion> findPromotionByCode(String Code);
 }

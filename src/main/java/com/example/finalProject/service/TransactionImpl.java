@@ -45,6 +45,7 @@ public class TransactionImpl {
     private final PassengerRepository passengerRepository;
     private final AirplaneClassRepository airplaneClassRepository;
     private final SavedPassengerRepository savedPassengerRepository;
+    private final PromotionRepository promotionRepository;
 
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
@@ -227,9 +228,21 @@ public class TransactionImpl {
                     if (!request.getUserDetails().isEmpty()) {
                         transaction.setTotalSeat(mature);
                     }
-                    Integer total = (mature * request.getPriceFlight()) + (child * (request.getPriceFlight()-(request.getPriceFlight() * 20/100)));
+                    Integer disc = 0;
+                    if (!request.getCodePromo().isEmpty()){
+                        Optional<Promotion> promotionByCode = promotionRepository.findPromotionByCode(request.getCodePromo());
+                        if (promotionByCode.isEmpty()){
+                            return response.dataNotFound("Promo");
+                        }
+                        transaction.setPromotion(promotionByCode.get());
+                        disc = promotionByCode.get().getDiscount();
+                    }
+//                    System.out.println("disc " + disc);
+                    Integer totalTicket = (mature * request.getPriceFlight()) + (child * (request.getPriceFlight()-(request.getPriceFlight() * 20/100)));
+//                    System.out.println("total tiket " + totalTicket);
+                    Integer total = totalTicket - (totalTicket * disc/100);
+//                    System.out.println("total "  + total);
                     transaction.setTotalPrice(total);
-
 
                     Transaction result = transactionRepository.save(transaction);
 
