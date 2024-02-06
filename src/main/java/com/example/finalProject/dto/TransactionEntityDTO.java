@@ -67,5 +67,5 @@ public class TransactionEntityDTO {
 
     String codePromo;
 
-    List<UserDetails> userDetails;
+    List<UserDetailsRequest> userDetails;
 }

@@ -99,4 +99,7 @@ public class Transaction extends AbstractDate {
     @OneToMany(mappedBy = "transaction")
     List<Ticket> ticket;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "transaction")
+    List<TransactionAirplaneAdditionalService> transactionAirplaneAdditionalServices;
 }

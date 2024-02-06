@@ -31,6 +31,20 @@ public class UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    public UserDetails(String firstName, String lastName, String address, String gender, String phoneNumber, String visa, String passport, String residentPermit, String NIK, Date dateOfBirth) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.visa = visa;
+        this.passport = passport;
+        this.residentPermit = residentPermit;
+        this.NIK = NIK;
+        this.dateOfBirth = dateOfBirth;
+    }
+
     private String firstName;
     private String lastName;
     private String address;
@@ -58,4 +72,6 @@ public class UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "userDetails")
     List<SavedPassenger> savedPassenger;
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.finalProject.service.user;
 
 import com.example.finalProject.dto.ResponseDTO;
+import com.example.finalProject.dto.UserDetailsRequest;
 import com.example.finalProject.dto.request.user.UserUpdateRequest;
 import com.example.finalProject.dto.response.user.UserUpdateResponse;
 import com.example.finalProject.model.user.User;
@@ -100,11 +101,16 @@ public class UsersServiceImpl implements UsersService{
     }
 
     @Transactional
-    public ResponseDTO createUserDetail(UserDetails userDetails) {
+    public ResponseDTO createUserDetail(UserDetailsRequest userDetailsRequest) {
         try {
-            String firstName = userDetails.getFirstName();
-            String lastName = userDetails.getLastName();
-            Date dob = userDetails.getDateOfBirth();
+            UserDetails userDetails = new UserDetails(userDetailsRequest.getFirstName(), userDetailsRequest.getLastName(),
+                    userDetailsRequest.getAddress(), userDetailsRequest.getGender(), userDetailsRequest.getPhoneNumber(),
+                    userDetailsRequest.getVisa(), userDetailsRequest.getPassport(), userDetailsRequest.getResidentPermit(),
+                    userDetailsRequest.getNIK(), userDetailsRequest.getDateOfBirth());
+
+            String firstName = userDetailsRequest.getFirstName();
+            String lastName = userDetailsRequest.getLastName();
+            Date dob = userDetailsRequest.getDateOfBirth();
 
             if (firstName.isEmpty()){
                 return response.dataNotFound("firstName");

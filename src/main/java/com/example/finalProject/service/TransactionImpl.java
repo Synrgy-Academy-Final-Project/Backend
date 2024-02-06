@@ -7,9 +7,11 @@ import com.example.finalProject.model.user.User;
 import com.example.finalProject.model.user.UserDetails;
 //import com.example.finalProject.repository.FlightRepository;
 import com.example.finalProject.repository.*;
+import com.example.finalProject.repository.user.UserDetailsRepository;
 import com.example.finalProject.repository.user.UserRepository;
 import com.example.finalProject.security.service.UserDetailsImpl;
 import com.example.finalProject.service.user.UsersServiceImpl;
+import com.example.finalProject.utils.GeneralFunction;
 import com.example.finalProject.utils.Response;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,6 +32,7 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -40,12 +43,14 @@ public class TransactionImpl {
     private final Response response;
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
-    private final PaymentRepository paymentRepository;
     private final UsersServiceImpl usersServiceImpl;
     private final PassengerRepository passengerRepository;
-    private final AirplaneClassRepository airplaneClassRepository;
     private final SavedPassengerRepository savedPassengerRepository;
     private final PromotionRepository promotionRepository;
+    private final AirplaneAdditionalServiceRepository airplaneAdditionalServiceRepository;
+    private final UserDetailsRepository userDetailsRepository;
+    private final GeneralFunction generalFunction;
+    private final TransactionAirplaneAdditionalServiceRepository transactionAirplaneAdditionalServiceRepository;
 
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
@@ -99,22 +104,40 @@ public class TransactionImpl {
 
     public ResponseDTO save(TransactionEntityDTO request) throws IOException {
         try {
-            List<UserDetails> userDetails = request.getUserDetails();
+            List<UserDetailsRequest> userDetails = request.getUserDetails();
+
             System.out.println(userDetails.size());
             userDetails.stream().forEach(additionalUserDTO -> System.out.println(additionalUserDTO.getDateOfBirth()));
+
+            List<DataMatureDTO> dataMature = new ArrayList<>();
             Integer child = 0;
             Integer mature = 0;
+            Integer totalAdditionalBaggage = 0;
             for (int i = 0; i<userDetails.size(); i++){
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                 LocalDate dateOfBirth = LocalDate.parse(dateFormat.format(userDetails.get(i).getDateOfBirth()), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                 Period age = Period.between(dateOfBirth, LocalDate.now());
                 if (age.getYears()>2){
+                    if (userDetails.get(i).getAirplaneAdditionalId() != null){
+                        Optional<AirplaneAdditionalService> check = airplaneAdditionalServiceRepository.findById(userDetails.get(i).getAirplaneAdditionalId());
+                        if (check.isEmpty()){
+                            return response.dataNotFound("Additional Baggage");
+                        }
+                        Integer quantity = check.get().getQuantity();
+                        Integer price = check.get().getPrice();
+                        totalAdditionalBaggage = totalAdditionalBaggage + price;
+                        dataMature.add(new DataMatureDTO(userDetails.get(i).getFirstName(), userDetails.get(i).getLastName(),
+                                dateOfBirth, quantity, price));
+                    }
                     mature++;
+
                 }
                 else{
                     child++;
                 }
             }
+            System.out.println(totalAdditionalBaggage);
+            System.out.println(dataMature);
             System.out.println(mature +" "+ child);
             ModelMapper modelMapper = new ModelMapper();
             Transaction transaction = modelMapper.map(request, Transaction.class);
@@ -237,11 +260,11 @@ public class TransactionImpl {
                         transaction.setPromotion(promotionByCode.get());
                         disc = promotionByCode.get().getDiscount();
                     }
-//                    System.out.println("disc " + disc);
-                    Integer totalTicket = (mature * request.getPriceFlight()) + (child * (request.getPriceFlight()-(request.getPriceFlight() * 20/100)));
-//                    System.out.println("total tiket " + totalTicket);
+                    System.out.println("disc " + disc);
+                    Integer totalTicket = (mature * request.getPriceFlight()) + (child * (request.getPriceFlight()-(request.getPriceFlight() * 20/100))) + totalAdditionalBaggage;
+                    System.out.println("total tiket " + totalTicket);
                     Integer total = totalTicket - (totalTicket * disc/100);
-//                    System.out.println("total "  + total);
+                    System.out.println("total "  + total);
                     transaction.setTotalPrice(total);
 
                     Transaction result = transactionRepository.save(transaction);
@@ -250,8 +273,9 @@ public class TransactionImpl {
                     if (userDetails.isEmpty()) {
                         return response.dataNotFound("Passenger");
                     }
-                    for (UserDetails u : userDetails) {
+                    for (UserDetailsRequest u : userDetails) {
                         ResponseDTO result1 = usersServiceImpl.createUserDetail(u);
+
                         if (result1.getStatus() == 200) {
                             passengerRepository.save(new Passenger(transactionRepository.findById(result.getId()).get(), (UserDetails) result1.getData()));
 
@@ -267,6 +291,23 @@ public class TransactionImpl {
                             throw new IOException(result1.getMessage());
                         }
                     }
+                    System.out.println("Hitung data mature with additional baggage");
+                    if (!dataMature.isEmpty()){
+                        for (int i = 0; i<dataMature.size();i++){
+                            UserDetails getUserDetails = userDetailsRepository.findByFirstNameAndLastNameAndDoB(generalFunction.createLikeQuery(dataMature.get(i).getFirstName()),
+                                    generalFunction.createLikeQuery(dataMature.get(i).getLastName()),
+                                    Date.from(dataMature.get(i).getDateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                            System.out.println(getUserDetails);
+                            Optional<Passenger> check = passengerRepository.findPassengerByUserDetailsAndTransaction(getUserDetails, result);
+                            if (check.isEmpty()){
+                                return response.dataNotFound("Passenger");
+                            }
+                            System.out.println(check.get());
+                            transactionAirplaneAdditionalServiceRepository.save(new TransactionAirplaneAdditionalService(result, check.get(), dataMature.get(i).getQty(), dataMature.get(i).getPrice()));
+
+                        }
+                    }
+
                     return response.suksesDTO(result);
                 } else {
                     return response.errorDTO(503,"Capacity from this airplane has been full");

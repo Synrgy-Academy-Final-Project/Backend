@@ -36,6 +36,11 @@ public class Passenger extends AbstractDate {
     @ToString.Exclude
     UserDetails userDetails;
 
+    @JsonIgnore
+    @ToString.Exclude
+    @OneToOne(mappedBy = "passenger")
+    TransactionAirplaneAdditionalService transactionAirplaneAdditionalService;
+
     public Passenger(Transaction transaction, UserDetails userDetails){
         this.transaction = transaction;
         this.userDetails = userDetails;
