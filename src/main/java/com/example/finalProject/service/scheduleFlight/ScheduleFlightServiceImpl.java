@@ -71,8 +71,10 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                     "select c.\"name\" as \"companyName\", c.url as \"urlLogo\", " +
                     "a.\"name\" as \"airplaneName\", a.code as \"airplaneCode\", ac.airplane_class as \"airplaneClass\", ac.capacity as \"capacity\", atf.flight_time, " +
                     "upper(?) as \"departureCode\", upper(?) as \"arrivalCode\", " +
-                    "(select concat(ap.city, ' (',upper(ap.code) ,')') from airports ap where ap.code = upper(?) limit 1) as \"departureCityCode\" ,\n" +
-                    "(select concat(ap.city, ' (',upper(ap.code) ,')') from airports ap where ap.code = upper(?) limit 1) as \"arrivalCityCode\"," +
+                    "(select concat(ap.city, ' (',upper(ap.code) ,')') from airports ap where upper(ap.code) = upper(?) limit 1) as \"departureCityCode\" ,\n" +
+                    "(select ap.\"name\" from airports ap where upper(ap.code) = upper(?) limit 1) as \"departureNameAirport\",\n" +
+                    "(select concat(ap.city, ' (',upper(ap.code) ,')') from airports ap where upper(ap.code) = upper(?) limit 1) as \"arrivalCityCode\",\n" +
+                    "(select ap.\"name\" from airports ap where upper(ap.code) = upper(?) limit 1) as \"arrivalNameAirport\", \n" +
                     "concat(to_date(?, 'dd-mm-yyyy'),' ',atf.flight_time)::timestamp with time zone AT TIME ZONE 'Asia/Jakarta' as \"departureTime\", " +
                     "(select concat(to_date(?, 'dd-mm-yyyy'),' ',atf.flight_time)::timestamp with time zone AT TIME ZONE 'Asia/Jakarta' + (ba.duration || ' minutes')::interval from baseprice_airports ba " +
                     "where upper(ba.departure_code) = upper(?) and upper(ba.arrival_code) = upper(?) and ba.deleted_date is null limit 1) as \"arrivalTime\", " +
@@ -147,7 +149,7 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
             String countQuery = "select count(*) from (" + sql + ") as subquery";
 
             List<ScheduleFlightDTO> resultList = jdbcTemplate.query(sql + " LIMIT ? OFFSET ?",
-                    new Object[]{departureCode, arrivalCode,departureCode, arrivalCode,
+                    new Object[]{departureCode, arrivalCode,departureCode,departureCode, arrivalCode, arrivalCode,
                             departureDateStr, departureDateStr, departureCode, arrivalCode, departureDateStr,
                             departureCode, arrivalCode, airplaneClass, pageable.getPageSize(), pageable.getOffset()},
                     new BeanPropertyRowMapper<>(ScheduleFlightDTO.class));
@@ -192,15 +194,15 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                                 resultList.get(i).getElectricSocket(), resultList.get(i).getWifi(), resultList.get(i).getReschedule(),
                                 resultList.get(i).getRefund()),
                                 resultList.get(i).getAirplaneFlightTimeId(), resultList.get(i).getFlightTime(),
-                                resultList.get(i).getDepartureCode(), resultList.get(i).getDepartureCityCode(),
-                                resultList.get(i).getArrivalCode(), resultList.get(i).getArrivalCityCode(),
+                                resultList.get(i).getDepartureCode(), resultList.get(i).getDepartureCityCode(), resultList.get(i).getDepartureNameAirport(),
+                                resultList.get(i).getArrivalCode(), resultList.get(i).getArrivalCityCode(), resultList.get(i).getArrivalNameAirport(),
                                 resultList.get(i).getDepartureTime(), resultList.get(i).getArrivalTime(),
                                 resultList.get(i).getTotalPrice()
                         ));
             }
 
 
-            Long totalCount = jdbcTemplate.queryForObject(countQuery, Long.class, departureCode, arrivalCode,departureCode, arrivalCode,
+            Long totalCount = jdbcTemplate.queryForObject(countQuery, Long.class, departureCode, arrivalCode,departureCode,departureCode, arrivalCode, arrivalCode,
                     departureDateStr, departureDateStr, departureCode, arrivalCode, departureDateStr, departureCode, arrivalCode, airplaneClass);
             if (resultList.isEmpty()){
                 resultList.clear();
