@@ -162,6 +162,10 @@ public class TransactionImpl {
                         (Time) array[10]
                 )).toList();
 
+                if (airplaneData.isEmpty()){
+                    return response.dataNotFound("Data Airplane (Airplane ID, Airplane Class ID, Airplane Time Flight ID)");
+                }
+
                 List<TotalSeatDTO> totalSeatData = checkTotalSeatTransactionAirplane.stream().map(array -> new TotalSeatDTO(
                         (Long) array[0],
                         (Date) array[1],
