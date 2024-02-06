@@ -42,8 +42,8 @@ public class PromotionImpl {
         }
     }
 
-    public ResponseDTO findById(UUID id) {
-        Optional<Promotion> checkData = promotionRepository.findById(id);
+    public ResponseDTO findByCode(String code) {
+        Optional<Promotion> checkData = promotionRepository.findPromotionByCode(code);
         if (checkData.isEmpty()) {
             return response.dataNotFound("Promotion");
         } else {

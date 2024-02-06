@@ -47,9 +47,9 @@ public class PromotionController {
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
-    @GetMapping({ "{id}", "{id}/" })
-    public ResponseEntity<ResponseDTO> findPromotion(@PathVariable UUID id) {
-        ResponseDTO result = promotionImpl.findById(id);
+    @GetMapping({ "{code}", "{code}/" })
+    public ResponseEntity<ResponseDTO> findPromotion(@PathVariable String code) {
+        ResponseDTO result = promotionImpl.findByCode(code);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
