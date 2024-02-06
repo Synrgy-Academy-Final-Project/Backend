@@ -40,6 +40,12 @@ public class TesController {
     @Autowired
     UserDetailsRepository userDetailsRepository;
 
+    @Autowired
+    AirplaneRepository airplaneRepository;
+
+    @Autowired
+    AirplaneAdditionalServiceRepository airplaneAdditionalServiceRepository;
+
     @GetMapping
     public String tes(){
         return "Tes Running";
@@ -48,28 +54,28 @@ public class TesController {
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
 
-//    @GetMapping("/dummy")
-//    public Object insertDummy(){
-//        List<AirplaneAdditionalService> result = new ArrayList<>();
-//        List<Airplane> airplanes = airplaneRepository.findAll();
-//        airplanes.forEach(airplane -> {
-//            for(int i=1; i <= 4; i++){
-//                result.add(airplaneAdditionalServiceRepository.save(new AirplaneAdditionalService(airplane, "baggage", i*5, 100000+((i-1)*50000))));
-//            }
-//        });
-//        return result;
-//    }
-
     @GetMapping("/dummy")
     public Object insertDummy(){
-        List<SavedPassenger> result = new ArrayList<>();
-        List<User> users = userRepository.findAll();
-        List<UserDetails> userDetails = userDetailsRepository.findAll();
-        for(int i=0; i <= 5; i++){
-            result.add(savedPassengerRepository.save(new SavedPassenger(users.get(i), userDetails.get(i))));
-        }
+        List<AirplaneAdditionalService> result = new ArrayList<>();
+        List<Airplane> airplanes = airplaneRepository.findAll();
+        airplanes.forEach(airplane -> {
+            for(int i=1; i <= 4; i++){
+                result.add(airplaneAdditionalServiceRepository.save(new AirplaneAdditionalService(airplane, "baggage", i*5, 100000+((i-1)*50000))));
+            }
+        });
         return result;
     }
+
+//    @GetMapping("/dummy")
+//    public Object insertDummy(){
+//        List<SavedPassenger> result = new ArrayList<>();
+//        List<User> users = userRepository.findAll();
+//        List<UserDetails> userDetails = userDetailsRepository.findAll();
+//        for(int i=0; i <= 5; i++){
+//            result.add(savedPassengerRepository.save(new SavedPassenger(users.get(i), userDetails.get(i))));
+//        }
+//        return result;
+//    }
 
 //    @GetMapping("/detail")
 //    public Object findUser(Principal principal){
