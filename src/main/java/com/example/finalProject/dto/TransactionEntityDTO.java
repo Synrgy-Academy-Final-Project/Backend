@@ -46,6 +46,8 @@ public class TransactionEntityDTO {
     @NotBlank
     String departureCode;
 
+    @NotNull
+//    @JsonFormat(pattern="dd-MM-yyyy")
     LocalDate departureDate;
 
     Time departureTime;
