@@ -25,16 +25,32 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JsonIgnore
     private UUID id;
+
     private String email;
+    @JsonIgnore
     private String password;
+
+    @JsonIgnore
     private Timestamp createdDate;
+
+    @JsonIgnore
     private Timestamp updatedDate;
+
+    @JsonIgnore
     private Timestamp deletedDate;
+
+    @JsonIgnore
     private String otp;
+
+    @JsonIgnore
     private Timestamp otpGeneratedTime;
+
+    @JsonIgnore
     private boolean userActive;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idRole", referencedColumnName = "id")
     private Role role;

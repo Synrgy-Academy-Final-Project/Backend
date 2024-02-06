@@ -64,10 +64,7 @@ public class UserDetailsImpl {
         if (user.isEmpty()){
             return response.dataNotFound("User");
         }
-        if (user.get().getUsersDetails() == null){
-            return response.dataNotFound("UserDetail");
-        }
-        return response.suksesDTO(user.get().getUsersDetails());
+        return response.suksesDTO(user.get());
     }
 
     public ResponseDTO update(UUID id, UserUpdateRequest userDetails) {
