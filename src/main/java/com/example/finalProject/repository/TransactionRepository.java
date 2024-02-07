@@ -1,13 +1,11 @@
 package com.example.finalProject.repository;
 
 import com.example.finalProject.dto.CheckRow;
-import com.example.finalProject.dto.ETicketDTO;
 import com.example.finalProject.entity.Transaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -65,4 +63,24 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
 
     @Query("select new com.example.finalProject.dto.CheckRow(count (*)) from Transaction ac ")
     CheckRow checkRow();
+
+    @Query(value = "select t.company_name as \"companyName\", t.url as \"companyUrl\", t.airplane_class as \"airplaneClass\", concat('ID - ',t.airplane_code)  as \"airplaneCode\", \n" +
+            "t.order_code as \"orderCode\", t.departure_time as \"departureTime\", t.departure_date as \"departureDate\", t.arrival_time as \"arrivalTime\", t.arrival_date as \"arrivalDate\", \n" +
+            "concat(a.city,' (',t.departure_code,')') as \"departureCityCode\", a.\"name\" as \"departureAirportName\", a.country as \"departureCountry\", \n" +
+            "concat(a2.city, ' (', t.arrival_code,')') as \"arrivalCityCode\", a2.\"name\" as \"arrivalAirportName\", a2.country as \"arrivalCountry\",\n" +
+            "concat(ud.first_name ,' ',ud.last_name) as \"passengerName\" , \n" +
+            "t.airplane_class as \"airplaneClass\", 'asdaasd' as \"ticketNumber\", '10' as \"gate\", 'A1' as \"seat\"\n" +
+            "from transactions t join passengers p on p.transaction_id = t.id and to_char(t.created_date, 'YYYY-MM-DD HH24:MI') = to_char(p.created_date, 'YYYY-MM-DD HH24:MI') \n" +
+            "join users_details ud on p.user_details_id = ud.id\n" +
+            "join airports a on t.departure_code = a.code\n" +
+            "join airports a2 on t.departure_code = a2.code \n" +
+            "join payments p2 on t.id = p2.transaction_id\n" +
+            "where lower(p2.transaction_status) = lower('settlement') \n" +
+            "and p2.transaction_id = ?1\n" +
+            "and t.user_id = ?2 " +
+            "and t.deleted_date is null \n" +
+            "and ud.deleted_date is null\n" +
+            "and a.deleted_date is null\n" +
+            "and p2.deleted_date is null", nativeQuery = true)
+    List<Object[]> getDataTransactionUser(UUID transactionId, UUID userId);
 }

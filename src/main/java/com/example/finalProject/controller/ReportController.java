@@ -24,11 +24,11 @@ public class ReportController {
     private final ReportServiceImpl reportService;
     private final EmailUtil emailUtil;
     @PostMapping(
-            path = "/eticket"
+            path = "/eticket/{orderId}"
     )
-    public ResponseEntity<String> exportETicket(Principal principal) throws JRException, FileNotFoundException, UserNotFoundException, MessagingException {
+    public ResponseEntity<String> exportETicket(Principal principal, @PathVariable UUID orderId) throws JRException, FileNotFoundException, UserNotFoundException, MessagingException {
         String uname = principal.getName();
-        byte[] pdfBytes = reportService.exportETicket(uname,"pdf");
+        byte[] pdfBytes = reportService.exportETicket(uname,orderId,"pdf");
         emailUtil.sendEticket(uname, pdfBytes);
         return new ResponseEntity<>("E-Ticket has been sent to email", HttpStatus.OK);
     }

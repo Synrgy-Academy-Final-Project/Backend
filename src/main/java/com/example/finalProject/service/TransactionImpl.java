@@ -10,14 +10,11 @@ import com.example.finalProject.model.user.UserDetails;
 import com.example.finalProject.repository.*;
 import com.example.finalProject.repository.user.UserDetailsRepository;
 import com.example.finalProject.repository.user.UserRepository;
-import com.example.finalProject.security.service.UserDetailsImpl;
 import com.example.finalProject.security.util.OtpUtil;
 import com.example.finalProject.service.user.AuthenticationServiceImpl;
 import com.example.finalProject.service.user.UsersServiceImpl;
 import com.example.finalProject.utils.GeneralFunction;
 import com.example.finalProject.utils.Response;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -25,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.DataInput;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -103,9 +99,9 @@ public class TransactionImpl {
         String midtransRedirectUrl = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
         ObjectMapper mapper = new ObjectMapper();
         Map midtrans = mapper.readValue(midtransRedirectUrl, Map.class);
-        PaymentMidtransReponse result = PaymentMidtransReponse.builder()
+        PaymentMidtransResponse result = PaymentMidtransResponse.builder()
                 .token((String) midtrans.get("token"))
-                .redirect_url((String) midtrans.get("redirect_url"))
+                .redirectUrl((String) midtrans.get("redirect_url"))
                 .orderId(savedTransaction.getId()).build();
 
         return response.suksesDTO(result);

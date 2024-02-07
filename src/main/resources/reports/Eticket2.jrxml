@@ -1,135 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a4151971-010f-4a6c-8bf0-41cb4f8bf19a">
-    <property name="com.jaspersoft.studio.data.sql.tables">
-        <![CDATA[dXNlcnMgLDE1LDM1NSw4ZmQ1MmYyNi1mMGYwLTRkODktODg0MC01NjJkMmVlMjc0ZDc7ZmxpZ2h0
-cyAsMzQzLDE1NSxjMjNiNmZhOS00NTI4LTQ1NzItOTIzMC1iYWMyMDQ3NTgwYjI7YWlycG9ydHMg
-LDY1OSw0MDgsZDI2ZDYzMTgtYTU1ZC00Yzc5LWEwOGYtYjdhNTM4ZTczNTk5O3RyYW5zYWN0aW9u
-cyAsMTg2LDM2Nyw3ZjgyYWRkOC1kNjZjLTQzOTktOTY2ZS02YTU3ZjExNDczZDU7YWlycG9ydHMg
-LDUwOSwxNSwzZmQ0YjUxMC01ZWZjLTRmMGMtYjZlNS0yYzUxZjlmZTQ3OTk7YWlycGxhbmVzICw1
-MDksMjg3LDU2ZmZhYTUwLWE4NDEtNGE4NC05MjJlLTZmMzVmYzk2OTAyNztjb21wYW5pZXMgLDc5
-Nyw0MTAsNzBjMDlmZmItMDM3Yy00MjRhLWFlYzktNGI3M2MwZWRkMGI2O3RpY2tldHMgLDkzNSw1
-NjcsMmMzN2E3OWUtOTk5Ni00MDc1LWI5NWEtZDdkZjhlMGU5ZDA4Ow==]]>
-    </property>
-    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
-    <queryString language="SQL">
-        <![CDATA[SELECT a3.name AS airplane_name,
-	a3.code AS airplane_code,
-	f.airplane_class,
-	f.departure_date,
-	a.name AS airport_name_departure,
-	a.code AS airport_code_departure,
-	a.city AS airport_city_departure,
-	a.country AS airport_country_departure,
-	f.arrival_date,
-	a2.name AS airport_name_arrival,
-	a2.code AS airport_code_arrival,
-	a2.city AS airport_city_arrival,
-	a2.country AS airport_country_arrival,
-	t2.id,
-	t2.gate,
-	t2.seat,
-	u.full_name
-FROM users u
-	join transactions t ON
-	 u.id = t.user_id
-	join flights f ON
-	 t.flight1_id = f.id
-	join airports a ON
-	 f.from_airport_id = a.id
-	join airports a2 ON
-	 f.to_airport_id = a2.id
-	join airplanes a3 ON
-	 f.airplane_id = a3.id
-	join companies c ON
-	 a3.company_id = c.id
-	join tickets t2 ON
-	 t.id = t2.transaction_id]]>
-    </queryString>
-    <field name="airplane_name" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airplane_name"/>
-        <property name="com.jaspersoft.studio.field.label" value="airplane_name"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airplanes"/>
+
+    <field name="companyUrl" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="companyUrl"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="companyUrl"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="airplanes"/>-->
     </field>
-    <field name="airplane_code" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airplane_code"/>
-        <property name="com.jaspersoft.studio.field.label" value="airplane_code"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airplanes"/>
+    <field name="companyName" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="airplane_code"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="airplane_code"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="airplanes"/>-->
     </field>
-    <field name="airplane_class" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airplane_class"/>
-        <property name="com.jaspersoft.studio.field.label" value="airplane_class"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>
+    <field name="airplaneClass" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="airplane_class"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="airplane_class"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>-->
     </field>
-    <field name="departure_date" class="java.sql.Timestamp">
-        <property name="com.jaspersoft.studio.field.name" value="departure_date"/>
-        <property name="com.jaspersoft.studio.field.label" value="departure_date"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>
+    <field name="airplaneCode" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="departure_date"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="departure_date"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>-->
     </field>
-    <field name="airport_name_departure" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_name_departure"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_name_departure"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="orderCode" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="departure_date"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="departure_date"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>-->
     </field>
-    <field name="airport_code_departure" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_code_departure"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_code_departure"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="departureTime" class="java.sql.Time">
+<!--        <property name="com.jaspersoft.studio.field.name" value="airport_name_departure"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="airport_name_departure"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="airport_city_departure" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_city_departure"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_city_departure"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="departureDate" class="java.util.Date">
+<!--        <property name="com.jaspersoft.studio.field.name" value="airport_code_departure"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="airport_code_departure"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="airport_country_departure" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_country_departure"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_country_departure"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="arrivalTime" class="java.sql.Time">
+<!--        <property name="com.jaspersoft.studio.field.name" value="airport_city_departure"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="airport_city_departure"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="arrival_date" class="java.sql.Timestamp">
-        <property name="com.jaspersoft.studio.field.name" value="arrival_date"/>
-        <property name="com.jaspersoft.studio.field.label" value="arrival_date"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>
+    <field name="arrivalDate" class="java.util.Date">
+<!--        <property name="com.jaspersoft.studio.field.name" value="airport_country_departure"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="airport_country_departure"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="airport_name_arrival" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_name_arrival"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_name_arrival"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="departureCityCode" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="airport_name_arrival"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="airport_name_arrival"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="airport_code_arrival" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_code_arrival"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_code_arrival"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="departureAirportName" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="airport_code_arrival"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="airport_code_arrival"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="airport_city_arrival" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_city_arrival"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_city_arrival"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="departureCountry" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="airport_city_arrival"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="airport_city_arrival"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="airport_country_arrival" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_country_arrival"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_country_arrival"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="arrivalCityCode" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="airport_country_arrival"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="airport_country_arrival"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="id" class="java.util.UUID">
-        <property name="com.jaspersoft.studio.field.name" value="id"/>
-        <property name="com.jaspersoft.studio.field.label" value="id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>
+    <field name="arrivalAirportName" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="id"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="id"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>-->
+    </field>
+    <field name="arrivalCountry" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="gate"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="gate"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>-->
+    </field>
+    <field name="passengerName" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="seat"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="seat"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>-->
+    </field>
+    <field name="ticketNumber" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
     </field>
     <field name="gate" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="gate"/>
-        <property name="com.jaspersoft.studio.field.label" value="gate"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
     </field>
     <field name="seat" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="seat"/>
-        <property name="com.jaspersoft.studio.field.label" value="seat"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>
-    </field>
-    <field name="full_name" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="full_name"/>
-        <property name="com.jaspersoft.studio.field.label" value="full_name"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
     </field>
     <background>
         <band splitType="Stretch"/>
@@ -138,7 +104,7 @@ FROM users u
         <band height="100" splitType="Stretch">
             <image>
                 <reportElement x="0" y="0" width="80" height="80" uuid="feba5d60-0293-43ab-b2e5-301d9e54ca93"/>
-                <imageExpression><![CDATA["/src/Group 2 (1)_pixian_ai.png"]]></imageExpression>
+                <imageExpression><![CDATA["reports/Group 2 (1)_pixian_ai.png"]]></imageExpression>
             </image>
             <staticText>
                 <reportElement x="177" y="-17" width="210" height="86" uuid="990b28ec-1c80-4765-8fc5-168ba2fd28ab"/>
@@ -163,15 +129,14 @@ FROM users u
         <band height="332" splitType="Stretch">
             <image>
                 <reportElement x="1" y="10" width="100" height="61" uuid="b3728179-c002-4720-9e47-f11a96e22668"/>
-                <imageExpression><![CDATA["https://w7.pngwing.com/pngs/714/909/png-transparent-logo-garuda-indonesia-airplane-airplane-cdr-text-trademark.png"]]></imageExpression>
+                <imageExpression><![CDATA[$F{companyUrl}]]></imageExpression>
             </image>
             <textField>
                 <reportElement x="1" y="109" width="100" height="20" uuid="03521405-9306-4ad5-b4ab-988a87bf88af"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="10"/>
                 </textElement>
-                <textFieldExpression><![CDATA[20:15
-]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{departureTime}]]></textFieldExpression>
             </textField>
             <line direction="BottomUp">
                 <reportElement x="125" y="133" width="1" height="80" forecolor="#3E7BFA" uuid="90330199-0e2e-4ca6-9b0a-8b10ddcae095">
@@ -193,36 +158,35 @@ FROM users u
                 <textElement verticalAlignment="Middle">
                     <font fontName="Serif" size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[Soekarno Hatta International Airport]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{departureAirportName}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="153" y="107" width="138" height="18" uuid="f9810029-305e-438f-8250-9ceeb2272dc6"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font size="9" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[Jakarta (CGK)]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{departureCityCode}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="122" y="15" width="153" height="30" uuid="55e311b7-60ab-44ce-a943-5653c8b34787"/>
                 <textElement>
                     <font size="14" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA["Garuda Indonesia"]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="280" y="15" width="100" height="30" uuid="dee8d93a-1f09-4d4a-a6b1-3b411bf45691"/>
                 <textElement>
                     <font size="14" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[ID - Boeing 777
-]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{airplaneCode}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="122" y="51" width="100" height="30" forecolor="#3E7BFA" uuid="f97f468b-5644-4320-a8da-75f7f7ffd280"/>
                 <textElement>
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA[Kelas Ekonomi]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{airplaneClass}]]></textFieldExpression>
             </textField>
             <line>
                 <reportElement x="2" y="238" width="551" height="1" uuid="c624314b-3a27-49ab-b3c1-5b16af7b6a22"/>
@@ -235,21 +199,21 @@ FROM users u
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 </reportElement>
-                <imageExpression><![CDATA["/src/ic_ticket.png"]]></imageExpression>
+                <imageExpression><![CDATA["reports/ic_ticket.png"]]></imageExpression>
             </image>
             <image>
                 <reportElement x="190" y="259" width="44" height="44" uuid="316cb46e-17c0-4a7a-8c42-8d985dc81176">
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 </reportElement>
-                <imageExpression><![CDATA["/src/ic_clock.png"]]></imageExpression>
+                <imageExpression><![CDATA["reports/ic_clock.png"]]></imageExpression>
             </image>
             <image>
                 <reportElement x="380" y="259" width="44" height="44" uuid="1361f539-1240-4025-bc66-944ea5908865">
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 </reportElement>
-                <imageExpression><![CDATA["/src/information-info_svgrepo.com.png"]]></imageExpression>
+                <imageExpression><![CDATA["reports/information-info_svgrepo.com.png"]]></imageExpression>
             </image>
             <staticText>
                 <reportElement x="56" y="263" width="116" height="34" forecolor="#86898B" uuid="5886d2a7-cc2c-484f-9b3d-09f884215697"/>
@@ -286,7 +250,7 @@ FROM users u
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="11" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[ABASA123]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{orderCode}]]></textFieldExpression>
             </textField>
             <staticText>
                 <reportElement x="404" y="5" width="148" height="40" uuid="52a2410c-bf3d-4229-a497-9f2f9091446d"/>
@@ -300,15 +264,14 @@ FROM users u
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[20 Oktober 2022
-]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{departureDate}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="153" y="127" width="88" height="17" forecolor="#757575" uuid="c066834b-bf3e-49f7-a449-59d6a169e77d"/>
                 <textElement verticalAlignment="Middle">
                     <font fontName="Serif" size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[Indonesia]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{departureCountry}]]></textFieldExpression>
             </textField>
             <line>
                 <reportElement x="1" y="90" width="551" height="1" uuid="6a1280d1-bccb-4885-a52f-8f216a8cd73a"/>
@@ -321,37 +284,35 @@ FROM users u
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="10"/>
                 </textElement>
-                <textFieldExpression><![CDATA[20:15
-]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{arrivalTime}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="1" y="202" width="100" height="17" uuid="64fd4ab7-b54d-4be3-820d-ea8104b86229"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[20 Oktober 2022
-]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{departureDate}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="153" y="200" width="164" height="11" forecolor="#757575" uuid="60e76b12-4466-4139-9b68-d906b4b59b95"/>
                 <textElement verticalAlignment="Middle">
                     <font fontName="Serif" size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[Soekarno Hatta International Airport]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{arrivalAirportName}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="153" y="187" width="138" height="18" uuid="d78c00db-79aa-4811-b9f1-77c6ade6bd63"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font size="9" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[Jakarta (CGK)]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{arrivalCityCode}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="153" y="207" width="88" height="17" forecolor="#757575" uuid="4d004409-5e0d-4eea-81fa-719103794ad5"/>
                 <textElement verticalAlignment="Middle">
                     <font fontName="Serif" size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[Indonesia]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{arrivalCountry}]]></textFieldExpression>
             </textField>
         </band>
     </pageHeader>
@@ -463,7 +424,7 @@ FROM users u
                 <textElement>
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA[1]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="40" y="0" width="120" height="40" uuid="d435c922-0a11-458a-9ad0-ce2da21825fd"/>
@@ -471,7 +432,7 @@ FROM users u
                 <textElement>
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA[Fajar TU]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{passengerName}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="160" y="0" width="80" height="40" uuid="bea5e627-fd43-4405-827a-c949d2ef61a7"/>
@@ -479,7 +440,7 @@ FROM users u
                 <textElement>
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA[Kelas Ekonomi]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{airplaneClass}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="240" y="0" width="210" height="40" uuid="2bd0004f-f7a6-49ca-b9e1-6eda4b5ba4f6"/>
@@ -487,7 +448,7 @@ FROM users u
                 <textElement>
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA[123123123]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{ticketNumber}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="450" y="0" width="62" height="40" uuid="3fb19286-b86e-4b49-985a-f29f28a89eb8"/>
@@ -495,8 +456,7 @@ FROM users u
                 <textElement>
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA[10
-]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{gate}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="513" y="0" width="38" height="40" uuid="088dcab8-0144-4f81-b4c1-0aa1f85fedcf"/>
@@ -504,7 +464,7 @@ FROM users u
                 <textElement>
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA[A 1]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{seat}]]></textFieldExpression>
             </textField>
         </band>
     </detail>
@@ -521,7 +481,7 @@ FROM users u
             </line>
             <image>
                 <reportElement x="2" y="22" width="50" height="50" uuid="a68f289f-5c8c-4615-948f-3c15520b7647"/>
-                <imageExpression><![CDATA["/src/hand-holding-smartphone_svgrepo.com.png"]]></imageExpression>
+                <imageExpression><![CDATA["reports/hand-holding-smartphone_svgrepo.com.png"]]></imageExpression>
             </image>
             <staticText>
                 <reportElement x="70" y="22" width="210" height="30" forecolor="#86898B" uuid="143a3fb7-2ee7-4098-b184-214ac0560809"/>
