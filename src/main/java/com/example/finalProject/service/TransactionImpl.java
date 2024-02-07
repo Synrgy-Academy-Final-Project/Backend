@@ -100,10 +100,13 @@ public class TransactionImpl {
                         Base64.getEncoder().encodeToString((midtransServerKey).getBytes()))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
-
         String midtransRedirectUrl = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
         ObjectMapper mapper = new ObjectMapper();
-        Map result = mapper.readValue(midtransRedirectUrl, Map.class);
+        Map midtrans = mapper.readValue(midtransRedirectUrl, Map.class);
+        PaymentMidtransReponse result = PaymentMidtransReponse.builder()
+                .token((String) midtrans.get("token"))
+                .redirect_url((String) midtrans.get("redirect_url"))
+                .orderId(savedTransaction.getId()).build();
 
         return response.suksesDTO(result);
     }
