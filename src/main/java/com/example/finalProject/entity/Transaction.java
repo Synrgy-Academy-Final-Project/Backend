@@ -41,7 +41,7 @@ public class Transaction extends AbstractDate {
 
     @NotBlank
     String url;
-    
+
     UUID airplaneId;
 
     @NotBlank
@@ -82,8 +82,7 @@ public class Transaction extends AbstractDate {
     @NotNull
     @Positive
     Integer totalSeat;
-
-    @NotNull
+    
     @Positive
     Integer priceFlight;
 
