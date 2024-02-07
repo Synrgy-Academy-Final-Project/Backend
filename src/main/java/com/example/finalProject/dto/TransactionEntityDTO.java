@@ -17,9 +17,6 @@ import java.util.UUID;
 public class TransactionEntityDTO {
     UUID id;
 
-    @NotNull
-    UUID userId;
-
     @NotBlank
     String companyName;
 

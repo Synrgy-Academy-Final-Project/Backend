@@ -2,6 +2,7 @@ package com.example.finalProject.controller;
 
 import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.dto.TransactionEntityDTO;
+import com.example.finalProject.exception.UserNotFoundException;
 import com.example.finalProject.service.TransactionImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,14 +43,14 @@ public class TransactionController {
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<ResponseDTO> addTransaction(@RequestBody @Validated TransactionEntityDTO transaction) throws IOException {
-        ResponseDTO result = transactionImpl.save(transaction);
+    public ResponseEntity<ResponseDTO> addTransaction(@RequestBody @Validated TransactionEntityDTO transaction, Principal principal) throws IOException, UserNotFoundException {
+        ResponseDTO result = transactionImpl.save( principal, transaction);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
     @PostMapping({"midtrans", "midtrans/"})
-    public ResponseEntity<ResponseDTO> addAndCreateMidtrans(@RequestBody @Validated TransactionEntityDTO transaction) throws IOException, InterruptedException {
-        ResponseDTO result = transactionImpl.createMidtransRequest(transaction);
+    public ResponseEntity<ResponseDTO> addAndCreateMidtrans(@RequestBody @Validated TransactionEntityDTO transaction, Principal principal ) throws IOException, InterruptedException, UserNotFoundException {
+        ResponseDTO result = transactionImpl.createMidtransRequest(transaction, principal);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 

@@ -20,7 +20,10 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "transactions")
+@Table(name = "transactions",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "order_code")
+        })
 @Where(clause = "deleted_date is null")
 public class Transaction extends AbstractDate {
     @Id
@@ -33,10 +36,12 @@ public class Transaction extends AbstractDate {
     @JoinColumn
     User user;
 
-    //    @NotNull
-//    @ManyToOne
-//    @JoinColumn
-//    Airplane airplane;
+    @NotBlank
+    String companyName;
+
+    @NotBlank
+    String url;
+    
     UUID airplaneId;
 
     @NotBlank
@@ -80,8 +85,14 @@ public class Transaction extends AbstractDate {
 
     @NotNull
     @Positive
+    Integer priceFlight;
+
+    @NotNull
+    @Positive
     Integer totalPrice;
 
+    @NotBlank
+    String orderCode;
 
     @ManyToOne
     @JoinColumn
