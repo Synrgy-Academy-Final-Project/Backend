@@ -7,8 +7,8 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class PaymentMidtransReponse {
+public class PaymentMidtransResponse {
     String token;
-    String redirect_url;
+    String redirectUrl;
     UUID orderId;
 }
