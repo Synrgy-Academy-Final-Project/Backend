@@ -1,6 +1,7 @@
 package com.example.finalProject.repository;
 
 import com.example.finalProject.dto.CheckRow;
+import com.example.finalProject.dto.HistoryTransactionDTO;
 import com.example.finalProject.entity.Transaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -84,5 +85,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             "and t.deleted_date is null \n" +
             "and a.deleted_date is null\n" +
             "and a2.deleted_date is null  ", nativeQuery = true)
-    List<Object[]> getDataHistoryTransaction(UUID userId, Pageable pageable);
+    Page<HistoryTransactionDTO> getDataHistoryTransaction(UUID userId, Pageable pageable);
 }
