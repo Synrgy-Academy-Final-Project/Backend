@@ -84,6 +84,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             "and p.deleted_date is null\n" +
             "and t.deleted_date is null \n" +
             "and a.deleted_date is null\n" +
-            "and a2.deleted_date is null  ", nativeQuery = true)
-    Page<HistoryTransactionDTO> getDataHistoryTransaction(UUID userId, Pageable pageable);
+            "and a2.deleted_date is null  ",
+            countQuery = "select count(*) from transaction t where t.user_id = ?1",
+            nativeQuery = true)
+    Page<Object[]> getDataHistoryTransaction(UUID userId, Pageable pageable);
 }

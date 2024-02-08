@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -343,7 +344,18 @@ public class TransactionServiceImpl implements TransactionService{
     public ResponseDTO transactionHistory(Principal principal, Pageable pageable) throws UserNotFoundException {
         try {
             User idUser = authenticationService.getIdUser(principal.getName());
-            return response.suksesDTO(transactionRepository.getDataHistoryTransaction(idUser.getId(), pageable));
+            Page<Object[]> dataHistoryTransaction = transactionRepository.getDataHistoryTransaction(idUser.getId(), pageable);
+
+            List<HistoryTransactionDTO> historyTransactionDTOS = dataHistoryTransaction.stream().map(array -> new HistoryTransactionDTO(
+                    (String) array[0],
+                    (Integer) array[1],
+                    (String) array[2],
+                    (String) array[3],
+                    (String) array[4],
+                    (String) array[5],
+                    (String) array[6]
+            )).toList();
+            return response.suksesDTO(new PageImpl<>(historyTransactionDTOS, pageable, dataHistoryTransaction.getTotalElements()));
         }catch (Exception e){
             return response.errorDTO(500, e.getMessage());
         }
