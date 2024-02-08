@@ -256,9 +256,10 @@ public class TransactionImpl {
                             transaction.setArrivalTime(request.getArrivalTime());
                         }
                         if (!request.getUserDetails().isEmpty()) {
-                            transaction.setTotalSeat(mature+baby);
-                            transaction.setSeatBaby(baby);
-                            transaction.setSeatMature(mature);
+                            transaction.setTotalSeat(mature);
+//                            transaction.setTotalSeat(mature+baby);
+//                            transaction.setSeatBaby(baby);
+//                            transaction.setSeatMature(mature);
                         }
                         Integer disc = 0;
                         if (!request.getCodePromo().isEmpty()){

@@ -32,7 +32,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             "and atf.id = ?3", nativeQuery = true)
     List<Object[]> getAirplaneConfirmDTOById(UUID airplaneId, UUID airplaneClassId, UUID airplaneTimeFlightId);
 
-    @Query(value = "select sum(t.seat_mature), t.departure_date, t.departure_time, t.arrival_date, t.arrival_time, t.airplane_id ,t.airplane_class_id , t.airplane_time_flight_id \n" +
+    @Query(value = "select sum(t.total_seat), t.departure_date, t.departure_time, t.arrival_date, t.arrival_time, t.airplane_id ,t.airplane_class_id , t.airplane_time_flight_id \n" +
             "from transactions t \n" +
             "where t.deleted_date is null \n" +
             "and t.airplane_id  = ?1\n" +
