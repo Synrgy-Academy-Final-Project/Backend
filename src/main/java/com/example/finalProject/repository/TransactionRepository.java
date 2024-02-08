@@ -65,4 +65,24 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             "and a.deleted_date is null\n" +
             "and p2.deleted_date is null", nativeQuery = true)
     List<Object[]> getDataTransactionUser(UUID transactionId, UUID userId);
+
+    @Query(value = "select t.order_code as \"orderCode\", t.total_price as \"totalPrice\", \n" +
+            "t.departure_code as \"departureCode\", concat(a.city, ' (',a.code,')') as \"departureCityCode\",\n" +
+            "t.arrival_code as \"arrivalCode\", concat(a2.city, ' (',a2.code,')') as \"arrivalCityCode\",\n" +
+            "case \n" +
+            "\twhen p.transaction_status = 'settlement'  then 'Pembayaran Berhasil'\n" +
+            "\twhen p.transaction_status = 'pending' then 'Menunggu Pembayaran'\n" +
+            "\twhen p.transaction_status = 'failure' then 'Pembayaran Tidak Berhasil'\n" +
+            "\twhen p.transaction_status = 'refund' then 'Pengembalian Pembayaran'\n" +
+            "end as \"transactionStatus\"\n" +
+            "from payments p \n" +
+            "join transactions t on p.transaction_id = t.id \n" +
+            "join airports a on a.code = t.departure_code \n" +
+            "join airports a2 on a2.code = t.arrival_code \n" +
+            "where t.user_id = ?1\n" +
+            "and p.deleted_date is null\n" +
+            "and t.deleted_date is null \n" +
+            "and a.deleted_date is null\n" +
+            "and a2.deleted_date is null  ", nativeQuery = true)
+    List<Object[]> getDataHistoryTransaction(UUID userId, Pageable pageable);
 }

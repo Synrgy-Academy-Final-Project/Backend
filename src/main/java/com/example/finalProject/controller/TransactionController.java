@@ -3,8 +3,7 @@ package com.example.finalProject.controller;
 import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.dto.TransactionEntityDTO;
 import com.example.finalProject.exception.UserNotFoundException;
-import com.example.finalProject.service.TransactionImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.finalProject.service.transaction.TransactionServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -26,7 +23,7 @@ import java.util.UUID;
 @Slf4j
 public class TransactionController {
     @Autowired
-    TransactionImpl transactionImpl;
+    TransactionServiceImpl transactionImpl;
 
     @GetMapping({"", "/"})
     public ResponseEntity<ResponseDTO> searchTransaction(@RequestParam(defaultValue = "0") int pageNumber,
@@ -51,6 +48,21 @@ public class TransactionController {
     @PostMapping({"midtrans", "midtrans/"})
     public ResponseEntity<ResponseDTO> addAndCreateMidtrans(@RequestBody @Validated TransactionEntityDTO transaction, Principal principal ) throws IOException, InterruptedException, UserNotFoundException {
         ResponseDTO result = transactionImpl.createMidtransRequest(transaction, principal);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+    }
+
+    @GetMapping({"history", "history/"})
+    public ResponseEntity<ResponseDTO> transactionHistory(@RequestParam(defaultValue = "0") int pageNumber,
+                                                         @RequestParam(defaultValue = "100") int pageSize,
+                                                         @RequestParam(defaultValue = "") String sortBy,
+                                                          Principal principal) throws UserNotFoundException {
+        Pageable pageable;
+        if (sortBy.isEmpty()){
+            pageable = PageRequest.of(pageNumber, pageSize);
+        }else{
+            pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        }
+        ResponseDTO result = transactionImpl.transactionHistory(principal, pageable);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 

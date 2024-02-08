@@ -1,4 +1,4 @@
-package com.example.finalProject.service;
+package com.example.finalProject.service.transaction;
 
 import com.example.finalProject.dto.*;
 //import com.example.finalProject.entity.Flight;
@@ -38,7 +38,7 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Service
-public class TransactionImpl {
+public class TransactionServiceImpl implements TransactionService{
 
     private final Response response;
     private final TransactionRepository transactionRepository;
@@ -57,6 +57,7 @@ public class TransactionImpl {
     @Value("${midtrans.server.key}")
     private String midtransServerKey;
 
+    @Override
     public ResponseDTO searchAll(Pageable pageable) {
         return response.suksesDTO(transactionRepository.findAll(pageable));
     }
@@ -107,6 +108,7 @@ public class TransactionImpl {
         return response.suksesDTO(result);
     }
 
+    @Override
     public ResponseDTO save(Principal principal, TransactionEntityDTO request) throws IOException, UserNotFoundException {
         try {
             ModelMapper modelMapper = new ModelMapper();
@@ -334,6 +336,27 @@ public class TransactionImpl {
         }
 
         return null;
+    }
+
+    @Override
+    public ResponseDTO transactionHistory(Principal principal, Pageable pageable) throws UserNotFoundException {
+        try {
+            User idUser = authenticationService.getIdUser(principal.getName());
+            List<Object[]> dataHistoryTransaction = transactionRepository.getDataHistoryTransaction(idUser.getId(), pageable);
+
+            List<HistoryTransactionDTO> historyTransactionDTOS = dataHistoryTransaction.stream().map(array -> new HistoryTransactionDTO(
+                    (String) array[0],
+                    (Integer) array[1],
+                    (String) array[2],
+                    (String) array[3],
+                    (String) array[4],
+                    (String) array[5],
+                    (String) array[6]
+            )).toList();
+            return response.suksesDTO(historyTransactionDTOS);
+        }catch (Exception e){
+            return response.errorDTO(500, e.getMessage());
+        }
     }
 
 //    @Transactional
