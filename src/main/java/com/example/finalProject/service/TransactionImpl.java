@@ -109,13 +109,16 @@ public class TransactionImpl {
 
     public ResponseDTO save(Principal principal, TransactionEntityDTO request) throws IOException, UserNotFoundException {
         try {
+            ModelMapper modelMapper = new ModelMapper();
+            Transaction transaction = modelMapper.map(request, Transaction.class);
+
             List<UserDetailsRequest> userDetails = request.getUserDetails();
 
             System.out.println(userDetails.size());
             userDetails.stream().forEach(additionalUserDTO -> System.out.println(additionalUserDTO.getDateOfBirth()));
 
             List<DataMatureDTO> dataMature = new ArrayList<>();
-            Integer child = 0;
+            Integer baby = 0;
             Integer mature = 0;
             Integer totalAdditionalBaggage = 0;
             for (int i = 0; i<userDetails.size(); i++){
@@ -138,14 +141,12 @@ public class TransactionImpl {
 
                 }
                 else{
-                    child++;
+                    baby++;
                 }
             }
             System.out.println(totalAdditionalBaggage);
             System.out.println(dataMature);
-            System.out.println(mature +" "+ child);
-            ModelMapper modelMapper = new ModelMapper();
-            Transaction transaction = modelMapper.map(request, Transaction.class);
+            System.out.println(mature +" "+ baby);
 //        Transaction transaction = new Transaction();
 
             if (!request.getAirplaneId().equals(null) && !request.getAirplaneClassId().equals(null) && !request.getAirplaneTimeFLightId().equals(null)) {
@@ -255,7 +256,9 @@ public class TransactionImpl {
                             transaction.setArrivalTime(request.getArrivalTime());
                         }
                         if (!request.getUserDetails().isEmpty()) {
-                            transaction.setTotalSeat(mature);
+                            transaction.setTotalSeat(mature+baby);
+                            transaction.setSeatBaby(baby);
+                            transaction.setSeatMature(mature);
                         }
                         Integer disc = 0;
                         if (!request.getCodePromo().isEmpty()){
@@ -267,13 +270,13 @@ public class TransactionImpl {
                             disc = promotionByCode.get().getDiscount();
                         }
                         System.out.println("disc " + disc);
-                        Integer totalTicket = (mature * request.getPriceFlight()) + (child * (request.getPriceFlight()-(request.getPriceFlight() * 20/100))) + totalAdditionalBaggage;
+                        Integer totalTicket = (mature * request.getPriceFlight()) + (baby * (request.getPriceFlight()-(request.getPriceFlight() * 20/100))) + totalAdditionalBaggage;
 
                         System.out.println("total tiket " + totalTicket);
                         Integer total = totalTicket - (totalTicket * disc/100);
                         System.out.println("total "  + total);
                         transaction.setTotalMatureTransaction((mature * request.getPriceFlight()));
-                        transaction.setTotalBabyTransaction((child * (request.getPriceFlight()-(request.getPriceFlight() * 20/100))));
+                        transaction.setTotalBabyTransaction((baby * (request.getPriceFlight()-(request.getPriceFlight() * 20/100))));
                         transaction.setTotalPrice(total);
                         transaction.setOrderCode(otpUtil.generatorderCode());
                         Transaction result = transactionRepository.save(transaction);

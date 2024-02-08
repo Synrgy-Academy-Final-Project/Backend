@@ -87,7 +87,11 @@ public class Transaction extends AbstractDate {
     @Positive
     Integer priceFlight;
 
+    Integer seatMature;
+
     Integer totalMatureTransaction;
+
+    Integer seatBaby;
 
     Integer totalBabyTransaction;
 

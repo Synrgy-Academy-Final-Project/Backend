@@ -180,7 +180,9 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                     )).toList();
                     // System.out.println("masuk");
                     // System.out.println(Math.toIntExact(totalSeatData.get(0).getTotalSeatTransaction()));
-                    seat = Math.toIntExact(totalSeatData.get(0).getTotalSeatTransaction());
+                    if (totalSeatData.get(0).getTotalSeatTransaction() != null){
+                        seat = Math.toIntExact(totalSeatData.get(0).getTotalSeatTransaction());
+                    }
                 }
                 // System.out.println("iter " + i);
                 // System.out.println(seat);

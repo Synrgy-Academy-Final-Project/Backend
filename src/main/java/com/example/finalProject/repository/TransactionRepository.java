@@ -17,15 +17,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             nativeQuery = true)
     public Page<Transaction> searchAll(String code, String name, Pageable pageable);
 
-//    @Query("select new com.example.finalProject.dto.ETicketDTO('fullName', a3.name, a3.code, " +
-//            "f1.airplaneClass, f1.departureDate," +
-//            "a1.name, a1.code, a1.city, a1.country, " +
-//            "f1.arrivalDate, a2.name, a2.code, a2.city, a2.country," +
-//            "t2.id, t2.gate, t2.seat) from User u " +
-//            "JOIN u.transaction t JOIN t.flight1 f1 JOIN f1.fromAirport a1 JOIN f1.toAirport a2 join f1.airplane a3 " +
-//            "join a3.company c join t.ticket t2 where u.id=:userId")
-//    List<ETicketDTO> getAllUserTransaction(@Param("userId") UUID userId);
-
     @Query(value = "select c.id, c.\"name\", c.url, a.id, a.\"name\", a.code, ac.id ,ac.airplane_class, ac.capacity, atf.id, atf.flight_time  \n" +
             "from airplanes a \n" +
             "join companies c on a.company_id = c.id\n" +
@@ -41,16 +32,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             "and atf.id = ?3", nativeQuery = true)
     List<Object[]> getAirplaneConfirmDTOById(UUID airplaneId, UUID airplaneClassId, UUID airplaneTimeFlightId);
 
-//    @Query(value = "select sum(t.total_seat), t.airplane_id ,t.airplane_class_id , t.airplane_time_flight_id \n" +
-//            "from transactions t \n" +
-//            "where t.deleted_date is null \n" +
-//            "and t.airplane_id = ?1\n" +
-//            "and t.airplane_class_id  = ?2\n" +
-//            "and t.airplane_time_flight_id  = ?3\n" +
-//            "group by t.airplane_id, t.airplane_class_id , t.airplane_time_flight_id ", nativeQuery = true)
-//    List<Object[]> getTotalSeatTransactionAirplane(UUID airplaneId, UUID airplaneClassId, UUID airplaneTimeFlightId);
-
-    @Query(value = "select sum(t.total_seat), t.departure_date, t.departure_time, t.arrival_date, t.arrival_time, t.airplane_id ,t.airplane_class_id , t.airplane_time_flight_id \n" +
+    @Query(value = "select sum(t.seat_mature), t.departure_date, t.departure_time, t.arrival_date, t.arrival_time, t.airplane_id ,t.airplane_class_id , t.airplane_time_flight_id \n" +
             "from transactions t \n" +
             "where t.deleted_date is null \n" +
             "and t.airplane_id  = ?1\n" +
