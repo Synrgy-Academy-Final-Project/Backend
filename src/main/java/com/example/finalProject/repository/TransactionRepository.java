@@ -43,7 +43,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     List<Object[]> getTotalSeatTransactionAirplane(UUID airplaneId, UUID airplaneClassId, UUID airplaneTimeFlightId, LocalDate date);
 
 
-    @Query("select new com.example.finalProject.dto.CheckRow(count (*)) from Transaction ac ")
+    @Query("select new com.example.finalProject.dto.CheckRow(count (*)) from Transaction ac where ac.deletedDate is null ")
     CheckRow checkRow();
 
     @Query(value = "select t.company_name as \"companyName\", t.url as \"companyUrl\", t.airplane_class as \"airplaneClass\", concat('ID - ',t.airplane_code)  as \"airplaneCode\", \n" +
