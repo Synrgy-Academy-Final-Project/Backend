@@ -206,9 +206,7 @@ public class TransactionImpl {
                 )).toList();
                 Long totalSeat = 0L;
                 if (!totalSeatData.isEmpty()){
-                    if (totalSeatData.get(0).getTotalSeatTransaction() != null){
-                        totalSeat = totalSeatData.get(0).getTotalSeatTransaction();
-                    }
+                    totalSeat = totalSeatData.get(0).getTotalSeatTransaction();
                 }
 
                 User idUser = authenticationService.getIdUser(principal.getName());
