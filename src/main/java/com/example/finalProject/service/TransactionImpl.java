@@ -268,9 +268,12 @@ public class TransactionImpl {
                         }
                         System.out.println("disc " + disc);
                         Integer totalTicket = (mature * request.getPriceFlight()) + (child * (request.getPriceFlight()-(request.getPriceFlight() * 20/100))) + totalAdditionalBaggage;
+
                         System.out.println("total tiket " + totalTicket);
                         Integer total = totalTicket - (totalTicket * disc/100);
                         System.out.println("total "  + total);
+                        transaction.setTotalMatureTransaction((mature * request.getPriceFlight()));
+                        transaction.setTotalBabyTransaction((child * (request.getPriceFlight()-(request.getPriceFlight() * 20/100))));
                         transaction.setTotalPrice(total);
                         transaction.setOrderCode(otpUtil.generatorderCode());
                         Transaction result = transactionRepository.save(transaction);
