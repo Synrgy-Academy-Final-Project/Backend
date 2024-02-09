@@ -5,6 +5,7 @@ import com.example.finalProject.dto.ErrorDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -112,5 +113,14 @@ public class ApplicationExceptionHandler {
         errorMap.put("message",ex.getMessage());
         errorMap.put("status", HttpStatus.BAD_REQUEST.value());
         return errorMap;
+    }
+
+    @ExceptionHandler(HttpMessageNotWritableException.class)
+    public ResponseEntity<String> handleHttpMessageNotWritableException(HttpMessageNotWritableException ex) {
+        // Log the exception or perform any necessary error handling
+
+        // Return an error response to the client
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error writing response: " + ex.getMessage());
     }
 }

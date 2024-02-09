@@ -210,7 +210,10 @@ public class TransactionServiceImpl implements TransactionService{
                 )).toList();
                 Long totalSeat = 0L;
                 if (!totalSeatData.isEmpty()){
-                    totalSeat = totalSeatData.get(0).getTotalSeatTransaction();
+                    if (totalSeatData.get(0).getTotalSeatTransaction() != null){
+                        totalSeat = totalSeatData.get(0).getTotalSeatTransaction();
+                    }
+
                 }
 
                 User idUser = authenticationService.getIdUser(principal.getName());
@@ -260,10 +263,10 @@ public class TransactionServiceImpl implements TransactionService{
                             transaction.setArrivalTime(request.getArrivalTime());
                         }
                         if (!request.getUserDetails().isEmpty()) {
-                            transaction.setTotalSeat(mature);
-//                            transaction.setTotalSeat(mature+baby);
-//                            transaction.setSeatBaby(baby);
-//                            transaction.setSeatMature(mature);
+//                            transaction.setTotalSeat(mature);
+                            transaction.setTotalSeat(mature+baby);
+                            transaction.setSeatBaby(baby);
+                            transaction.setSeatMature(mature);
                         }
                         Integer disc = 0;
                         if (!request.getCodePromo().isEmpty()){
@@ -275,13 +278,15 @@ public class TransactionServiceImpl implements TransactionService{
                             disc = promotionByCode.get().getDiscount();
                         }
                         System.out.println("disc " + disc);
-                        Integer totalTicket = (mature * request.getPriceFlight()) + (baby * (request.getPriceFlight()-(request.getPriceFlight() * 20/100))) + totalAdditionalBaggage;
+                        Integer totalTicket = ((mature * request.getPriceFlight()) + (baby * (request.getPriceFlight()-(request.getPriceFlight() * 20/100))) + totalAdditionalBaggage);
 
                         System.out.println("total tiket " + totalTicket);
                         Integer total = totalTicket - (totalTicket * disc/100);
                         System.out.println("total "  + total);
-                        transaction.setTotalMatureTransaction((mature * request.getPriceFlight()));
+                        transaction.setTotalMatureTransaction( (mature * request.getPriceFlight()));
                         transaction.setTotalBabyTransaction((baby * (request.getPriceFlight()-(request.getPriceFlight() * 20/100))));
+                        transaction.setDiscount(disc);
+                        transaction.setTotalDiscount(totalTicket * disc/100);
                         transaction.setTotalPrice(total);
                         transaction.setOrderCode(otpUtil.generatorderCode());
                         Transaction result = transactionRepository.save(transaction);

@@ -1,10 +1,13 @@
 package com.example.finalProject.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Time;
 import java.util.Date;
+
+@AllArgsConstructor
 @Data
 @Builder
 public class ReportETicketDTO {
@@ -24,29 +27,29 @@ public class ReportETicketDTO {
     private String arrivalAirportName;
     private String arrivalCountry;
     private String passengerName;
-    private String ticketNumber;
-    private String gate;
-    private String seat;
+    private Integer baggage;
+    private Integer additionalBaggage;
+    private String airplaneNameCodeDate;
+    private Integer priceFlight;
+    private Integer seatBaby;
+    private Integer totalBabyTransaction;
+    private Integer seatMature;
+    private Integer totalMatureTransaction;
+    private Long qtyItem5;
+    private Integer priceItem5;
+    private Long subTotPriceItem5;
+    private Long qtyItem10;
+    private Integer priceItem10;
+    private Long subTotPriceItem10;
+    private Long qtyItem15;
+    private Integer priceItem15;
+    private Long subTotPriceItem15;
+    private Long qtyItem20;
+    private Integer priceItem20;
+    private Long subTotPriceItem20;
+    private String codePromo;
+    private Integer totalDiscount;
+    private String discount;
+    private Integer total;
 
-    public ReportETicketDTO(String companyName, String companyUrl, String airplaneClass, String airplaneCode, String orderCode, Time departureTime, Date departureDate, Time arrivalTime, Date arrivalDate, String departureCityCode, String departureAirportName, String departureCountry, String arrivalCityCode, String arrivalAirportName, String arrivalCountry, String passengerName, String ticketNumber, String gate, String seat) {
-        this.companyName = companyName;
-        this.companyUrl = companyUrl;
-        this.airplaneClass = airplaneClass;
-        this.airplaneCode = airplaneCode;
-        this.orderCode = orderCode;
-        this.departureTime = departureTime;
-        this.departureDate = departureDate;
-        this.arrivalTime = arrivalTime;
-        this.arrivalDate = arrivalDate;
-        this.departureCityCode = departureCityCode;
-        this.departureAirportName = departureAirportName;
-        this.departureCountry = departureCountry;
-        this.arrivalCityCode = arrivalCityCode;
-        this.arrivalAirportName = arrivalAirportName;
-        this.arrivalCountry = arrivalCountry;
-        this.passengerName = passengerName;
-        this.ticketNumber = ticketNumber;
-        this.gate = gate;
-        this.seat = seat;
-    }
 }

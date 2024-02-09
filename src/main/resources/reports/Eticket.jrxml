@@ -1,91 +1,205 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a4151971-010f-4a6c-8bf0-41cb4f8bf19a">
-
-    <field name="airplaneName" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airplane_name"/>
-        <property name="com.jaspersoft.studio.field.label" value="airplane_name"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airplanes"/>
+    <field name="companyUrl" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="companyUrl"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="companyUrl"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airplanes"/>-->
     </field>
-    <field name="airplaneCode" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airplane_code"/>
-        <property name="com.jaspersoft.studio.field.label" value="airplane_code"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airplanes"/>
+    <field name="companyName" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="airplane_code"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="airplane_code"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airplanes"/>-->
     </field>
     <field name="airplaneClass" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airplane_class"/>
-        <property name="com.jaspersoft.studio.field.label" value="airplane_class"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>
+        <!--        <property name="com.jaspersoft.studio.field.name" value="airplane_class"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="airplane_class"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>-->
     </field>
-    <field name="departureDate" class="java.sql.Timestamp">
-        <property name="com.jaspersoft.studio.field.name" value="departure_date"/>
-        <property name="com.jaspersoft.studio.field.label" value="departure_date"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>
+    <field name="airplaneCode" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="departure_date"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="departure_date"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>-->
     </field>
-    <field name="airportNameDeparture" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_name_departure"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_name_departure"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="orderCode" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="departure_date"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="departure_date"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>-->
     </field>
-    <field name="airportCodeDeparture" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_code_departure"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_code_departure"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="departureTime" class="java.sql.Time">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="airport_name_departure"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="airport_name_departure"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="airportCityDeparture" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_city_departure"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_city_departure"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="departureDate" class="java.util.Date">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="airport_code_departure"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="airport_code_departure"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="airportCountryDeparture" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_country_departure"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_country_departure"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="arrivalTime" class="java.sql.Time">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="airport_city_departure"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="airport_city_departure"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="arrivalDate" class="java.sql.Timestamp">
-        <property name="com.jaspersoft.studio.field.name" value="arrival_date"/>
-        <property name="com.jaspersoft.studio.field.label" value="arrival_date"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>
+    <field name="arrivalDate" class="java.util.Date">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="airport_country_departure"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="airport_country_departure"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="airportNameArrival" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_name_arrival"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_name_arrival"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="departureCityCode" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="airport_name_arrival"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="airport_name_arrival"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="airportCodeArrival" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_code_arrival"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_code_arrival"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="departureAirportName" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="airport_code_arrival"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="airport_code_arrival"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="airportCityArrival" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="airport_city_arrival"/>
-        <property name="com.jaspersoft.studio.field.label" value="airport_city_arrival"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>
+    <field name="departureCountry" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="airport_city_arrival"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="airport_city_arrival"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-<!--    <field name="airportCountryArrival" class="java.lang.String">-->
-<!--        <property name="com.jaspersoft.studio.field.name" value="airport_country_arrival"/>-->
-<!--        <property name="com.jaspersoft.studio.field.label" value="airport_country_arrival"/>-->
-<!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
-<!--    </field>-->
-    <field name="ticketNumber" class="java.util.UUID">
-        <property name="com.jaspersoft.studio.field.name" value="id"/>
-        <property name="com.jaspersoft.studio.field.label" value="id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>
+    <field name="arrivalCityCode" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="airport_country_arrival"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="airport_country_arrival"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="gate" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="gate"/>
-        <property name="com.jaspersoft.studio.field.label" value="gate"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>
+    <field name="arrivalAirportName" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="id"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="id"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>-->
     </field>
-    <field name="seat" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="seat"/>
-        <property name="com.jaspersoft.studio.field.label" value="seat"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>
+    <field name="arrivalCountry" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="gate"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="gate"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>-->
     </field>
-    <field name="fullName" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="full_name"/>
-        <property name="com.jaspersoft.studio.field.label" value="full_name"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>
+    <field name="passengerName" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="seat"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="seat"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="tickets"/>-->
+    </field>
+    <field name="baggage" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="additionalBaggage" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="airplaneNameCodeDate" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="priceFlight" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="seatBaby" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="totalBabyTransaction" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="seatMature" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="totalMatureTransaction" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="qtyItem5" class="java.lang.Long">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="priceItem5" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="subTotPriceItem5" class="java.lang.Long">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="qtyItem10" class="java.lang.Long">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="priceItem10" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="subTotPriceItem10" class="java.lang.Long">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="qtyItem15" class="java.lang.Long">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="priceItem15" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="subTotPriceItem15" class="java.lang.Long">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="qtyItem20" class="java.lang.Long">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="priceItem20" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="subTotPriceItem20" class="java.lang.Long">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="codePromo" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="totalDiscount" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="discount" class="java.lang.String">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
+    <field name="total" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
     </field>
     <background>
         <band splitType="Stretch"/>
@@ -94,21 +208,21 @@
         <band height="100" splitType="Stretch">
             <image>
                 <reportElement x="0" y="0" width="80" height="80" uuid="feba5d60-0293-43ab-b2e5-301d9e54ca93"/>
-                <imageExpression><![CDATA["reports/logo.png"]]></imageExpression>
+                <imageExpression><![CDATA["reports/Group 2 (1)_pixian_ai.png"]]></imageExpression>
             </image>
             <staticText>
-                <reportElement x="104" y="-17" width="210" height="86" uuid="990b28ec-1c80-4765-8fc5-168ba2fd28ab"/>
+                <reportElement x="177" y="-17" width="210" height="86" uuid="990b28ec-1c80-4765-8fc5-168ba2fd28ab"/>
                 <box>
                     <pen lineColor="#000000"/>
                 </box>
-                <textElement textAlignment="Left" verticalAlignment="Middle">
+                <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="24"/>
                 </textElement>
                 <text><![CDATA[E-Ticket / E-Tiket]]></text>
             </staticText>
             <staticText>
-                <reportElement x="104" y="47" width="220" height="30" uuid="d92115b1-3420-44bc-a4c1-0ce64ec46df0"/>
-                <textElement textAlignment="Left" verticalAlignment="Top">
+                <reportElement x="171" y="47" width="220" height="30" uuid="d92115b1-3420-44bc-a4c1-0ce64ec46df0"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="14"/>
                 </textElement>
                 <text><![CDATA[Departure Flight / Penerbangan Pergi]]></text>
@@ -116,141 +230,194 @@
         </band>
     </title>
     <pageHeader>
-        <band height="232" splitType="Stretch">
+        <band height="332" splitType="Stretch">
             <image>
-                <reportElement x="10" y="-5" width="100" height="61" uuid="b3728179-c002-4720-9e47-f11a96e22668"/>
-                <imageExpression><![CDATA["reports/Garuda logo.png"]]></imageExpression>
+                <reportElement x="1" y="10" width="100" height="61" uuid="b3728179-c002-4720-9e47-f11a96e22668"/>
+                <imageExpression><![CDATA[$F{companyUrl}]]></imageExpression>
             </image>
             <textField>
-                <reportElement x="110" y="13" width="100" height="30" uuid="03521405-9306-4ad5-b4ab-988a87bf88af"/>
-                <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="14"/>
+                <reportElement x="1" y="109" width="100" height="20" uuid="03521405-9306-4ad5-b4ab-988a87bf88af"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{departureDate}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{departureTime}]]></textFieldExpression>
             </textField>
-            <textField>
-                <reportElement x="425" y="13" width="100" height="30" uuid="8ca7a093-0d7d-4aeb-9dba-2232ddce7ae2"/>
-                <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="14"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{arrivalDate}]]></textFieldExpression>
-            </textField>
-            <line>
-                <reportElement x="275" y="60" width="100" height="1" uuid="90330199-0e2e-4ca6-9b0a-8b10ddcae095">
+            <line direction="BottomUp">
+                <reportElement x="125" y="133" width="1" height="80" forecolor="#3E7BFA" uuid="90330199-0e2e-4ca6-9b0a-8b10ddcae095">
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 </reportElement>
                 <graphicElement>
-                    <pen lineWidth="2.0"/>
+                    <pen lineWidth="2.0" lineStyle="Dashed"/>
                 </graphicElement>
             </line>
             <ellipse>
-                <reportElement x="265" y="55" width="10" height="11" backcolor="#030303" uuid="54acfb9f-a8fe-45c4-807e-b6af7a943d7b"/>
+                <reportElement x="120" y="120" width="10" height="11" forecolor="#3E7BFA" backcolor="#3E7BFA" uuid="54acfb9f-a8fe-45c4-807e-b6af7a943d7b"/>
             </ellipse>
             <ellipse>
-                <reportElement x="375" y="55" width="10" height="11" backcolor="#030303" uuid="16d2df37-e55d-4a6a-85b6-e6ed6412eada"/>
+                <reportElement x="120" y="208" width="10" height="11" forecolor="#3E7BFA" backcolor="#3E7BFA" uuid="16d2df37-e55d-4a6a-85b6-e6ed6412eada"/>
             </ellipse>
             <textField>
-                <reportElement x="112" y="34" width="138" height="30" uuid="497644e3-1985-4300-88c3-0bc129590f18"/>
+                <reportElement x="153" y="120" width="164" height="11" forecolor="#757575" uuid="d65c4b57-8ffb-4e82-97bf-6671344dfe00"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Serif" size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{departureAirportName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="153" y="107" width="138" height="18" uuid="f9810029-305e-438f-8250-9ceeb2272dc6"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="13" isBold="true"/>
+                    <font size="9" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{airportCityDeparture} + " (" + $F{airportCodeDeparture} + ")"]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{departureCityCode}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="112" y="55" width="100" height="30" uuid="d65c4b57-8ffb-4e82-97bf-6671344dfe00"/>
-                <textElement verticalAlignment="Middle">
-                    <font size="14"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{airportNameDeparture}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="112" y="77" width="100" height="30" uuid="86268c16-af32-4374-813b-dc97a89ed968"/>
-                <textElement verticalAlignment="Middle">
-                    <font size="14"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{airportCountryDeparture}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="426" y="77" width="100" height="30" uuid="0cc1683e-aade-47b8-9afd-f73c281914cb"/>
-                <textElement verticalAlignment="Middle">
-                    <font size="14"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{airportCountryDeparture}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="426" y="55" width="100" height="30" uuid="a5f3c5ad-6d21-42a6-98d0-5eb89916d409"/>
-                <textElement verticalAlignment="Middle">
-                    <font size="14"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{airportNameArrival}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="425" y="34" width="138" height="30" uuid="f9810029-305e-438f-8250-9ceeb2272dc6"/>
-                <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="13" isBold="true"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{airportCityArrival} + " (" + $F{airportCodeArrival} + ")"]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="10" y="48" width="100" height="30" uuid="55e311b7-60ab-44ce-a943-5653c8b34787"/>
+                <reportElement x="114" y="10" width="153" height="30" uuid="55e311b7-60ab-44ce-a943-5653c8b34787"/>
                 <textElement>
-                    <font size="12"/>
+                    <font size="14" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{airplaneName}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="10" y="68" width="100" height="30" uuid="dee8d93a-1f09-4d4a-a6b1-3b411bf45691"/>
+                <reportElement x="114" y="30" width="128" height="30" uuid="dee8d93a-1f09-4d4a-a6b1-3b411bf45691"/>
                 <textElement>
-                    <font size="12"/>
+                    <font size="14" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA["ID" + " - " + $F{airplaneCode}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{airplaneCode}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="10" y="87" width="100" height="30" uuid="f97f468b-5644-4320-a8da-75f7f7ffd280"/>
+                <reportElement x="115" y="51" width="100" height="30" forecolor="#3E7BFA" uuid="f97f468b-5644-4320-a8da-75f7f7ffd280"/>
                 <textElement>
                     <font size="12"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{airplaneClass}]]></textFieldExpression>
             </textField>
             <line>
-                <reportElement x="2" y="130" width="551" height="1" uuid="c624314b-3a27-49ab-b3c1-5b16af7b6a22"/>
+                <reportElement x="2" y="238" width="551" height="1" uuid="c624314b-3a27-49ab-b3c1-5b16af7b6a22"/>
+                <graphicElement>
+                    <pen lineStyle="Dashed" lineColor="#E0E0E0"/>
+                </graphicElement>
             </line>
             <image>
-                <reportElement x="0" y="151" width="50" height="50" uuid="26d2b299-7bab-49f3-aed6-65a0e21f9e28"/>
-                <imageExpression><![CDATA["reports/ticket.png"]]></imageExpression>
+                <reportElement x="0" y="259" width="44" height="44" uuid="26d2b299-7bab-49f3-aed6-65a0e21f9e28">
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <imageExpression><![CDATA["reports/ic_ticket.png"]]></imageExpression>
             </image>
             <image>
-                <reportElement x="190" y="153" width="50" height="50" uuid="316cb46e-17c0-4a7a-8c42-8d985dc81176"/>
-                <imageExpression><![CDATA["reports/clock.png"]]></imageExpression>
+                <reportElement x="190" y="259" width="44" height="44" uuid="316cb46e-17c0-4a7a-8c42-8d985dc81176">
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <imageExpression><![CDATA["reports/ic_clock.png"]]></imageExpression>
             </image>
             <image>
-                <reportElement x="380" y="153" width="50" height="50" uuid="1361f539-1240-4025-bc66-944ea5908865"/>
-                <imageExpression><![CDATA["reports/info.png"]]></imageExpression>
+                <reportElement x="380" y="259" width="44" height="44" uuid="1361f539-1240-4025-bc66-944ea5908865">
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <imageExpression><![CDATA["reports/information-info_svgrepo.com.png"]]></imageExpression>
             </image>
             <staticText>
-                <reportElement x="60" y="147" width="116" height="58" uuid="5886d2a7-cc2c-484f-9b3d-09f884215697"/>
+                <reportElement x="56" y="263" width="116" height="34" forecolor="#86898B" uuid="5886d2a7-cc2c-484f-9b3d-09f884215697"/>
                 <textElement>
-                    <font size="11"/>
+                    <font size="9"/>
                 </textElement>
                 <text><![CDATA[Tunjukkan e-tiket dan identitas para penumpang saat check-in]]></text>
             </staticText>
             <staticText>
-                <reportElement x="250" y="149" width="116" height="58" uuid="8cf0940f-aff4-4f47-b295-61a9fcf89294"/>
+                <reportElement x="248" y="260" width="116" height="42" forecolor="#86898B" uuid="8cf0940f-aff4-4f47-b295-61a9fcf89294"/>
                 <textElement>
-                    <font size="11"/>
+                    <font size="9"/>
                 </textElement>
                 <text><![CDATA[Check-in paling lambat 90 menit sebelum keberangkatan]]></text>
             </staticText>
             <staticText>
-                <reportElement x="440" y="149" width="116" height="58" uuid="d5be8434-cdac-42d3-a7df-c4ba892b3fbc"/>
+                <reportElement x="439" y="264" width="116" height="32" forecolor="#86898B" uuid="d5be8434-cdac-42d3-a7df-c4ba892b3fbc"/>
                 <textElement>
-                    <font size="11"/>
+                    <font size="9"/>
                 </textElement>
                 <text><![CDATA[Waktu tertera adalah waktu bandara setempat]]></text>
             </staticText>
             <line>
-                <reportElement x="2" y="220" width="551" height="1" uuid="9559a4a0-b206-49bf-a503-bc89237b89e4"/>
+                <reportElement x="2" y="320" width="551" height="1" uuid="9559a4a0-b206-49bf-a503-bc89237b89e4"/>
+                <graphicElement>
+                    <pen lineStyle="Dashed" lineColor="#E0E0E0"/>
+                </graphicElement>
             </line>
+            <rectangle radius="25">
+                <reportElement x="404" y="5" width="150" height="70" forecolor="#3E7BFA" uuid="b82e860e-cd03-4104-b98c-87d72b874a47"/>
+            </rectangle>
+            <textField>
+                <reportElement x="404" y="42" width="150" height="30" forecolor="#3E7BFA" uuid="cce87ea6-61fc-4a34-8293-2142a06b1472"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="11" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{orderCode}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="404" y="5" width="148" height="40" uuid="52a2410c-bf3d-4229-a497-9f2f9091446d"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Order Code / Kode Pemesanan]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="1" y="123" width="100" height="17" uuid="d603fd6e-21fd-4291-a2f0-d6e97d6487f2"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{departureDate}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="153" y="127" width="88" height="17" forecolor="#757575" uuid="c066834b-bf3e-49f7-a449-59d6a169e77d"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Serif" size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{departureCountry}]]></textFieldExpression>
+            </textField>
+            <line>
+                <reportElement x="1" y="90" width="551" height="1" uuid="6a1280d1-bccb-4885-a52f-8f216a8cd73a"/>
+                <graphicElement>
+                    <pen lineStyle="Dashed" lineColor="#E0E0E0"/>
+                </graphicElement>
+            </line>
+            <textField>
+                <reportElement x="1" y="188" width="100" height="20" uuid="16b06c88-e609-49ed-ba04-6f221d094a82"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{arrivalTime}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="1" y="202" width="100" height="17" uuid="64fd4ab7-b54d-4be3-820d-ea8104b86229"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{departureDate}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="153" y="200" width="164" height="11" forecolor="#757575" uuid="60e76b12-4466-4139-9b68-d906b4b59b95"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Serif" size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{arrivalAirportName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="153" y="187" width="138" height="18" uuid="d78c00db-79aa-4811-b9f1-77c6ade6bd63"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="9" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{arrivalCityCode}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="153" y="207" width="88" height="17" forecolor="#757575" uuid="4d004409-5e0d-4eea-81fa-719103794ad5"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Serif" size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{arrivalCountry}]]></textFieldExpression>
+            </textField>
         </band>
     </pageHeader>
     <columnHeader>
@@ -259,7 +426,7 @@
                 <reportElement x="0" y="14" width="40" height="19" uuid="5c45f1a6-656a-49f2-8c32-ba8b890039ae"/>
                 <box leftPadding="5"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                    <font size="12" isBold="true"/>
+                    <font size="10" isBold="true"/>
                 </textElement>
                 <text><![CDATA[No]]></text>
             </staticText>
@@ -267,141 +434,117 @@
                 <reportElement x="0" y="33" width="40" height="19" uuid="4b866043-133e-4784-a1e8-15715eb0cce5"/>
                 <box leftPadding="5"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                    <font size="11"/>
+                    <font size="10"/>
                 </textElement>
                 <text><![CDATA[No]]></text>
             </staticText>
             <staticText>
-                <reportElement x="40" y="14" width="120" height="19" uuid="0060dd83-835e-4801-b7ea-8c3f30beab16"/>
+                <reportElement x="40" y="14" width="184" height="19" uuid="0060dd83-835e-4801-b7ea-8c3f30beab16"/>
                 <box leftPadding="5"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="12" isBold="true"/>
+                    <font size="10" isBold="true"/>
                 </textElement>
                 <text><![CDATA[Passenger's]]></text>
             </staticText>
             <staticText>
-                <reportElement x="40" y="33" width="120" height="19" uuid="15419a30-26f0-42e9-ae50-8508f25a2e1e"/>
+                <reportElement x="40" y="33" width="184" height="19" uuid="15419a30-26f0-42e9-ae50-8508f25a2e1e"/>
                 <box leftPadding="5"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="11"/>
+                    <font size="10"/>
                 </textElement>
                 <text><![CDATA[Nama Penumpang ]]></text>
             </staticText>
             <staticText>
-                <reportElement x="160" y="14" width="80" height="19" uuid="d3c8a7de-59f9-4ffb-804b-f5f608249294"/>
+                <reportElement x="224" y="14" width="122" height="19" uuid="d3c8a7de-59f9-4ffb-804b-f5f608249294"/>
                 <box leftPadding="5"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="12" isBold="true"/>
+                    <font size="10" isBold="true"/>
                 </textElement>
                 <text><![CDATA[Ticket Type]]></text>
             </staticText>
             <staticText>
-                <reportElement x="160" y="33" width="80" height="19" uuid="a071236b-a989-423b-af18-e456daeda8b2"/>
+                <reportElement x="224" y="33" width="122" height="19" uuid="a071236b-a989-423b-af18-e456daeda8b2"/>
                 <box leftPadding="5"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="11"/>
+                    <font size="10"/>
                 </textElement>
                 <text><![CDATA[Tipe Tiket]]></text>
             </staticText>
             <staticText>
-                <reportElement x="240" y="14" width="210" height="19" uuid="574b3a7c-6581-429a-b1c8-19ff8a4f656d"/>
+                <reportElement x="346" y="14" width="104" height="19" uuid="574b3a7c-6581-429a-b1c8-19ff8a4f656d"/>
                 <box leftPadding="5"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="12" isBold="true"/>
+                    <font size="10" isBold="true"/>
                 </textElement>
-                <text><![CDATA[Ticket Number]]></text>
+                <text><![CDATA[Baggage]]></text>
             </staticText>
             <staticText>
-                <reportElement x="240" y="33" width="210" height="19" uuid="64ccb4f4-0e5e-4a54-8e8f-dc87e544b12c"/>
+                <reportElement x="346" y="33" width="104" height="19" uuid="64ccb4f4-0e5e-4a54-8e8f-dc87e544b12c"/>
                 <box leftPadding="5"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="11"/>
+                    <font size="10"/>
                 </textElement>
-                <text><![CDATA[Nomot Tiket]]></text>
+                <text><![CDATA[Bagasi]]></text>
             </staticText>
             <staticText>
-                <reportElement x="450" y="14" width="62" height="19" uuid="354bd8e4-b085-4792-b1a4-42da4de0b4c5"/>
+                <reportElement x="450" y="14" width="104" height="19" uuid="354bd8e4-b085-4792-b1a4-42da4de0b4c5"/>
                 <box leftPadding="5"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="12" isBold="true"/>
+                    <font size="10" isBold="true"/>
                 </textElement>
-                <text><![CDATA[Gate]]></text>
+                <text><![CDATA[Additional Baggage]]></text>
             </staticText>
             <staticText>
-                <reportElement x="450" y="33" width="62" height="19" uuid="c060a7b7-8d78-444e-b6dc-229a6e82ebda"/>
+                <reportElement x="450" y="33" width="104" height="19" uuid="c060a7b7-8d78-444e-b6dc-229a6e82ebda"/>
                 <box leftPadding="5"/>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="11"/>
+                    <font size="10"/>
                 </textElement>
-                <text><![CDATA[Pintu]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="513" y="33" width="40" height="19" uuid="95e1c38c-594c-4c50-9b0f-a15c1cc6545f"/>
-                <box leftPadding="5"/>
-                <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="11"/>
-                </textElement>
-                <text><![CDATA[Kursi]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="513" y="14" width="40" height="19" uuid="75acf39d-7242-4990-986b-2d9861934ebc"/>
-                <box leftPadding="5"/>
-                <textElement textAlignment="Left" verticalAlignment="Middle">
-                    <font size="12" isBold="true"/>
-                </textElement>
-                <text><![CDATA[Seat]]></text>
+                <text><![CDATA[Bagasi Tambahan]]></text>
             </staticText>
         </band>
     </columnHeader>
     <detail>
-        <band height="40" splitType="Stretch">
+        <band height="30" splitType="Stretch">
             <textField>
-                <reportElement x="2" y="0" width="38" height="40" uuid="4d603590-4d5d-4c33-b44a-bf7c6f21be0c"/>
+                <reportElement x="0" y="0" width="40" height="20" uuid="4d603590-4d5d-4c33-b44a-bf7c6f21be0c"/>
                 <box leftPadding="5"/>
-                <textElement>
-                    <font size="12"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="10"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="40" y="0" width="120" height="40" uuid="d435c922-0a11-458a-9ad0-ce2da21825fd"/>
+                <reportElement x="40" y="0" width="184" height="20" uuid="d435c922-0a11-458a-9ad0-ce2da21825fd"/>
                 <box leftPadding="5"/>
-                <textElement>
-                    <font size="12"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="10"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{fullName}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{passengerName}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="160" y="0" width="80" height="40" uuid="bea5e627-fd43-4405-827a-c949d2ef61a7"/>
+                <reportElement x="224" y="0" width="122" height="20" uuid="bea5e627-fd43-4405-827a-c949d2ef61a7"/>
                 <box leftPadding="5"/>
-                <textElement>
-                    <font size="12"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="10"/>
                 </textElement>
-                <textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{airplaneClass}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="240" y="0" width="210" height="40" uuid="2bd0004f-f7a6-49ca-b9e1-6eda4b5ba4f6"/>
+                <reportElement x="346" y="0" width="104" height="20" uuid="2bd0004f-f7a6-49ca-b9e1-6eda4b5ba4f6"/>
                 <box leftPadding="5"/>
-                <textElement>
-                    <font size="12"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{ticketNumber}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{baggage}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="450" y="0" width="62" height="40" uuid="3fb19286-b86e-4b49-985a-f29f28a89eb8"/>
+                <reportElement x="450" y="0" width="104" height="20" uuid="3fb19286-b86e-4b49-985a-f29f28a89eb8"/>
                 <box leftPadding="5"/>
-                <textElement>
-                    <font size="12"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{gate}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="513" y="0" width="38" height="40" uuid="088dcab8-0144-4f81-b4c1-0aa1f85fedcf"/>
-                <box leftPadding="5"/>
-                <textElement>
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$F{seat}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{additionalBaggage}]]></textFieldExpression>
             </textField>
         </band>
     </detail>
@@ -409,52 +552,550 @@
         <band height="45" splitType="Stretch"/>
     </columnFooter>
     <pageFooter>
-        <band height="96" splitType="Stretch">
-            <rectangle>
-                <reportElement x="1" y="10" width="555" height="72" forecolor="#3E7BFA" backcolor="#3E7BFA" uuid="5ae4801f-f110-4ac4-95f9-126cbcebc169"/>
-            </rectangle>
+        <band height="81" splitType="Stretch">
             <line>
-                <reportElement x="2" y="7" width="551" height="1" uuid="8ae0c867-2754-45ec-8b3b-7f81230857cd"/>
+                <reportElement x="-20" y="10" width="551" height="1" uuid="8ae0c867-2754-45ec-8b3b-7f81230857cd"/>
+                <graphicElement>
+                    <pen lineColor="#E0E0E0"/>
+                </graphicElement>
             </line>
             <image>
                 <reportElement x="2" y="22" width="50" height="50" uuid="a68f289f-5c8c-4615-948f-3c15520b7647"/>
-                <imageExpression><![CDATA["reports/24-hours.png"]]></imageExpression>
+                <imageExpression><![CDATA["reports/hand-holding-smartphone_svgrepo.com.png"]]></imageExpression>
             </image>
             <staticText>
-                <reportElement x="70" y="22" width="142" height="30" forecolor="#FFFFFF" uuid="143a3fb7-2ee7-4098-b184-214ac0560809"/>
+                <reportElement x="70" y="22" width="210" height="30" forecolor="#86898B" uuid="143a3fb7-2ee7-4098-b184-214ac0560809"/>
                 <textElement>
-                    <font size="12"/>
+                    <font size="12" isBold="true"/>
                 </textElement>
-                <text><![CDATA[Customer Service (Indonesia)]]></text>
+                <text><![CDATA[E-Ticket ini tidak perlu di print lo!]]></text>
             </staticText>
             <staticText>
-                <reportElement x="70" y="52" width="142" height="30" forecolor="#FFFFFF" uuid="7046c55b-73f6-45fe-9d6b-1414c94a291e"/>
+                <reportElement x="70" y="40" width="442" height="31" forecolor="#86898B" uuid="7046c55b-73f6-45fe-9d6b-1414c94a291e"/>
                 <textElement>
-                    <font size="14" isBold="true"/>
+                    <font size="10" isBold="false"/>
                 </textElement>
-                <text><![CDATA[0812-1231-123]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="409" y="22" width="142" height="30" forecolor="#FFFFFF" uuid="ef08ed82-97eb-46cd-80e7-e20a8f993f6b">
-                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
-                </reportElement>
-                <textElement>
-                    <font size="12"/>
-                </textElement>
-                <text><![CDATA[Customer Service Email]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="409" y="52" width="142" height="30" forecolor="#FFFFFF" uuid="6c3e3d14-7fbc-4e1f-b305-95b7d96599d2">
-                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
-                </reportElement>
-                <textElement>
-                    <font size="14" isBold="true"/>
-                </textElement>
-                <text><![CDATA[cs@fly.id]]></text>
+                <text><![CDATA[Cukup tunjukkan e-tiket pada aplikasi atau mobile web saat melakukan check-in
+Jika menggunakan perangkat lain, login dengan email yang digunakan pada saat booking ya!]]></text>
             </staticText>
         </band>
     </pageFooter>
     <summary>
-        <band height="42" splitType="Stretch"/>
+<!--        <band height="42" splitType="Stretch">-->
+<!--            <break>-->
+<!--                <reportElement x="0" y="20" width="267" height="1" uuid="36e510b2-4b39-40ae-9e52-fd9f96c64bb2"/>-->
+<!--            </break>-->
+<!--        </band>-->
+        <band height="241" splitType="Stretch">
+            <staticText>
+                <reportElement x="1" y="2" width="230" height="19" uuid="c02b72e6-9cf1-48fb-8b8d-1edb68e3d87d"/>
+                <box leftPadding="5">
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Payment Details / Detail Pembayaran]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="470" y="25" width="83" height="19" uuid="e0613a0a-fea8-44a6-a19e-a5435e60a5fa"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Sub Total]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="40" y="44" width="120" height="19" uuid="5a659244-d398-4e33-a3f1-b3fa68c0c152"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <text><![CDATA[Item]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="310" y="25" width="66" height="19" uuid="48e0dc8f-516e-4724-99ad-d49864d931fd"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Total Item]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="376" y="44" width="94" height="19" uuid="34182d98-0341-4f5b-891a-5b67ee95ed64"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <text><![CDATA[Harga per item]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="44" width="40" height="19" uuid="30283c42-cd07-48d5-8fb9-b384dc1b4f58"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <text><![CDATA[No]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="160" y="44" width="100" height="19" uuid="c6a3f9ca-2988-4468-a04f-61dddfd2a8b6"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <text><![CDATA[Deskripsi Item]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="25" width="40" height="19" uuid="57f95c62-9449-4c98-804f-cf80a5a5c89a"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[No]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="470" y="44" width="83" height="19" uuid="71a96fad-7961-45e8-af1f-ab18a86c1bd7"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <text><![CDATA[Kursi]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="40" y="25" width="120" height="19" uuid="a2208148-c283-4900-b59c-f43e737fd9d1"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Item]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="376" y="25" width="94" height="19" uuid="36189488-7931-41c5-9a12-11998f51cc9f"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Price per item]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="310" y="44" width="66" height="19" uuid="96f5a649-12af-4eb0-aeb1-b070149f9bc9"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <text><![CDATA[Jumlah Item]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="160" y="25" width="100" height="19" uuid="e79d1ec9-16f0-4ec3-82da-eac481f6a3fc"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Item Description]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="40" y="63" width="120" height="33" uuid="eb425811-ef37-420c-b9c7-027a8e20937f"/>
+                <box>
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Airplane Tickets/ Tiket Pesawat]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="63" width="40" height="33" uuid="a2c7f5d1-1421-4eee-b04c-770717d3b881"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement>
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[1]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="260" y="25" width="50" height="19" uuid="09fd02d6-f690-40e4-a0dd-aa956f859438"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Type]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="260" y="44" width="50" height="19" uuid="8832e6e9-af04-4108-9515-4dd9101596c5"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="9" isBold="false"/>
+                </textElement>
+                <text><![CDATA[Tipe]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="40" y="96" width="120" height="64" uuid="dc4e5c30-6923-4b0d-a261-15d8fa7939e1"/>
+                <box>
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Tax and etc / Pajak dan Lainnya]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="96" width="40" height="64" uuid="0a18f83e-4c1a-46a1-b5e8-84b99b12148e"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement>
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[2]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="160" y="63" width="100" height="33" uuid="a0743220-e158-4727-9aae-88cc66495ead"/>
+                <box>
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{airplaneNameCodeDate}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="260" y="63" width="50" height="16" uuid="bb13d6b5-09de-4b0a-87d3-61308371019d"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="6"/>
+                </textElement>
+                <text><![CDATA[Mature / Dewasa]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="160" y="96" width="100" height="64" uuid="8cc507c7-d2c3-4e3a-a2eb-b337d48e93ec"/>
+                <box>
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Bagasi ]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="310" y="63" width="66" height="16" uuid="dd884646-f0f0-4ba7-a622-843a29aa068c"/>
+                <box>
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{seatMature}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="310" y="79" width="66" height="17" uuid="3eb8c0b0-7135-48e9-b517-07b7a40f6d35"/>
+                <box>
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{seatBaby}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="376" y="63" width="94" height="16" uuid="144413ab-1bfa-4f43-a329-e127b9dfea16"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{priceFlight}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="376" y="79" width="94" height="17" uuid="68773073-1729-4057-a2c7-7113af897a9d"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{priceFlight}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="470" y="63" width="83" height="16" uuid="24d97fdf-7ff9-4d84-9fca-5f67554da188"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{totalMatureTransaction}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="470" y="79" width="83" height="17" uuid="31493f22-b709-48c6-9950-c78fb492fb14"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{totalBabyTransaction}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="376" y="96" width="94" height="16" uuid="d8832c52-1b0e-4a4d-b630-868a9064c870"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{priceItem5}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="470" y="96" width="83" height="16" uuid="f63877af-910e-44bf-bbe0-a1651013e121"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{subTotPriceItem5}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="376" y="160" width="54" height="16" uuid="4e594419-b002-49d9-afc0-d2f9512202f9">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Diskon]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="376" y="176" width="94" height="16" uuid="5b437a59-000f-443a-95cc-f3649d8d69c6">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Total]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="470" y="112" width="83" height="16" uuid="63b0e34d-3638-4abf-892e-da7c70f3ba79"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{subTotPriceItem10}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="310" y="96" width="66" height="16" uuid="25f30530-bc25-41cd-813f-b4e712a9d875"/>
+                <box>
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{qtyItem5}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="260" y="96" width="50" height="16" uuid="6425028e-9caf-4128-a46e-0eb9f2f84c62"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement>
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[5]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="260" y="112" width="50" height="16" uuid="e12a702f-08b7-49c3-a013-aff33712ce73">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement>
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[10]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="260" y="128" width="50" height="16" uuid="631ec30a-2230-47ba-8962-31ab209d25df">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement>
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[15]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="260" y="144" width="50" height="16" uuid="d724e77a-91fb-4986-a2ff-3f020c2c3e42">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement>
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[20]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="260" y="79" width="50" height="17" uuid="44730f06-1f13-40f2-bf2f-5a18d363ac3d"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="6"/>
+                </textElement>
+                <text><![CDATA[Baby / Bayi]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="310" y="112" width="66" height="16" uuid="c72f9104-1ef5-400e-8398-7f478c29f68f"/>
+                <box>
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{qtyItem10}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="310" y="128" width="66" height="16" uuid="85036597-d98f-49de-a8d0-b2c1d690be0f"/>
+                <box>
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{qtyItem15}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="310" y="144" width="66" height="16" uuid="e94b22c4-8e6e-4189-8b00-8f46af3b820f"/>
+                <box>
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{qtyItem20}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="376" y="112" width="94" height="16" uuid="be9da73d-2898-4b97-a4db-d8fa8cb0f5db"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{priceItem10}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="376" y="128" width="94" height="16" uuid="7abad496-ecab-4be9-9820-57642606ee88"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{priceItem15}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="376" y="144" width="94" height="16" uuid="ebd2871a-38e3-4e93-91a2-8b18690f4c76"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{priceItem20}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="470" y="128" width="83" height="16" uuid="2de4ae0f-46bc-4570-a2d1-7dfdff146edd"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{subTotPriceItem15}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="470" y="144" width="83" height="16" uuid="b099dbef-bb0d-4077-a708-8125d72c2c6c"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{priceItem20}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="470" y="160" width="83" height="16" uuid="fe091581-04b7-494b-a981-7016e6582f2b"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{totalDiscount}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="470" y="176" width="83" height="16" uuid="bfbc529e-728e-4432-bb27-8bf7a43688f1"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="430" y="160" width="40" height="16" uuid="2c048af9-0b78-4dcf-b1de-4b51dabf9c1b"/>
+                <box>
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
+            </textField>
+        </band>
     </summary>
 </jasperReport>

@@ -87,11 +87,11 @@ public class Transaction extends AbstractDate {
     @Positive
     Integer priceFlight;
 
-//    Integer seatMature;
+    Integer seatMature;
 
     Integer totalMatureTransaction;
 
-//    Integer seatBaby;
+    Integer seatBaby;
 
     Integer totalBabyTransaction;
 
@@ -105,6 +105,10 @@ public class Transaction extends AbstractDate {
     @ManyToOne
     @JoinColumn
     Promotion promotion;
+
+    Integer discount;
+
+    Integer totalDiscount;
 
     @JsonIgnore
     @ToString.Exclude
