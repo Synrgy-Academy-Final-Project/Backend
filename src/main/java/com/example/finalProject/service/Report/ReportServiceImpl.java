@@ -65,7 +65,7 @@ public class ReportServiceImpl implements ReportService{
 //    }
 
     @Override
-    public byte[] exportETicket2(String uname, UUID orderId, String reportFormat) throws UserNotFoundException, JRException, FileNotFoundException {
+    public byte[] exportETicket2(String uname, UUID orderId, String reportFormat) throws UserNotFoundException, JRException, IOException {
         User idUser = authenticationService.getIdUser(uname);
 
 //        UUID transactionId = UUID.fromString("ddfe442e-6e8d-41b6-9c35-576f196b63e2");
@@ -182,6 +182,7 @@ public class ReportServiceImpl implements ReportService{
 
     public InputStream loadJrxmlFile() throws IOException {
         Resource resource = new ClassPathResource("reports/Eticket.jrxml");
+
         return resource.getInputStream();
     }
 
@@ -189,7 +190,6 @@ public class ReportServiceImpl implements ReportService{
     public String generateReportUserLink(List<ReportETicketDTO> report, String reportFormat, HttpServletResponse response) throws IOException, JRException, IOException {
         JasperReport jasperReport;
 //        File file = ResourceUtils.getFile("classpath:reports/Eticket.jrxml");
-        loadJrxmlFile();
 //        jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         jasperReport = JasperCompileManager.compileReport(loadJrxmlFile());
         JRSaver.saveObject(jasperReport, "Eticket.jasper"); // Compile to .jasper file instead of .jrxml
@@ -218,11 +218,12 @@ public class ReportServiceImpl implements ReportService{
         return "Report generated successfully";
     }
     @Override
-    public byte[] generateReportUser2(List<ReportETicketDTO> report, String reportFormat) throws FileNotFoundException, JRException {
+    public byte[] generateReportUser2(List<ReportETicketDTO> report, String reportFormat) throws IOException, JRException {
         JasperReport jasperReport;
 
-        File file = ResourceUtils.getFile("classpath:reports/Eticket.jrxml");
-        jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+//        File file = ResourceUtils.getFile("classpath:reports/Eticket.jrxml");
+//        jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        jasperReport = JasperCompileManager.compileReport(loadJrxmlFile());
         JRSaver.saveObject(jasperReport, "Eticket.jrxml");
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(report);
         Map<String, Object> parameters = new HashMap<>();

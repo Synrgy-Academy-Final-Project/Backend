@@ -12,10 +12,6 @@ public class FinalProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FinalProjectApplication.class, args);
 
-		Path rootDir = Paths.get("").toAbsolutePath();
-
-		// Print the root directory
-		System.out.println("Root Directory: " + rootDir.toString());
 	}
 
 }

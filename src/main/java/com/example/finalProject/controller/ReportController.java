@@ -31,7 +31,7 @@ public class ReportController {
     @PostMapping(
             path = "/eticket/{orderId}"
     )
-    public ResponseEntity<ResponseDTO> exportETicket(Principal principal, @PathVariable UUID orderId) throws JRException, FileNotFoundException, UserNotFoundException, MessagingException {
+    public ResponseEntity<ResponseDTO> exportETicket(Principal principal, @PathVariable UUID orderId) throws JRException, IOException, UserNotFoundException, MessagingException {
         String uname = principal.getName();
         byte[] pdfBytes = reportService.exportETicket2(uname,orderId,"pdf");
         emailUtil.sendEticket(uname, pdfBytes);
