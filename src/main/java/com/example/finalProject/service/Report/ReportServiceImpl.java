@@ -9,6 +9,7 @@ import com.example.finalProject.service.user.AuthenticationServiceImpl;
 import com.example.finalProject.utils.Response;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRSaver;
@@ -24,6 +25,7 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class ReportServiceImpl implements ReportService{
     private final AuthenticationServiceImpl authenticationService;
     private final TransactionRepository transactionRepository;
