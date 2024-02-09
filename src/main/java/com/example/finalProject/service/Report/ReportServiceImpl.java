@@ -13,13 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRSaver;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Time;
 import java.util.*;
 
@@ -181,12 +180,18 @@ public class ReportServiceImpl implements ReportService{
         return responses.suksesDTO(result);
     }
 
+    public InputStream loadJrxmlFile() throws IOException {
+        Resource resource = new ClassPathResource("reports/Eticket.jrxml");
+        return resource.getInputStream();
+    }
+
     @Override
     public String generateReportUserLink(List<ReportETicketDTO> report, String reportFormat, HttpServletResponse response) throws IOException, JRException, IOException {
         JasperReport jasperReport;
-
-        File file = ResourceUtils.getFile("classpath:reports/Eticket.jrxml");
-        jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+//        File file = ResourceUtils.getFile("classpath:reports/Eticket.jrxml");
+        loadJrxmlFile();
+//        jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        jasperReport = JasperCompileManager.compileReport(loadJrxmlFile());
         JRSaver.saveObject(jasperReport, "Eticket.jasper"); // Compile to .jasper file instead of .jrxml
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(report);
         Map<String, Object> parameters = new HashMap<>();
