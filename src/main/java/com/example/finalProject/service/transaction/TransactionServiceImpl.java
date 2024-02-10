@@ -282,12 +282,14 @@ public class TransactionServiceImpl implements TransactionService{
 //                        Integer totalTicket = ((mature * request.getPriceFlight()) + (baby * (request.getPriceFlight() * 20/100)) + totalAdditionalBaggage);
                         Integer afterDiskon = totalTicket - (totalTicket * disc/100);
                         System.out.println("total tiket " + totalTicket);
-                        Integer total = afterDiskon + totalAdditionalBaggage;
+                        Integer taxAdmin = 15000;
+                        Integer total = afterDiskon + totalAdditionalBaggage + taxAdmin;
                         System.out.println("total "  + total);
                         transaction.setTotalMatureTransaction( (mature * request.getPriceFlight()));
                         transaction.setTotalBabyTransaction((baby * (request.getPriceFlight() * 20/100)));
                         transaction.setDiscount(disc);
                         transaction.setTotalDiscount(totalTicket * disc/100);
+                        transaction.setTaxAdmin(taxAdmin);
                         transaction.setTotalPrice(total);
                         transaction.setOrderCode(otpUtil.generatorderCode());
                         Transaction result = transactionRepository.save(transaction);

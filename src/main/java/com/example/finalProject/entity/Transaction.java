@@ -110,6 +110,8 @@ public class Transaction extends AbstractDate {
 
     Integer totalDiscount;
 
+    Integer taxAdmin;
+
     @JsonIgnore
     @ToString.Exclude
     @OneToOne(mappedBy = "transaction")
