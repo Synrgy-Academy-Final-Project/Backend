@@ -40,4 +40,12 @@ public interface AirplaneRepository extends JpaRepository<Airplane, UUID> {
             "join airplane_flight_times aft on airplanes.id = aft.airplane_id",
             nativeQuery = true)
     public int getMinimumPriceThatDay(String fromAirportCode, String toAirportCode, LocalDate theDate);
+
+    @Query(value = "select aas.id as \"airplaneId\", aas.\"type\" as \"type\", aas.quantity as \"qty\", aas.price as \"price\"  \n" +
+            "from airplane_additional_service aas \n" +
+            "join airplanes a on aas.airplane_id = a.id \n" +
+            "where a.id = ?1\n" +
+            "and aas.deleted_date is null\n" +
+            "and a.deleted_date is null", nativeQuery = true)
+    List<Object[]> getDataAirplaneAdditionalBaggage(UUID airplaneId);
 }

@@ -60,4 +60,10 @@ public class AirplaneAdditionalServiceController {
         ResponseDTO result = airplaneAdditionalServiceImpl.delete(id);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
+
+    @GetMapping({"baggage/{airplaneId}", "baggage/{airplaneId}/"})
+    public ResponseEntity<ResponseDTO> getAdditionalAirplaneBaggage(@PathVariable UUID airplaneId){
+        ResponseDTO result = airplaneAdditionalServiceImpl.getAdditionalBaggage(airplaneId);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+    }
 }

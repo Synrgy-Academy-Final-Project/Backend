@@ -1,6 +1,8 @@
 package com.example.finalProject.service;
 
+import com.example.finalProject.dto.AirplaneAdditionalBaggageDTO;
 import com.example.finalProject.dto.AirplaneAdditionalServiceDTO;
+import com.example.finalProject.dto.ReportETicketDTO;
 import com.example.finalProject.dto.ResponseDTO;
 import com.example.finalProject.entity.Airplane;
 import com.example.finalProject.entity.AirplaneAdditionalService;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,6 +60,7 @@ public class AirplaneAdditionalServiceImpl {
             return response.suksesDTO(checkData.get());
         }
     }
+
 
     public ResponseDTO update(UUID id, AirplaneAdditionalServiceDTO airplaneAdditionalService) {
         try{
@@ -103,5 +108,18 @@ public class AirplaneAdditionalServiceImpl {
         }catch (Exception e){
             return response.errorDTO(500, e.getMessage());
         }
+    }
+
+    public ResponseDTO getAdditionalBaggage(UUID airplaneId){
+        List<Object[]> dataAirplaneAdditionalBaggage = airplaneRepository.getDataAirplaneAdditionalBaggage(airplaneId);
+        if (dataAirplaneAdditionalBaggage.isEmpty()){
+            return response.dataNotFound("Airplane Baggage");
+        }
+        return response.suksesDTO(dataAirplaneAdditionalBaggage.stream().map(array -> new AirplaneAdditionalBaggageDTO(
+                (UUID) array[0],
+                (String) array[1],
+                (Integer) array[2],
+                (Integer) array[3]
+        )).toList());
     }
 }
