@@ -764,7 +764,7 @@ Jika menggunakan perangkat lain, login dengan email yang digunakan pada saat boo
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <text><![CDATA[Tax and etc / Pajak dan Lainnya]]></text>
+                <text><![CDATA[Other/Lainnya]]></text>
             </staticText>
             <staticText>
                 <reportElement x="0" y="96" width="40" height="64" uuid="0a18f83e-4c1a-46a1-b5e8-84b99b12148e"/>
@@ -844,7 +844,7 @@ Jika menggunakan perangkat lain, login dengan email yang digunakan pada saat boo
                 <textElement verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{priceFlight}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{priceFlight}*20/100]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="470" y="63" width="83" height="16" uuid="24d97fdf-7ff9-4d84-9fca-5f67554da188"/>
@@ -896,7 +896,7 @@ Jika menggunakan perangkat lain, login dengan email yang digunakan pada saat boo
                 <textElement verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <text><![CDATA[Diskon]]></text>
+                <text><![CDATA[Discount/Diskon]]></text>
             </staticText>
             <staticText>
                 <reportElement x="376" y="176" width="94" height="16" uuid="5b437a59-000f-443a-95cc-f3649d8d69c6">
@@ -984,7 +984,7 @@ Jika menggunakan perangkat lain, login dengan email yang digunakan pada saat boo
                 <textElement verticalAlignment="Middle">
                     <font size="6"/>
                 </textElement>
-                <text><![CDATA[Baby / Bayi]]></text>
+                <text><![CDATA[Baby / Bayi(20%)]]></text>
             </staticText>
             <textField>
                 <reportElement x="310" y="112" width="66" height="16" uuid="c72f9104-1ef5-400e-8398-7f478c29f68f"/>

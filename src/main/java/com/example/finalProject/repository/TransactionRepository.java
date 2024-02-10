@@ -75,7 +75,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             "concat(a2.city, ' (', t.arrival_code,')') as \"arrivalCityCode\", a2.\"name\" as \"arrivalAirportName\", a2.country as \"arrivalCountry\",\n" +
             "concat(ud.first_name ,' ',ud.last_name) as \"passengerName\" , as2.baggage as \"baggage\", coalesce (taas.quantity, 0) as \"additionalBaggage\",\n" +
             "concat(t.company_name, ' (', t.airplane_code, ') ', t.departure_date) as \"airplaneNameCodeDate\",\n" +
-            "t.price_flight as \"priceFlight\", t.seat_baby as \"seatBaby\", t.total_baby_transaction as \"totalBabyTransaction\", t.seat_mature as \"seatMature\", t.total_mature_transaction as \"totalMatureTransaction\", \n" +
+            "coalesce(t.price_flight, 0) as \"priceFlight\", " +
+            "coalesce(t.seat_baby,0) as \"seatBaby\", coalesce(t.total_baby_transaction, 0) as \"totalBabyTransaction\", " +
+            "coalesce(t.seat_mature, 0) as \"seatMature\", coalesce(t.total_mature_transaction,0) as \"totalMatureTransaction\", \n" +
             "coalesce (case \n" +
             "\twhen taas.quantity = 5 then coalesce(tot.totalItem, 0)\n" +
             "end, 0) as \"qtyItem5\",\n" +
@@ -112,7 +114,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             "coalesce (case \n" +
             "\twhen taas.quantity = 20 and taas.price = 250000 then coalesce(tot.totalItem * taas.price, 0)\n" +
             "end, 0) as \"subTotpriceItem20\",\n" +
-            "p3.code as \"codePromo\", t.total_discount as \"totalDiscount\", concat(CAST(t.discount  AS VARCHAR), ' %') as \"discount\", t.total_price  as \"total\"\n" +
+            "p3.code as \"codePromo\", coalesce(t.total_discount,0) as \"totalDiscount\", concat(CAST(coalesce(t.discount,0)  AS VARCHAR), ' %') as \"discount\", t.total_price  as \"total\"\n" +
             "from transactions t \n" +
             "join passengers p on p.transaction_id = t.id and to_char(t.created_date, 'YYYY-MM-DD HH24:MI') = to_char(p.created_date, 'YYYY-MM-DD HH24:MI') \n" +
             "join users_details ud on p.user_details_id = ud.id\n" +
