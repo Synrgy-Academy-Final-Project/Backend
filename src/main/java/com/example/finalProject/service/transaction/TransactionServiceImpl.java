@@ -278,7 +278,7 @@ public class TransactionServiceImpl implements TransactionService{
                             disc = promotionByCode.get().getDiscount();
                         }
                         System.out.println("disc " + disc);
-                        Integer totalTicket = ((mature * request.getPriceFlight()) + (baby * (request.getPriceFlight()-(request.getPriceFlight() * 20/100))) + totalAdditionalBaggage);
+                        Integer totalTicket = ((mature * request.getPriceFlight()) + (baby * (request.getPriceFlight() * 20/100)) + totalAdditionalBaggage);
 
                         System.out.println("total tiket " + totalTicket);
                         Integer total = totalTicket - (totalTicket * disc/100);
@@ -341,7 +341,6 @@ public class TransactionServiceImpl implements TransactionService{
         }catch (Exception e){
             return response.errorDTO(500, e.getMessage());
         }
-
         return null;
     }
 
