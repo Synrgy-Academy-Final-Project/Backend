@@ -122,7 +122,7 @@ public class UsersServiceImpl implements UsersService{
                 return response.dataNotFound("dateOfBirth");
             }
 
-            UserDetails getUserDetails = userDetailsRepository.findByFirstNameAndLastNameAndDoB(generalFunction.createLikeQuery(firstName), generalFunction.createLikeQuery(lastName), dob);
+            UserDetails getUserDetails = userDetailsRepository.findByFirstNameAndLastNameAndDoB(firstName, (lastName == null) ? "null" : lastName, dob);
             System.out.println(getUserDetails);
             if (getUserDetails != null){
                 return response.suksesDTO(getUserDetails);

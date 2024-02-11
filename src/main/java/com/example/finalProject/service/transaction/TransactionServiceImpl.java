@@ -319,8 +319,8 @@ public class TransactionServiceImpl implements TransactionService{
                         System.out.println("Hitung data mature with additional baggage");
                         if (!dataMature.isEmpty()){
                             for (int i = 0; i<dataMature.size();i++){
-                                UserDetails getUserDetails = userDetailsRepository.findByFirstNameAndLastNameAndDoB(generalFunction.createLikeQuery(dataMature.get(i).getFirstName()),
-                                        generalFunction.createLikeQuery(dataMature.get(i).getLastName()),
+                                UserDetails getUserDetails = userDetailsRepository.findByFirstNameAndLastNameAndDoB(dataMature.get(i).getFirstName(),
+                                        (dataMature.get(i).getLastName() == null) ? "null" : dataMature.get(i).getLastName(),
                                         Date.from(dataMature.get(i).getDateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant()));
                                 System.out.println(getUserDetails);
                                 Optional<Passenger> check = passengerRepository.findPassengerByUserDetailsAndTransaction(getUserDetails, result);
