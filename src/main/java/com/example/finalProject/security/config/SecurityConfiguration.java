@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                                         .requestMatchers("/user-detail/logged-in-user").authenticated()
                                         .requestMatchers(HttpMethod.PUT, "/user-detail/**").authenticated()
                                         .requestMatchers(HttpMethod.POST, "/transaction/**").authenticated()
+                                        .requestMatchers(HttpMethod.POST, "/report/**").authenticated()
                                         .anyRequest().permitAll()
                 );
         http.authenticationProvider(applicationConfig.authenticationProvider());

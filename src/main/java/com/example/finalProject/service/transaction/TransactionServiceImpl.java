@@ -118,7 +118,6 @@ public class TransactionServiceImpl implements TransactionService{
 
             List<UserDetailsRequest> userDetails = request.getUserDetails();
 
-            System.out.println(userDetails.size());
             userDetails.stream().forEach(additionalUserDTO -> System.out.println(additionalUserDTO.getDateOfBirth()));
 
             List<DataMatureDTO> dataMature = new ArrayList<>();
@@ -148,37 +147,13 @@ public class TransactionServiceImpl implements TransactionService{
                     baby++;
                 }
             }
-            System.out.println(totalAdditionalBaggage);
-            System.out.println(dataMature);
-            System.out.println(mature +" "+ baby);
-//        Transaction transaction = new Transaction();
 
             if (!request.getAirplaneId().equals(null) && !request.getAirplaneClassId().equals(null) && !request.getAirplaneTimeFLightId().equals(null)) {
-                System.out.println("tes");
-//                Optional<Airplane> checkAirplane = airplaneRepository.findById(request.getAirplaneId());
-//                Optional<AirplaneClass> checkAirplaneClass = airplaneClassRepository.findById(request.getAirplaneClassId());
-//                Optional<AirplaneFlightTime> checkAirplaneFlightTime = airplaneFlightTimeRepository.findById(request.getAirplaneTimeFLightId());
-//                System.out.println(checkAirplane);
-//                if (checkAirplane.isEmpty() && checkAirplaneClass.isEmpty() && checkAirplaneFlightTime.isEmpty()) {
-//                    return response.dataNotFound("Data Airplane");
-//                }
-//                Airplane airplane = checkAirplane.get();
-//                System.out.println(airplane);
-//                AirplaneClass airplaneClass = checkAirplaneClass.get();
-//                AirplaneFlightTime airplaneFlightTime = checkAirplaneFlightTime.get();
 
                 List<Object[]> checkAirplaneConfirmDTO = transactionRepository.getAirplaneConfirmDTOById(request.getAirplaneId(), request.getAirplaneClassId(), request.getAirplaneTimeFLightId());
                 CheckRow checkRows = transactionRepository.checkRow();
-                System.out.println(checkAirplaneConfirmDTO);
+
                 List<Object[]> checkTotalSeatTransactionAirplane = transactionRepository.getTotalSeatTransactionAirplane(request.getAirplaneId(), request.getAirplaneClassId(), request.getAirplaneTimeFLightId(), request.getDepartureDate());
-
-
-//            if (checkAirplaneConfirmDTO.isEmpty()) {
-//                return response.dataNotFound("Data Airplane");
-//            }
-//            if (checkTotalSeatTransactionAirplane.isEmpty()){
-//                return response.dataNotFound("Transaction");
-//            }
 
                 List<AirplaneConfirmDTO> airplaneData = checkAirplaneConfirmDTO.stream().map(array -> new AirplaneConfirmDTO(
                         (UUID) array[0],
@@ -220,7 +195,6 @@ public class TransactionServiceImpl implements TransactionService{
                 if (idUser.isUserActive()){
                     if (checkRows.getRow() == 0 || totalSeat <= airplaneData.get(0).getCapacity() &&
                             (mature + totalSeat) <= airplaneData.get(0).getCapacity()) {
-                        System.out.println("masuk");
                         if (idUser.getUsersDetails().equals(null)){
                             response.errorDTO(500, "Update your profile");
                         }
@@ -230,7 +204,6 @@ public class TransactionServiceImpl implements TransactionService{
                                 !request.getAirplaneClassId().equals(null) && !request.getAirplaneClass().isEmpty()) {
                             System.out.println("masuk2");
                             if (request.getAirplaneId().equals(airplaneData.get(0).getAirplaneId())) {
-//                        Optional<Airplane> byId = airplaneRepository.findById(airplaneData.get(0).getAirplaneId());
                                 transaction.setAirplaneId(airplaneData.get(0).getAirplaneId());
                             }
                             System.out.println(transaction);
@@ -241,14 +214,12 @@ public class TransactionServiceImpl implements TransactionService{
                                 transaction.setAirplaneCode(airplaneData.get(0).getAirplaneCode());
                             }
                             if (request.getAirplaneClassId().equals(airplaneData.get(0).getAirplaneClassId())) {
-//                        Optional<AirplaneClass> byId = airplaneClassRepository.findById(airplaneData.get(0).getAirplaneClassId());
                                 transaction.setAirplaneClassId(airplaneData.get(0).getAirplaneClassId());
                             }
                             if (request.getAirplaneClass().equals(airplaneData.get(0).getAirplaneClass())) {
                                 transaction.setAirplaneClass(airplaneData.get(0).getAirplaneClass());
                             }
                             if (request.getAirplaneTimeFLightId().equals(airplaneData.get(0).getAirplaneFlightTimeId())) {
-//                            Optional<AirplaneFlightTime> byId = airplaneFlightTimeRepository.findById(airplaneData.get(0).getAirplaneFlightTimeId());
                                 transaction.setAirplaneTimeFlightId(airplaneData.get(0).getAirplaneFlightTimeId());
                             }
                         }
@@ -263,7 +234,6 @@ public class TransactionServiceImpl implements TransactionService{
                             transaction.setArrivalTime(request.getArrivalTime());
                         }
                         if (!request.getUserDetails().isEmpty()) {
-//                            transaction.setTotalSeat(mature);
                             transaction.setTotalSeat(mature+baby);
                             transaction.setSeatBaby(baby);
                             transaction.setSeatMature(mature);
@@ -277,14 +247,18 @@ public class TransactionServiceImpl implements TransactionService{
                             transaction.setPromotion(promotionByCode.get());
                             disc = promotionByCode.get().getDiscount();
                         }
-                        System.out.println("disc " + disc);
                         Integer totalTicket = ((mature * request.getPriceFlight()) + (baby * (request.getPriceFlight() * 20/100)));
-//                        Integer totalTicket = ((mature * request.getPriceFlight()) + (baby * (request.getPriceFlight() * 20/100)) + totalAdditionalBaggage);
                         Integer afterDiskon = totalTicket - (totalTicket * disc/100);
-                        System.out.println("total tiket " + totalTicket);
                         Integer taxAdmin = 15000;
                         Integer total = afterDiskon + totalAdditionalBaggage + taxAdmin;
-                        System.out.println("total "  + total);
+//                        System.out.println("disc " + disc);
+//                        System.out.println("Harga Pesawat " + request.getPriceFlight());
+//                        System.out.println("Total Baby transaction = " + baby +" + "+(request.getPriceFlight() * 20/100)+" = "+baby * (request.getPriceFlight() * 20/100));
+//                        System.out.println("Total Mature transaction = " + mature +" + "+request.getPriceFlight()+" = "+mature * request.getPriceFlight());
+//                        System.out.println("total tiket " + totalTicket);
+//                        System.out.println("total after diskon " + afterDiskon);
+//                        System.out.println("tax admin " + taxAdmin);
+//                        System.out.println("total "  + total);
                         transaction.setTotalMatureTransaction( (mature * request.getPriceFlight()));
                         transaction.setTotalBabyTransaction((baby * (request.getPriceFlight() * 20/100)));
                         transaction.setDiscount(disc);
@@ -316,7 +290,7 @@ public class TransactionServiceImpl implements TransactionService{
                                 throw new IOException(result1.getMessage());
                             }
                         }
-                        System.out.println("Hitung data mature with additional baggage");
+                        System.out.println("Calculate data mature with additional baggage");
                         if (!dataMature.isEmpty()){
                             for (int i = 0; i<dataMature.size();i++){
                                 UserDetails getUserDetails = userDetailsRepository.findByFirstNameAndLastNameAndDoB(dataMature.get(i).getFirstName(),
