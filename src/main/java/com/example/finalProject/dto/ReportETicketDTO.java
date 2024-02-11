@@ -50,6 +50,7 @@ public class ReportETicketDTO {
     private String codePromo;
     private Integer totalDiscount;
     private String discount;
+    private Integer taxAdmin;
     private Integer total;
 
 }

@@ -196,6 +196,11 @@
         <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
         <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
     </field>
+    <field name="taxAdmin" class="java.lang.Integer">
+        <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
+        <!--        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>-->
+    </field>
     <field name="total" class="java.lang.Integer">
         <!--        <property name="com.jaspersoft.studio.field.name" value="full_name"/>-->
         <!--        <property name="com.jaspersoft.studio.field.label" value="full_name"/>-->
@@ -395,7 +400,7 @@
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{departureDate}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{arrivalDate}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="153" y="200" width="164" height="11" forecolor="#757575" uuid="60e76b12-4466-4139-9b68-d906b4b59b95"/>
@@ -896,10 +901,10 @@ Jika menggunakan perangkat lain, login dengan email yang digunakan pada saat boo
                 <textElement verticalAlignment="Middle">
                     <font size="8"/>
                 </textElement>
-                <text><![CDATA[Discount/Diskon]]></text>
+                <text><![CDATA[Disc]]></text>
             </staticText>
             <staticText>
-                <reportElement x="376" y="176" width="94" height="16" uuid="5b437a59-000f-443a-95cc-f3649d8d69c6">
+                <reportElement x="376" y="192" width="94" height="16" uuid="5b437a59-000f-443a-95cc-f3649d8d69c6">
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 </reportElement>
                 <box leftPadding="5">
@@ -1077,7 +1082,7 @@ Jika menggunakan perangkat lain, login dengan email yang digunakan pada saat boo
                 <textFieldExpression><![CDATA[$F{totalDiscount}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="470" y="176" width="83" height="16" uuid="bfbc529e-728e-4432-bb27-8bf7a43688f1"/>
+                <reportElement x="470" y="192" width="83" height="16" uuid="bfbc529e-728e-4432-bb27-8bf7a43688f1"/>
                 <box leftPadding="5">
                     <pen lineWidth="0.25" lineStyle="Solid"/>
                 </box>
@@ -1095,6 +1100,28 @@ Jika menggunakan perangkat lain, login dengan email yang digunakan pada saat boo
                     <font size="8"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="376" y="176" width="94" height="16" uuid="f08a17f3-0783-4930-a90e-b8a2ad9e72be">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Admin]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="470" y="176" width="83" height="16" uuid="47eafa51-308a-4f7e-bb0b-dac6c9a26cb4"/>
+                <box leftPadding="5">
+                    <pen lineWidth="0.25" lineStyle="Solid"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{taxAdmin}]]></textFieldExpression>
             </textField>
         </band>
     </summary>

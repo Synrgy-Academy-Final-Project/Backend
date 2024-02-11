@@ -114,7 +114,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             "coalesce (case \n" +
             "\twhen taas.quantity = 20 and taas.price = 250000 then coalesce(tot.totalItem * taas.price, 0)\n" +
             "end, 0) as \"subTotpriceItem20\",\n" +
-            "p3.code as \"codePromo\", coalesce(t.total_discount,0) as \"totalDiscount\", concat(CAST(coalesce(t.discount,0)  AS VARCHAR), ' %') as \"discount\", t.total_price  as \"total\"\n" +
+            "p3.code as \"codePromo\", coalesce(t.total_discount,0) as \"totalDiscount\", concat(CAST(coalesce(t.discount,0)  AS VARCHAR), ' %') as \"discount\", " +
+            "coalesce(t.tax_admin,0) as \"taxAdmin\", coalesce(t.total_price, 0) as \"total\"\n" +
             "from transactions t \n" +
             "join passengers p on p.transaction_id = t.id and to_char(t.created_date, 'YYYY-MM-DD HH24:MI') = to_char(p.created_date, 'YYYY-MM-DD HH24:MI') \n" +
             "join users_details ud on p.user_details_id = ud.id\n" +
