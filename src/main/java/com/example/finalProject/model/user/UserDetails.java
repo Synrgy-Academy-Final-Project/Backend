@@ -21,7 +21,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "usersDetails",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "phoneNumber"),
                 @UniqueConstraint(columnNames = "visa"),
                 @UniqueConstraint(columnNames = "passport"),
                 @UniqueConstraint(columnNames = "residentPermit"),
