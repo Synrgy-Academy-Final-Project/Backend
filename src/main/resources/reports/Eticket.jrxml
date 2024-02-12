@@ -26,22 +26,22 @@
         <!--        <property name="com.jaspersoft.studio.field.label" value="departure_date"/>-->
         <!--        <property name="com.jaspersoft.studio.field.tree.path" value="flights"/>-->
     </field>
-    <field name="departureTime" class="java.sql.Time">
+    <field name="departureTime" class="java.lang.String">
         <!--        <property name="com.jaspersoft.studio.field.name" value="airport_name_departure"/>-->
         <!--        <property name="com.jaspersoft.studio.field.label" value="airport_name_departure"/>-->
         <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="departureDate" class="java.util.Date">
+    <field name="departureDate" class="java.lang.String">
         <!--        <property name="com.jaspersoft.studio.field.name" value="airport_code_departure"/>-->
         <!--        <property name="com.jaspersoft.studio.field.label" value="airport_code_departure"/>-->
         <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="arrivalTime" class="java.sql.Time">
+    <field name="arrivalTime" class="java.lang.String">
         <!--        <property name="com.jaspersoft.studio.field.name" value="airport_city_departure"/>-->
         <!--        <property name="com.jaspersoft.studio.field.label" value="airport_city_departure"/>-->
         <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->
     </field>
-    <field name="arrivalDate" class="java.util.Date">
+    <field name="arrivalDate" class="java.lang.String">
         <!--        <property name="com.jaspersoft.studio.field.name" value="airport_country_departure"/>-->
         <!--        <property name="com.jaspersoft.studio.field.label" value="airport_country_departure"/>-->
         <!--        <property name="com.jaspersoft.studio.field.tree.path" value="airports"/>-->

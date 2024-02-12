@@ -110,7 +110,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     List<Object[]> getDataDetailHistoryTransaction(UUID userId, UUID orderId);
 
     @Query(value = "select t.company_name as \"companyName\", t.url as \"companyUrl\", t.airplane_class as \"airplaneClass\", concat('ID - ',t.airplane_code)  as \"airplaneCode\", \n" +
-            "t.order_code as \"orderCode\", t.departure_time as \"departureTime\", t.departure_date as \"departureDate\", t.arrival_time as \"arrivalTime\", t.arrival_date as \"arrivalDate\", \n" +
+            "t.order_code as \"orderCode\", " +
+            "to_char(t.departure_time, 'HH24:MI') as \"departureTime\", to_char(t.departure_date, 'Dy, DD Mon YYYY') as \"departureDate\", " +
+            "to_char(t.arrival_time, 'HH24:MI') as \"arrivalTime\", to_char(t.arrival_date, 'Dy, DD Mon YYYY') as \"arrivalDate\", \n" +
             "concat(a.city,' (',t.departure_code,')') as \"departureCityCode\", a.\"name\" as \"departureAirportName\", a.country as \"departureCountry\", \n" +
             "concat(a2.city, ' (', t.arrival_code,')') as \"arrivalCityCode\", a2.\"name\" as \"arrivalAirportName\", a2.country as \"arrivalCountry\",\n" +
             "concat(ud.first_name ,' ',ud.last_name) as \"passengerName\" , as2.baggage as \"baggage\", coalesce (taas.quantity, 0) as \"additionalBaggage\",\n" +

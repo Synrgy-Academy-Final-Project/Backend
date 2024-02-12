@@ -16,10 +16,10 @@ public class ReportETicketDTO {
     private String airplaneClass;
     private String airplaneCode;
     private String orderCode;
-    private Time departureTime;
-    private Date departureDate;
-    private Time arrivalTime;
-    private Date arrivalDate;
+    private String departureTime;
+    private String departureDate;
+    private String arrivalTime;
+    private String arrivalDate;
     private String departureCityCode;
     private String departureAirportName;
     private String departureCountry;
