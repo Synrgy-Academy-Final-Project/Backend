@@ -66,7 +66,6 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
             }
             System.out.println(listFilter);
 
-
             String sql = "select * from (" +
                     "select c.\"name\" as \"companyName\", c.url as \"urlLogo\", " +
                     "a.\"name\" as \"airplaneName\", a.code as \"airplaneCode\", ac.airplane_class as \"airplaneClass\", ac.capacity as \"capacity\", atf.flight_time, " +
@@ -153,6 +152,10 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                             departureDateStr, departureDateStr, departureCode, arrivalCode, departureDateStr,
                             departureCode, arrivalCode, airplaneClass, pageable.getPageSize(), pageable.getOffset()},
                     new BeanPropertyRowMapper<>(ScheduleFlightDTO.class));
+
+            System.out.println(departureCode+"|||"+arrivalCode+"|||"+departureCode+"|||"+departureCode+"|||"+arrivalCode+"|||"+arrivalCode+"|||"+
+                    departureDateStr+"|||"+departureDateStr+"|||"+departureCode+"|||"+arrivalCode+"|||"+departureDateStr+"|||"+
+                    departureCode+"|||"+arrivalCode+"|||"+airplaneClass+"|||"+pageable.getPageSize()+"|||"+pageable.getOffset());
 
             List<ScheduleFlightResponseDTO> scheduleFlightResponseDTOS = new ArrayList<>();
 
