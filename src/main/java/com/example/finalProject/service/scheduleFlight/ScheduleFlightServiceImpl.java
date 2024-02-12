@@ -223,7 +223,6 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
             Long totalCount = jdbcTemplate.queryForObject(countQuery, Long.class, departureCode, arrivalCode,departureCode,departureCode, arrivalCode, arrivalCode,
                     departureDateStr, departureDateStr, departureCode, arrivalCode, departureDateStr, departureCode, arrivalCode, airplaneClass);
             if (resultList.isEmpty()){
-                resultList.clear();
                 totalCount = 0L;
                 PageImpl<ScheduleFlightDTO> flightDTOS = new PageImpl<>(resultList, pageable, totalCount);
                 return response.suksesDTO(flightDTOS);

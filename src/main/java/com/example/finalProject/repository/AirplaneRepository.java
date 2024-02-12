@@ -30,16 +30,19 @@ public interface AirplaneRepository extends JpaRepository<Airplane, UUID> {
     public int getMinimumPrice();
 
     @Query(value = "select \n" +
-            "\tmin(airplane_price + airplane_class_price + airplane_flight_time_price) \n" +
+            "\tmin(airplane_price + airplane_class_price + airplane_flight_time_price)\n" +
             "\t+ coalesce((select date_price from baseprice_dates bd \n" +
             "\twhere bd.date_time = ?3),0)\n" +
             "\t+ coalesce((select airport_price from baseprice_airports ba\n" +
-            "\twhere departure_code ilike ?1 and ba.arrival_code ilike ?2),0)\n" +
-            "from airplanes\n" +
-            "join airplane_classes ac on airplanes.id = ac.airplane_id\n" +
-            "join airplane_flight_times aft on airplanes.id = aft.airplane_id",
+            "\twhere departure_code ilike ?1 and ba.arrival_code ilike ?2 and deleted_date is null),0)\n" +
+            "from airplanes a \n" +
+            "join companies c on a.company_id = c.id \n" +
+            "join airplane_classes ac on a.id = ac.airplane_id \n" +
+            "join airplane_flight_times atf on a.id = atf.airplane_id \n" +
+            "join airplane_service as2 on ac.id = as2.airplane_class_id \n" +
+            "where initcap(ac.airplane_class) = initcap(?4)",
             nativeQuery = true)
-    public int getMinimumPriceThatDay(String fromAirportCode, String toAirportCode, LocalDate theDate);
+    public int getMinimumPriceThatDay(String fromAirportCode, String toAirportCode, LocalDate theDate, String airplaneClass);
 
     @Query(value = "select aas.id as \"airplaneId\", aas.\"type\" as \"type\", aas.quantity as \"qty\", aas.price as \"price\"  \n" +
             "from airplane_additional_service aas \n" +

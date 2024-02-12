@@ -178,14 +178,14 @@ public class AirplaneImpl {
         }
     }
 
-    public ResponseDTO minimumPrice(String fromAirportCode, String toAirportCode, Date departureDate) {
+    public ResponseDTO minimumPrice(String fromAirportCode, String toAirportCode, Date departureDate, String airplaneClass) {
         List<Map<String, Object>> sevenDays = new ArrayList<>();
         LocalDate date = LocalDate.ofInstant(departureDate.toInstant(), ZoneId.systemDefault());
         for (int i = 0; i < 7; i++){
             Map<String, Object> data = new HashMap<>();
             LocalDate theDate = date.plusDays(i);
             data.put("date", String.format("%02d", theDate.getDayOfMonth())+"-"+String.format("%02d", theDate.getMonthValue())+"-"+theDate.getYear());
-            data.put("price", airplaneRepository.getMinimumPriceThatDay(fromAirportCode, toAirportCode, theDate));
+            data.put("price", airplaneRepository.getMinimumPriceThatDay(fromAirportCode, toAirportCode, theDate, airplaneClass));
             sevenDays.add(data);
         }
         return response.suksesDTO(sevenDays);

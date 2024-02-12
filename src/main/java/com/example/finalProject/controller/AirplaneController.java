@@ -67,8 +67,9 @@ public class AirplaneController {
     @GetMapping("minimum-price")
     public Object minimumPrice(@ModelAttribute("fromAirportCode") String fromAirportCode,
                                @ModelAttribute("toAirportCode") String toAirportCode,
-                               @ModelAttribute("departureDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date departureDate){
-        ResponseDTO result = airplaneImpl.minimumPrice(fromAirportCode, toAirportCode, departureDate);
+                               @ModelAttribute("departureDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date departureDate,
+                               @ModelAttribute("airplaneClass") String airplaneClass){
+        ResponseDTO result = airplaneImpl.minimumPrice(fromAirportCode, toAirportCode, departureDate, airplaneClass);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
