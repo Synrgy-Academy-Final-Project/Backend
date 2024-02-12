@@ -18,6 +18,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,7 +55,8 @@ public class UserDetailsController {
     @PutMapping({ "", "/" })
     public ResponseEntity<ResponseDTO> updateUserDetails(@RequestBody UserUpdateRequest userDetails,
                                                          Principal principal) {
-        UserDetails data = (UserDetails)userDetailsImpl.findByEmail(principal.getName()).getData();
+        Map<String, Object> map = (HashMap) userDetailsImpl.findByEmail(principal.getName()).getData();
+        UserDetails data = (UserDetails) map.get("userDetail");
         ResponseDTO result = userDetailsImpl.update(data.getId(), userDetails);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
