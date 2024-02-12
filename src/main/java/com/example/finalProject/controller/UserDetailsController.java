@@ -53,8 +53,9 @@ public class UserDetailsController {
     @PutMapping({ "", "/" })
     public ResponseEntity<ResponseDTO> updateUserDetails(@RequestBody UserUpdateRequest userDetails,
                                                          Principal principal) {
-        UserDetails data = (UserDetails)userDetailsImpl.findByEmail(principal.getName()).getData();
-        ResponseDTO result = userDetailsImpl.update(data.getId(), userDetails);
+        User data = (User) userDetailsImpl.findByEmail(principal.getName()).getData();
+        UserDetails userDetailData = data.getUsersDetails();
+        ResponseDTO result = userDetailsImpl.update(userDetailData.getId(), userDetails);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 
