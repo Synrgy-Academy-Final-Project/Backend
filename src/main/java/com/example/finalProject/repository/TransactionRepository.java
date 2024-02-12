@@ -47,27 +47,67 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     CheckRow checkRow();
 
 
-    @Query(value = "select t.order_code as \"orderCode\", t.total_price as \"totalPrice\", \n" +
-            "t.departure_code as \"departureCode\", concat(a.city, ' (',a.code,')') as \"departureCityCode\",\n" +
-            "t.arrival_code as \"arrivalCode\", concat(a2.city, ' (',a2.code,')') as \"arrivalCityCode\",\n" +
-            "case \n" +
+    @Query(value = "select t.id as \"orderId\", t.url as \"urlCompany\",\n" +
+            "t.departure_code as \"departureCode\", to_char(t.departure_time, 'HH24:MI') as \"departureTime\", to_char(t.departure_date, 'Dy, DD Mon YYYY') as \"departureDate\", \n" +
+            "t.arrival_code as \"arrivalCode\", to_char(t.arrival_time, 'HH24:MI') as \"arrivalTime\", to_char(t.arrival_date, 'Dy, DD Mon YYYY') as \"arrivalDate\", \n" +
+            "CONCAT(\n" +
+            "        EXTRACT(HOUR FROM (interval '1 minute' * ba.duration)) || ' j ',\n" +
+            "        EXTRACT(MINUTE FROM (interval '1 minute' * ba.duration)) || ' m'\n" +
+            "    ) as \"durationAirplane\",\n" +
+            "concat(a.city,' (',t.departure_code,')') as \"departureCityCode\", a.\"name\" as \"departureAirportName\", a.country as \"departureCountry\", \n" +
+            "concat(a2.city, ' (', t.arrival_code,')') as \"arrivalCityCode\", a2.\"name\" as \"arrivalAirportName\", a2.country as \"arrivalCountry\", \n" +
+            "t.order_code as \"orderCode\", p.payment_type as \"paymentMethode\",\n" +
+            "case\n" +
             "\twhen p.transaction_status = 'settlement'  then 'Pembayaran Berhasil'\n" +
-            "\twhen p.transaction_status = 'pending' then 'Menunggu Pembayaran'\n" +
+            "\twhen p.transaction_status = 'pending' then 'Menunggu Pembayaran'\t\n" +
             "\twhen p.transaction_status = 'failure' then 'Pembayaran Tidak Berhasil'\n" +
             "\twhen p.transaction_status = 'refund' then 'Pengembalian Pembayaran'\n" +
-            "end as \"transactionStatus\"\n" +
+            "end as \"transactionStatus\",\n" +
+            "t.total_price as \"totalPrice\"\n" +
             "from payments p \n" +
             "join transactions t on p.transaction_id = t.id \n" +
-            "join airports a on a.code = t.departure_code \n" +
-            "join airports a2 on a2.code = t.arrival_code \n" +
+            "join airports a on t.departure_code = a.code\n" +
+            "join airports a2 on t.arrival_code  = a2.code \n" +
+            "join baseprice_airports ba on t.departure_code = ba.departure_code and t.arrival_code = ba.arrival_code \n" +
             "where t.user_id = ?1\n" +
             "and p.deleted_date is null\n" +
             "and t.deleted_date is null \n" +
             "and a.deleted_date is null\n" +
-            "and a2.deleted_date is null  ",
+            "and a2.deleted_date is null ",
             countQuery = "select count(*) from transaction t where t.user_id = ?1",
             nativeQuery = true)
     Page<Object[]> getDataHistoryTransaction(UUID userId, Pageable pageable);
+
+    @Query(value = "select t.id as \"orderId\", t.url as \"urlCompany\",\n" +
+            "t.departure_code as \"departureCode\", to_char(t.departure_time, 'HH24:MI') as \"departureTime\", to_char(t.departure_date, 'Dy, DD Mon YYYY') as \"departureDate\", \n" +
+            "t.arrival_code as \"arrivalCode\", to_char(t.arrival_time, 'HH24:MI') as \"arrivalTime\", to_char(t.arrival_date, 'Dy, DD Mon YYYY') as \"arrivalDate\", \n" +
+            "CONCAT(\n" +
+            "        EXTRACT(HOUR FROM (interval '1 minute' * ba.duration)) || ' j ',\n" +
+            "        EXTRACT(MINUTE FROM (interval '1 minute' * ba.duration)) || ' m'\n" +
+            "    ) as \"durationAirplane\",\n" +
+            "concat(a.city,' (',t.departure_code,')') as \"departureCityCode\", a.\"name\" as \"departureAirportName\", a.country as \"departureCountry\", \n" +
+            "concat(a2.city, ' (', t.arrival_code,')') as \"arrivalCityCode\", a2.\"name\" as \"arrivalAirportName\", a2.country as \"arrivalCountry\", \n" +
+            "t.order_code as \"orderCode\", p.payment_type as \"paymentMethode\",\n" +
+            "case\n" +
+            "\twhen p.transaction_status = 'settlement'  then 'Pembayaran Berhasil'\n" +
+            "\twhen p.transaction_status = 'pending' then 'Menunggu Pembayaran'\t\n" +
+            "\twhen p.transaction_status = 'failure' then 'Pembayaran Tidak Berhasil'\n" +
+            "\twhen p.transaction_status = 'refund' then 'Pengembalian Pembayaran'\n" +
+            "end as \"transactionStatus\",\n" +
+            "t.total_price as \"totalPrice\"\n" +
+            "from payments p \n" +
+            "join transactions t on p.transaction_id = t.id \n" +
+            "join airports a on t.departure_code = a.code\n" +
+            "join airports a2 on t.arrival_code  = a2.code \n" +
+            "join baseprice_airports ba on t.departure_code = ba.departure_code and t.arrival_code = ba.arrival_code \n" +
+            "where t.user_id = ?1\n" +
+            "and t.id = ?2\n" +
+            "and p.deleted_date is null\n" +
+            "and t.deleted_date is null \n" +
+            "and a.deleted_date is null\n" +
+            "and a2.deleted_date is null ",
+            nativeQuery = true)
+    List<Object[]> getDataDetailHistoryTransaction(UUID userId, UUID orderId);
 
     @Query(value = "select t.company_name as \"companyName\", t.url as \"companyUrl\", t.airplane_class as \"airplaneClass\", concat('ID - ',t.airplane_code)  as \"airplaneCode\", \n" +
             "t.order_code as \"orderCode\", t.departure_time as \"departureTime\", t.departure_date as \"departureDate\", t.arrival_time as \"arrivalTime\", t.arrival_date as \"arrivalDate\", \n" +

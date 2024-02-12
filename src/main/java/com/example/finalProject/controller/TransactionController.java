@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -63,6 +64,12 @@ public class TransactionController {
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
         ResponseDTO result = transactionImpl.transactionHistory(principal, pageable);
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
+    }
+    @GetMapping({"history/detail/{orderId}", "history/detail/{orderId}/"})
+    public ResponseEntity<ResponseDTO> transactionHistory(Principal principal,
+                                                          @PathVariable UUID orderId) throws UserNotFoundException {
+        ResponseDTO result = transactionImpl.transactionHistoryDetail(principal, orderId);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 

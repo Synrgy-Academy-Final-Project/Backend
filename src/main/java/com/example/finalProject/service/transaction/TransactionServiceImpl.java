@@ -326,17 +326,62 @@ public class TransactionServiceImpl implements TransactionService{
         try {
             User idUser = authenticationService.getIdUser(principal.getName());
             Page<Object[]> dataHistoryTransaction = transactionRepository.getDataHistoryTransaction(idUser.getId(), pageable);
-
             List<HistoryTransactionDTO> historyTransactionDTOS = dataHistoryTransaction.stream().map(array -> new HistoryTransactionDTO(
-                    (String) array[0],
-                    (Integer) array[1],
+                    (UUID) array[0],
+                    (String) array[1],
                     (String) array[2],
                     (String) array[3],
                     (String) array[4],
                     (String) array[5],
-                    (String) array[6]
+                    (String) array[6],
+                    (String) array[7],
+                    (String) array[8],
+                    (String) array[9],
+                    (String) array[10],
+                    (String) array[11],
+                    (String) array[12],
+                    (String) array[13],
+                    (String) array[14],
+                    (String) array[15],
+                    (String) array[16],
+                    (String) array[17],
+                    (Integer) array[18]
             )).toList();
+
             return response.suksesDTO(new PageImpl<>(historyTransactionDTOS, pageable, dataHistoryTransaction.getTotalElements()));
+        }catch (Exception e){
+            return response.errorDTO(500, e.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseDTO transactionHistoryDetail(Principal principal, UUID orderId) throws UserNotFoundException {
+        try {
+            User idUser = authenticationService.getIdUser(principal.getName());
+            List<Object[]> dataDetailHistoryTransaction = transactionRepository.getDataDetailHistoryTransaction(idUser.getId(), orderId);
+
+            List<HistoryTransactionDTO> historyTransactionDTOS = dataDetailHistoryTransaction.stream().map(array -> new HistoryTransactionDTO(
+                    (UUID) array[0],
+                    (String) array[1],
+                    (String) array[2],
+                    (String) array[3],
+                    (String) array[4],
+                    (String) array[5],
+                    (String) array[6],
+                    (String) array[7],
+                    (String) array[8],
+                    (String) array[9],
+                    (String) array[10],
+                    (String) array[11],
+                    (String) array[12],
+                    (String) array[13],
+                    (String) array[14],
+                    (String) array[15],
+                    (String) array[16],
+                    (String) array[17],
+                    (Integer) array[18]
+            )).toList();
+            return response.suksesDTO(historyTransactionDTOS);
         }catch (Exception e){
             return response.errorDTO(500, e.getMessage());
         }

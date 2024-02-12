@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.UUID;
 
 public interface TransactionService {
 
@@ -17,4 +18,6 @@ public interface TransactionService {
     ResponseDTO save(Principal principal, TransactionEntityDTO request) throws IOException, UserNotFoundException;
 
     ResponseDTO transactionHistory(Principal principal, Pageable pageable) throws UserNotFoundException;
+
+    ResponseDTO transactionHistoryDetail(Principal principal, UUID orderId) throws UserNotFoundException;
 }
