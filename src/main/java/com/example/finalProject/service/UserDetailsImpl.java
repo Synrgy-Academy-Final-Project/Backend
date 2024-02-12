@@ -19,7 +19,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.*;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserDetailsImpl {
@@ -58,15 +60,11 @@ public class UserDetailsImpl {
     }
 
     public ResponseDTO findByEmail(String email) {
-        Map<String, Object> combine = new HashMap();
-
         Optional<User> user = userRepository.findUserByEmail(email);
         if (user.isEmpty()){
             return response.dataNotFound("User");
         }
-        combine.put("user", user);
-        combine.put("userDetail", user.get().getUsersDetails());
-        return response.suksesDTO(combine);
+        return response.suksesDTO(user.get());
     }
 
     public ResponseDTO update(UUID id, UserUpdateRequest userDetails) {
