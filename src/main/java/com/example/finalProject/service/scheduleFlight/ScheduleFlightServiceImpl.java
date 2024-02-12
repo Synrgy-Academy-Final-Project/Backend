@@ -25,9 +25,16 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
     @Override
     public ResponseDTO getScheduleFlight(String departureCode, String arrivalCode, Date departureDate, String airplaneClass,
                                          String departureTimeFilter, String companyName, String hasBaggage, String hasInflightEntertainment, String hasMeals,
-                                         String hasUSB, String hasWIFI, String hasRefund, String hasReschedule, Pageable pageable) {
+                                         String hasUSB, String hasWIFI, String hasRefund, String hasReschedule, String fromPrice, String toPrice, Pageable pageable) {
         try
         {
+            String totalPrice;
+            if (!fromPrice.isEmpty() && !toPrice.isEmpty()){
+                totalPrice = fromPrice + "-" + toPrice;
+            }else{
+                totalPrice = "";
+            }
+
             Map<String, String> varInput = new HashMap<>();
             varInput.put("departureTimeFilter", departureTimeFilter);
             varInput.put("companyName", companyName);
@@ -38,16 +45,22 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
             varInput.put("hasWIFI", hasWIFI);
             varInput.put("hasRefund", hasRefund);
             varInput.put("hasReschedule", hasReschedule);
+            varInput.put("totalPrice", totalPrice);
 
             List<String> listFilter = new ArrayList<>();
             for (Map.Entry<String, String> entry : varInput.entrySet()) {
                 if (!entry.getValue().isEmpty()){
-                    String filter = "lower(sf.\""+entry.getKey()+"\") = lower('"+entry.getValue()+"')";
-                    listFilter.add(filter);
+                    if (entry.getKey().equals("totalPrice")){
+                        String[] price = entry.getValue().split("-");
+                        String filter = "sf.\""+entry.getKey()+"\""+" >= " + price[0] + "::INTEGER and " + "sf.\""+entry.getKey()+"\" < "+price[1] + "::INTEGER";
+                        listFilter.add(filter);
+                    }else {
+                        String filter = "lower(sf.\""+entry.getKey()+"\") = lower('"+entry.getValue()+"')";
+                        listFilter.add(filter);
+                    }
                 }
             }
             String filter;
-            System.out.println(listFilter);
 
             if (listFilter.size()>1){
                 String tempFilter = "";
@@ -64,7 +77,7 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
             }else {
                 filter = "";
             }
-            System.out.println(listFilter);
+//            System.out.println(listFilter);
 
             String sql = "select * from (" +
                     "select c.\"name\" as \"companyName\", c.url as \"urlLogo\", " +
@@ -81,7 +94,7 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                     "coalesce ((select bd.date_price from baseprice_dates bd where to_date(?, 'dd-mm-yyyy') = to_date(to_char(bd.date_time, 'dd-mm-yyyy'), 'dd-mm-yyyy') and deleted_date is null limit 1), 0)   + " +
                     "(select airport_price from baseprice_airports ba where upper(departure_code) = upper(?) and upper(arrival_code) = upper(?) and deleted_date is null limit 1) + " +
                     "ac.airplane_class_price + " +
-                    "atf.airplane_flight_time_price) as totalPrice, " +
+                    "atf.airplane_flight_time_price) as \"totalPrice\", \n" +
                     "a.id as \"airplaneId\",\n" +
                     "ac.id as \"airplaneClassId\",\n" +
                     "atf.id as \"airplaneFlightTimeId\"," +
@@ -139,7 +152,7 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                     "and c.deleted_date is null " +
                     "and ac.deleted_date is null " +
                     "and atf.deleted_date is null " +
-                    "and as2.deleted_date is null) sf " + filter;
+                    "and as2.deleted_date is null) sf " + filter + "order by sf.\"totalPrice\" asc";
 //            System.out.println(sql);
             String pattern = "dd-MM-yyyy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -153,9 +166,9 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                             departureCode, arrivalCode, airplaneClass, pageable.getPageSize(), pageable.getOffset()},
                     new BeanPropertyRowMapper<>(ScheduleFlightDTO.class));
 
-            System.out.println(departureCode+"|||"+arrivalCode+"|||"+departureCode+"|||"+departureCode+"|||"+arrivalCode+"|||"+arrivalCode+"|||"+
-                    departureDateStr+"|||"+departureDateStr+"|||"+departureCode+"|||"+arrivalCode+"|||"+departureDateStr+"|||"+
-                    departureCode+"|||"+arrivalCode+"|||"+airplaneClass+"|||"+pageable.getPageSize()+"|||"+pageable.getOffset());
+//            System.out.println(departureCode+"|||"+arrivalCode+"|||"+departureCode+"|||"+departureCode+"|||"+arrivalCode+"|||"+arrivalCode+"|||"+
+//                    departureDateStr+"|||"+departureDateStr+"|||"+departureCode+"|||"+arrivalCode+"|||"+departureDateStr+"|||"+
+//                    departureCode+"|||"+arrivalCode+"|||"+airplaneClass+"|||"+pageable.getPageSize()+"|||"+pageable.getOffset());
 
             List<ScheduleFlightResponseDTO> scheduleFlightResponseDTOS = new ArrayList<>();
 

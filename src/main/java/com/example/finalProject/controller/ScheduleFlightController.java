@@ -39,7 +39,9 @@ public class ScheduleFlightController {
                                                  @ModelAttribute("usb") String hasUSB,
                                                  @ModelAttribute("wifi") String hasWIFI,
                                                  @ModelAttribute("refund") String hasRefund,
-                                                 @ModelAttribute("reschedule") String hasReschedule)
+                                                 @ModelAttribute("reschedule") String hasReschedule,
+                                                 @ModelAttribute("fromPrice") String fromPrice,
+                                                 @ModelAttribute("toPrice") String toPrice)
     {
         Pageable pageable;
         if (sortBy.isEmpty()){
@@ -48,7 +50,7 @@ public class ScheduleFlightController {
             pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         }
         ResponseDTO result = scheduleFlightService.getScheduleFlight(fromAirportCode, toAirportCode, departureDate, airplaneClass,
-                departureTimeFilter, companyName, hasBaggage, hasInflightEntertainment, hasMeals, hasUSB, hasWIFI, hasRefund, hasReschedule, pageable);
+                departureTimeFilter, companyName, hasBaggage, hasInflightEntertainment, hasMeals, hasUSB, hasWIFI, hasRefund, hasReschedule,fromPrice, toPrice,pageable);
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getStatus()));
     }
 }
