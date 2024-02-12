@@ -77,7 +77,7 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
             }else {
                 filter = "";
             }
-//            System.out.println(listFilter);
+            System.out.println(listFilter);
 
             String sql = "select * from (" +
                     "select c.\"name\" as \"companyName\", c.url as \"urlLogo\", " +
@@ -152,8 +152,8 @@ public class ScheduleFlightServiceImpl implements ScheduleFlightService{
                     "and c.deleted_date is null " +
                     "and ac.deleted_date is null " +
                     "and atf.deleted_date is null " +
-                    "and as2.deleted_date is null) sf " + filter + "order by sf.\"totalPrice\" asc";
-//            System.out.println(sql);
+                    "and as2.deleted_date is null) sf " + filter + " order by sf.\"totalPrice\" asc";
+            System.out.println(sql);
             String pattern = "dd-MM-yyyy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             String departureDateStr = simpleDateFormat.format(departureDate);
