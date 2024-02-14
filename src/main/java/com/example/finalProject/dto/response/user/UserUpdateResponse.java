@@ -17,4 +17,5 @@ public class UserUpdateResponse {
     private String passport;
     private String residentPermit;
     private String nik;
+    private String nationality;
 }

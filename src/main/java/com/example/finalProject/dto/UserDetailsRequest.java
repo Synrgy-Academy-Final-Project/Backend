@@ -23,6 +23,7 @@ public class UserDetailsRequest {
     private String residentPermit;
     private String NIK;
     private Date dateOfBirth;
+    private String nationality;
     private UUID airplaneAdditionalId;
 
 }

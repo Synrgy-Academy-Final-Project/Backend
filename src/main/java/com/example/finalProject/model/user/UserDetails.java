@@ -55,6 +55,7 @@ public class UserDetails {
     private String NIK;
     @Column(columnDefinition = "date")
     private Date dateOfBirth;
+    private String nationality = "Indonesia";
     private Timestamp createdDate;
     private Timestamp updatedDate;
     private Timestamp deletedDate;

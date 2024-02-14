@@ -45,4 +45,6 @@ public class UserUpdateRequest {
 
     @NotNull
     private String nik;
+
+    private String nationality;
 }
