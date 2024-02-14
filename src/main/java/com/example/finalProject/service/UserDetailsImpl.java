@@ -76,38 +76,38 @@ public class UserDetailsImpl {
 
             UserDetails updatedUserDetails = checkData.get();
 
-            if (!userDetails.getFirstName().isEmpty()){
+            if (userDetails.getFirstName() != null){
                 updatedUserDetails.setFirstName(userDetails.getFirstName());
             }
-            if (!userDetails.getLastName().isEmpty()){
+            if (userDetails.getLastName() != null){
                 updatedUserDetails.setLastName(userDetails.getLastName());
             }
             if (userDetails.getDateOfBirth() != null){
                 updatedUserDetails.setDateOfBirth(userDetails.getDateOfBirth());
             }
-            if (userDetails.getDateOfBirth() != null){
-                updatedUserDetails.setDateOfBirth(userDetails.getDateOfBirth());
-            }
-            if (!userDetails.getAddress().isEmpty()){
+            if (userDetails.getAddress() != null){
                 updatedUserDetails.setAddress(userDetails.getAddress());
             }
-            if (!userDetails.getGender().isEmpty()){
+            if (userDetails.getGender() != null){
                 updatedUserDetails.setGender(userDetails.getGender());
             }
-            if (!userDetails.getPhoneNumber().isEmpty()){
+            if (userDetails.getPhoneNumber() != null){
                 updatedUserDetails.setPhoneNumber(userDetails.getPhoneNumber());
             }
-            if (!userDetails.getVisa().isEmpty()){
+            if (userDetails.getVisa() != null){
                 updatedUserDetails.setVisa(userDetails.getVisa());
             }
-            if (!userDetails.getPassport().isEmpty()){
+            if (userDetails.getPassport() != null){
                 updatedUserDetails.setPassport(userDetails.getPassport());
             }
-            if (!userDetails.getResidentPermit().isEmpty()){
+            if (userDetails.getResidentPermit() != null){
                 updatedUserDetails.setResidentPermit(userDetails.getResidentPermit());
             }
-            if (!userDetails.getNik().isEmpty()){
+            if (userDetails.getNik() != null){
                 updatedUserDetails.setNIK(userDetails.getNik());
+            }
+            if (userDetails.getNationality() != null){
+                updatedUserDetails.setNationality(userDetails.getNationality());
             }
 
             return response.suksesDTO(userDetailsRepository.save(updatedUserDetails));
