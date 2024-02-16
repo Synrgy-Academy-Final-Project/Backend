@@ -48,9 +48,14 @@ public class RefreshTokenServiceImpl {
         }
 
         RefreshToken data = optionalData.get();
+        try{
+            verifyExpiration(data);
+        }catch(RuntimeException e){
+            return response.errorDTO(401, e.getMessage());
+        }
 
-        verifyExpiration(data);
-        System.out.println(data);
+
+
         UserDetails user = userService.loadUserByUsername(data.getUser().getEmail());
 
         JwtResponseLogin jwtResponseLogin = new JwtResponseLogin();
