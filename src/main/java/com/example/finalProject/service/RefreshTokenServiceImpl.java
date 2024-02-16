@@ -44,7 +44,7 @@ public class RefreshTokenServiceImpl {
         System.out.println(token);
         Optional<RefreshToken> optionalData = findByToken(token);
         if (optionalData.isEmpty()){
-            return response.dataNotFound("Company");
+            return response.dataNotFound("RefreshToken");
         }
 
         RefreshToken data = optionalData.get();
