@@ -203,6 +203,9 @@ public class TransactionServiceImpl implements TransactionService{
                                 !request.getAirplaneName().isEmpty() && !request.getAirplaneCode().isEmpty() &&
                                 !request.getAirplaneClassId().equals(null) && !request.getAirplaneClass().isEmpty()) {
                             System.out.println("masuk2");
+                            if (request.getUrl().equals(airplaneData.get(0).getUrlCompany())){
+                                transaction.setUrl(airplaneData.get(0).getUrlCompany());
+                            }
                             if (request.getAirplaneId().equals(airplaneData.get(0).getAirplaneId())) {
                                 transaction.setAirplaneId(airplaneData.get(0).getAirplaneId());
                             }
