@@ -32,12 +32,21 @@ public class RefreshTokenServiceImpl {
     UserRepository userRepository;
 
     public RefreshToken createRefreshToken(String email){
-        RefreshToken refreshToken = RefreshToken.builder()
-                .user(userRepository.findUserByEmail(email).get())
-                .token(UUID.randomUUID().toString())
-                .expiryDate(Instant.now().plusSeconds(60*60*24*7)) // set expiry of refresh token to 10 minutes - you can configure it application.properties file
-                .build();
-        return refreshTokenRepository.save(refreshToken);
+        Optional<RefreshToken> optionalData = refreshTokenRepository.searchByEmail(email);
+        if(optionalData.isEmpty()){
+            RefreshToken refreshToken = RefreshToken.builder()
+                    .user(userRepository.findUserByEmail(email).get())
+                    .token(UUID.randomUUID().toString())
+                    .expiryDate(Instant.now().plusSeconds(60*60*24*7)) // set expiry of refresh token to 10 minutes - you can configure it application.properties file
+                    .build();
+            return refreshTokenRepository.save(refreshToken);
+        }else{
+            RefreshToken data = optionalData.get();
+            data.setToken(UUID.randomUUID().toString());
+            data.setExpiryDate(Instant.now().plusSeconds(60*60*24*7));
+            return refreshTokenRepository.save(data);
+        }
+
     }
 
     public ResponseDTO refreshLoginToken(String token){

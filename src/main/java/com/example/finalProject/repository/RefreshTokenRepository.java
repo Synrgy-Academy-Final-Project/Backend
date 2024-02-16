@@ -16,4 +16,9 @@ import java.util.UUID;
 @Repository
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Integer> {
     Optional<RefreshToken> findByToken(String token);
+    @Query(value = "select refresh_token.* from refresh_token \n" +
+            "join users on users.id = refresh_token.user_id\n" +
+            "where users.email  = ?1",
+            nativeQuery = true)
+    Optional<RefreshToken> searchByEmail(String email);
 }
