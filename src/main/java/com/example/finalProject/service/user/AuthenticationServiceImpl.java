@@ -2,6 +2,7 @@ package com.example.finalProject.service.user;
 
 import com.example.finalProject.dto.request.user.*;
 import com.example.finalProject.dto.response.user.*;
+import com.example.finalProject.entity.RefreshToken;
 import com.example.finalProject.exception.*;
 import com.example.finalProject.model.user.ERole;
 import com.example.finalProject.model.user.Role;
@@ -15,12 +16,10 @@ import com.example.finalProject.security.service.UserService;
 import com.example.finalProject.security.util.EmailUtil;
 import com.example.finalProject.security.util.OtpUtil;
 //import com.nimbusds.jose.crypto.PasswordBasedDecrypter;
-import com.example.finalProject.utils.Config;
+import com.example.finalProject.service.RefreshTokenServiceImpl;
 import com.example.finalProject.utils.Response;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,9 +27,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.Array;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -49,6 +46,7 @@ public class AuthenticationServiceImpl implements AuhenticationService {
     private final OtpUtil otpUtil;
     private final EmailUtil emailUtil;
     private final Response response;
+    private final RefreshTokenServiceImpl refreshTokenService;
 
     @Override
     public Map register(RegisterRequest request) throws NullRequestException, UserExistException {
@@ -125,10 +123,12 @@ public class AuthenticationServiceImpl implements AuhenticationService {
 
             JwtResponseLogin jwtResponseLogin = new JwtResponseLogin();
             var jwtToken = jwtService.generateToken(userDetails);
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getEmail());
             jwtResponseLogin.setToken(jwtToken);
             jwtResponseLogin.setType("Bearer");
             jwtResponseLogin.setEmail(user.getEmail());
             jwtResponseLogin.setRoles(rolesList);
+            jwtResponseLogin.setRefreshToken(refreshToken.getToken());
 
 //            return response.sukses(jwtResponseRegister);
             return response.sukses(jwtResponseLogin);
@@ -174,12 +174,16 @@ public class AuthenticationServiceImpl implements AuhenticationService {
                     List<String> roles = userDetails.getAuthorities().stream()
                             .map(GrantedAuthority::getAuthority)
                             .toList();
+
                     JwtResponseLogin jwtResponseLogin = new JwtResponseLogin();
                     var jwtToken = jwtService.generateToken(user);
+                    RefreshToken refreshToken = refreshTokenService.createRefreshToken(userId.getEmail());
                     jwtResponseLogin.setToken(jwtToken);
                     jwtResponseLogin.setType("Bearer");
                     jwtResponseLogin.setEmail(userId.getEmail());
                     jwtResponseLogin.setRoles(roles);
+                    jwtResponseLogin.setRefreshToken(refreshToken.getToken());
+
                     map = response.sukses(jwtResponseLogin);
                 }else{
                     throw new UserNotVerifiedException();

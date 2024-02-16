@@ -16,4 +16,5 @@ public class JwtResponseLogin {
     private String type;
     private String email;
     private List<String> roles;
+    private String refreshToken;
 }
