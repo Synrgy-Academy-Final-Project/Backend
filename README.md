@@ -117,5 +117,3 @@ This project is licensed under the MIT License. See the LICENSE file for details
 * Consider showcasing API usage examples or integrating code snippets where relevant.
 * Mention any community forums or channels for discussions and support.
 * Briefly describe your maintenance plans for addressing issues and updates.
-
-**Remember to update and customize this template with your specific project details and tailor it to your target audience.**
