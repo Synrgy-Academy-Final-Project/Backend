@@ -77,7 +77,7 @@ fly.id offers a comprehensive set of API endpoints for managing essential travel
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/fly.id.git`
+1. Clone the repository: `git clone https://github.com/Synrgy-Academy-Final-Project/Backend.git`
 2. Install dependencies: `mvn install` (or Gradle equivalent)
 
 ### Running the Application
@@ -87,7 +87,16 @@ fly.id offers a comprehensive set of API endpoints for managing essential travel
 
 ## API Usage
 
-Detailed API documentation and usage examples are available within the repository or via a separate guide.
+**Comprehensive API documentation is available through your Postman collection:**
+
+https://www.postman.com/gold-trinity-555834/workspace/final-project-workspace/collection/27703370-315bd356-b4e1-4a69-91b9-dde319a3ca45?action=share&source=copy-link&creator=27703370
+
+This collection provides detailed information on each API endpoint, including:
+
+* Request methods (GET, POST, PUT, DELETE)
+* Request and response body formats (JSON, XML)
+* Authentication requirements
+* Example usage scenarios
 
 ---
 
